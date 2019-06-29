@@ -1,0 +1,88 @@
+plugins {
+    id 'com.craigburke.karma' version '1.4.4'
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'io.spring.dependency-management'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+node {
+    version = '11.12.0'
+}
+
+karma {
+    basePath = '../' // <1>
+    colors = true // <2>
+
+    browsers = ['PhantomJS'] // <4>
+    frameworks = ['jasmine'] // <5>
+
+    profile('default') {
+        libraryBases = ['src/main/resources/static/lib/']
+        libraryFiles = ['jquery-3.2.1.js'] // <1>
+
+        sourceBases = ['src/main/resources/static/js/']
+        sourceFiles = ['*.js'] // <2>
+
+        testBases = ['src/test/javascript/']
+        testFiles = ['**/*test.js'] // <3>
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'e2e', 'src/test/resources', '--tags', 'not @developing']
+        }
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.apache.commons:commons-email:1.5')
+    compile('commons-io:commons-io:2.5')
+    compile('org.apache.commons:commons-lang3:3.6')
+    compile('com.fasterxml.jackson.core:jackson-core:2.9.0')
+    compile('com.fasterxml.jackson.core:jackson-databind:2.9.0')
+    compile('com.fasterxml.jackson.core:jackson-annotations:2.9.0')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile(
+            'com.icegreen:greenmail:1.5.10',
+            'junit:junit:4.12',
+            'org.mockito:mockito-core:2.7.19',
+            'io.github.bonigarcia:webdrivermanager:3.6.1',
+            'org.seleniumhq.selenium:selenium-java:3.3.1'
+    )
+    testCompile 'io.cucumber:cucumber-java:4.4.0'
+    testCompile 'io.cucumber:cucumber-junit:4.4.0'
+    testCompile 'io.cucumber:cucumber-spring:4.4.0'
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootRun {
+
+}

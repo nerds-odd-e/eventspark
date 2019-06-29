@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Gadget Mailsender</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h1>Gadget Mailsender</h1>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="/send">HOME</a></li>
+                <li role="presentation"><a href="/contact-list">Contact List</a></li>
+            </ul>
+
+            <form action="/send" method="post" th:object="${form}">
+                <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Error</h3>
+                    </div>
+                    <div class="panel-body" id="error-area">
+                        <ul >
+                            <li th:each="error : ${#fields.detailedErrors()}">
+                                <span th:text="${error.message}"></span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" name="address" id="address" placeholder="address" th:value="${form.address}" />
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="subject" th:value="${form.subject}" />
+                </div>
+                <div class="form-group">
+                    <label for="body">Body</label>
+                    <textarea class="form-control" name="body" id="body" placeholder="body" rows="10" th:text="${form.body}"></textarea>
+                </div>
+                <button type="submit" id="send" class="btn btn-default">Send</button>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+</body>
+</html>

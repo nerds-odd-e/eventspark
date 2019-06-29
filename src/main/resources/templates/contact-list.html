@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gadget Mailsender</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <script th:src="@{/lib/jquery-3.2.1.js}"></script>
+    <script th:src="@{/js/contact-list.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h1>Contact List</h1>
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="/send">HOME</a></li>
+                <li role="presentation" class="active"><a href="/contact-list">Contact List</a></li>
+            </ul>
+
+            <form action="/contact-list" method="post" th:object="${form}">
+                <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Error</h3>
+                    </div>
+                    <div class="panel-body" id="error-area">
+                        <ul >
+                            <li th:each="error : ${#fields.detailedErrors()}">
+                                <span th:text="${error.message}"></span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <table>
+                        <tr>
+                            <td width="30%">
+                                <input type="text" class="form-control" name="name" id="name" th:field="*{name}"
+                                       placeholder="name"/>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="address" id="address" th:field="*{address}"
+                                       placeholder="address"/>
+                            </td>
+                            <td>
+                                <button type="submit" id="add" class="btn btn-default">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+
+            <br/>
+            <label>Address List</label>
+            <br/>
+            <form action="/create-mail" method="post">
+                <button type="submit" id="create-email" class="btn btn-default pull-right">Create Email</button>
+                <table class="table table-bordered" id="address-list">
+                    <tr>
+                        <th>name</th>
+                        <th>address</th>
+                        <th><input type="checkbox" id="all" onclick="new ContactList().checkAll()"/>&nbsp;Check All</th>
+                    </tr>
+                    <tr th:each="mail, stat : ${contactList}">
+                        <td th:text="${mail.name}"></td>
+                        <td><a href="#" th:text="${mail.mailAddress}"></a></td>
+                        <td><input type="checkbox" name="mailAddress" th:id="${'address' + stat.index}" th:value="${mail.mailAddress}"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>
