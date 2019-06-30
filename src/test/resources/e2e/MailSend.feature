@@ -1,4 +1,5 @@
 Feature: Mail Send
+
   Background:
     Given user visits send page
 
@@ -10,9 +11,9 @@ Feature: Mail Send
     When send
     Then error_area is none
     And should receive the following emails:
-      | from                        | to            | subject | body    |
-      | gadget.mailsender@gmail.com | xxx@gmail.com | hello   | message |
-      | gadget.mailsender@gmail.com | yyy@gmail.com | hello   | message |
+      | from               | to            | subject | body    |
+      | eventspark@gmx.com | xxx@gmail.com | hello   | message |
+      | eventspark@gmx.com | yyy@gmail.com | hello   | message |
 
   # replace subject and body placeholder
   # success case
@@ -23,9 +24,9 @@ Feature: Mail Send
     When send
     Then error_area is none
     And should receive the following emails:
-      | from                        | to              | subject  | body     |
-      | gadget.mailsender@gmail.com | user1@gmail.com | Hi user1 | Hi user1 |
-      | gadget.mailsender@gmail.com | user2@gmail.com | Hi user2 | Hi user2 |
+      | from               | to              | subject  | body     |
+      | eventspark@gmx.com | user1@gmail.com | Hi user1 | Hi user1 |
+      | eventspark@gmx.com | user2@gmail.com | Hi user2 | Hi user2 |
 
 # 1 field error
   Scenario: address is empty
