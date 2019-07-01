@@ -1,4 +1,4 @@
-# gadget-mailsender
+# eventspark
 
 
 # production run 
