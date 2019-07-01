@@ -55,7 +55,7 @@ public class MailControllerTest {
     @Autowired
     private AddressBookService addressBookService;
 
-    AddressItem noNameAddress = new AddressItem("gadget.mailsender@gmail.com", "");
+    AddressItem noNameAddress = new AddressItem("eventspark@gmx.com", "");
 
     @Before
     public void setUp() {
@@ -97,10 +97,10 @@ public class MailControllerTest {
     @Test
     public void sendMultipleWhenUseTemplate() throws Exception {
 
-        addressBookService.add(new AddressItem("gadget.mailsender@gmail.com", "Aki"));
+        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
         addressBookService.add(new AddressItem("stanly@xxx.com", "Stanly"));
 
-        MailInfo mailInfo = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("gadget.mailsender@gmail.com;stanly@xxx.com").build();
+        MailInfo mailInfo = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
 
         getPerform(mailInfo)
                 .andExpect(view().name("redirect:/send"));
