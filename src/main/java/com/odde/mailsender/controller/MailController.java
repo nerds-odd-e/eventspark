@@ -31,14 +31,14 @@ public class MailController {
 
     @GetMapping("/home")
     public String send(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
-        return "send";
+        return "home";
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String sendEmail(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "send";
+            return "home";
         }
 
         try {
@@ -58,7 +58,7 @@ public class MailController {
             return "redirect:/home";
         } catch (Exception e) {
             result.rejectValue("", "", e.getMessage());
-            return "send";
+            return "home";
         }
     }
 

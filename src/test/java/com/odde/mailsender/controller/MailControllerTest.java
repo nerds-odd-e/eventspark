@@ -74,7 +74,7 @@ public class MailControllerTest {
     @Test
     public void showErrorIfEmptyForms() throws Exception {
         MvcResult mvcResult = getPerform(validMail().withTo("").withSubject("").withBody("").build())
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "address", "{0} may not be empty");
@@ -86,7 +86,7 @@ public class MailControllerTest {
     @Test
     public void manyAddressWithInvalidAddressAndNoSubject() throws Exception {
         MvcResult mvcResult = getPerform(validMail().withTo("abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com").withSubject("").build())
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "address", "Address format is wrong");
@@ -114,7 +114,7 @@ public class MailControllerTest {
     @Test
     public void notSubjectReplaceWhenNotRegisteredAddress() throws Exception {
         MvcResult mvcResult = getPerform(validMail().withSubject("Hello $name").withTo("foobar@xxx.com").build())
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "", "When you use template, choose email from contract list that has a name");
@@ -124,7 +124,7 @@ public class MailControllerTest {
     @Test
     public void notBodyReplaceWhenNotRegisteredAddress() throws Exception {
         MvcResult mvcResult = getPerform(validMail().withBody("Hi $name").withTo("foobar@xxx.com").build())
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "", "When you use template, choose email from contract list that has a name");
@@ -138,7 +138,7 @@ public class MailControllerTest {
         MailInfo mailInfo = validMail().withSubject("Hi $name").withTo(noNameAddress.getMailAddress()).build();
 
         MvcResult mvcResult = getPerform(mailInfo)
-                .andExpect(view().name("send")).andReturn();
+                .andExpect(view().name("home")).andReturn();
 
         assertErrorMessage(mvcResult, "", "When you use template, choose email from contract list that has a name");
         verify(mailService, never()).sendMultiple(any());
@@ -152,7 +152,7 @@ public class MailControllerTest {
         MailInfo mailInfo = validMail().withBody("Hi $name").withTo(noNameAddress.getMailAddress()).build();
 
         MvcResult mvcResult = getPerform(mailInfo)
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "", "When you use template, choose email from contract list that has a name");
@@ -163,7 +163,7 @@ public class MailControllerTest {
     public void mailServerHasDown()  throws Exception {
         doThrow(new Exception("Try to send email, but failed")).when(mailService).sendMultiple(any(List.class));
         MvcResult mvcResult = getPerform(validMail().withTo("abc@gmail.com;john@gmail.com").build())
-                .andExpect(view().name("send"))
+                .andExpect(view().name("home"))
                 .andReturn();
 
         assertErrorMessage(mvcResult, "", "Try to send email, but failed");
