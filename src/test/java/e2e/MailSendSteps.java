@@ -36,7 +36,7 @@ public class MailSendSteps {
 
     @Given("user visits send page")
     public void userVisitsSendPage() {
-        driver.get("http://localhost:" + port + "/send");
+        driver.get("http://localhost:" + port + "/home");
     }
 
     @Given("^address is \"([^\"]*)\"$")

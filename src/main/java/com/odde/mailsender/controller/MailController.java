@@ -29,7 +29,7 @@ public class MailController {
     @Autowired
     private AddressBookService addressBookService;
 
-    @GetMapping("/send")
+    @GetMapping("/home")
     public String send(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
         return "send";
     }
@@ -44,7 +44,7 @@ public class MailController {
         try {
             if (!form.isTemplate()) {
                 mailService.sendMultiple(Arrays.stream(form.getAddresses()).map(form::createNormalMail).collect(Collectors.toList()));
-                return "redirect:/send";
+                return "redirect:/home";
             }
 
             List<MailInfo> mails = new ArrayList<>();
@@ -55,7 +55,7 @@ public class MailController {
                 mails.add(form.createRenderedMail(addressBookService.findByAddress(address)));
             }
             mailService.sendMultiple(mails);
-            return "redirect:/send";
+            return "redirect:/home";
         } catch (Exception e) {
             result.rejectValue("", "", e.getMessage());
             return "send";
