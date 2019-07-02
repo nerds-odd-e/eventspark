@@ -14,13 +14,9 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <h1>Contact List</h1>
-            <ul class="nav nav-tabs">
-                <li role="presentation"><a href="/send">HOME</a></li>
-                <li role="presentation" class="active"><a href="/contact-list">Contact List</a></li>
-            </ul>
 
-            <form action="/contact-list" method="post" th:object="${form}">
-                <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
+            <!--form action="/import-csv" method="post" th:object="${form}">
+                <div-- th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">Error</h3>
                     </div>
@@ -32,45 +28,24 @@
 
                         </ul>
                     </div>
-                </div>
+                </div-->
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="csvfile">Select CSV file</label>
                     <table>
                         <tr>
-                            <td width="30%">
-                                <input type="text" class="form-control" name="name" id="name" th:field="*{name}"
-                                       placeholder="name"/>
+                            <td>
+                                <input type="file" class="form-control" name="csvfile" id="csvfile"
+                                       placeholder="csvfile"/>
                             </td>
                             <td>
-                                <input type="text" class="form-control" name="address" id="address" th:field="*{address}"
-                                       placeholder="address"/>
-                            </td>
-                            <td>
-                                <button type="submit" id="add" class="btn btn-default">Add</button>
+                                <button type="submit" id="import" class="btn btn-default">Import</button>
                             </td>
                         </tr>
                     </table>
                 </div>
-            </form>
+            <!--/form-->
 
             <br/>
-            <label>Address List</label>
-            <br/>
-            <form action="/create-mail" method="post">
-                <button type="submit" id="create-email" class="btn btn-default pull-right">Create Email</button>
-                <table class="table table-bordered" id="address-list">
-                    <tr>
-                        <th>name</th>
-                        <th>address</th>
-                        <th><input type="checkbox" id="all" onclick="new ContactList().checkAll()"/>&nbsp;Check All</th>
-                    </tr>
-                    <tr th:each="mail, stat : ${contactList}">
-                        <td th:text="${mail.name}"></td>
-                        <td><a href="#" th:text="${mail.mailAddress}"></a></td>
-                        <td><input type="checkbox" name="mailAddress" th:id="${'address' + stat.index}" th:value="${mail.mailAddress}"/></td>
-                    </tr>
-                </table>
-            </form>
         </div>
         <div class="col-md-3"></div>
     </div>
