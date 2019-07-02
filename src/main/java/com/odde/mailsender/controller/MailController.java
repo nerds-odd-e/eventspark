@@ -39,6 +39,11 @@ public class MailController {
         return "home";
     }
 
+    @RequestMapping(value = "/home", method = RequestMethod.POST)
+    public String goBackToHome(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
+        return "home";
+    }
+
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String sendEmail(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
 

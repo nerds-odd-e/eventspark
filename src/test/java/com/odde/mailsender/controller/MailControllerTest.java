@@ -176,6 +176,21 @@ public class MailControllerTest {
         verify(mailService, times(1)).sendMultiple(any());
     }
 
+    @Test
+    public void postToHome() throws Exception {
+        MvcResult mvcResult = mvc.perform(post("/home")
+                .param("from", "")
+                .param("address", "test@hoge.co.jp")
+                .param("subject", "Hi $name")
+                .param("body", "Hello $name"))
+                .andExpect(view().name("home"))
+                .andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        assertTrue(contentAsString.contains("test@hoge.co.jp"));
+        assertTrue(contentAsString.contains("Hi $name"));
+        assertTrue(contentAsString.contains("Hello $name"));
+    }
+
     private ResultActions getPerform(MailInfo mailInfo) throws Exception {
         return mvc.perform(post("/send")
                 .param("from", mailInfo.getFrom())
