@@ -1,7 +1,7 @@
 Feature: Mail Send
 
   Background:
-    Given user visits send page
+    Given user visits our homepage
 
   # success case
   Scenario: send mail success two

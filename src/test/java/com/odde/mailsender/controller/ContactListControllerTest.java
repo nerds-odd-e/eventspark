@@ -69,7 +69,7 @@ public class ContactListControllerTest {
     @Test
     public void createMailEmpty() throws Exception {
         MvcResult mvcResult = mvc.perform(post("/create-mail"))
-                .andExpect(view().name("send")).andReturn();
+                .andExpect(view().name("home")).andReturn();
 
         Assert.assertEquals("", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
     }
@@ -77,7 +77,7 @@ public class ContactListControllerTest {
     @Test
     public void createMailTwo() throws Exception {
         MvcResult mvcResult = mvc.perform(post("/create-mail").param("mailAddress", "aaa@yahoo.co.jp", "bbb@yahoo.co.jp"))
-                .andExpect(view().name("send")).andReturn();
+                .andExpect(view().name("home")).andReturn();
 
         Assert.assertEquals("aaa@yahoo.co.jp;bbb@yahoo.co.jp", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
     }

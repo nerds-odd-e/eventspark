@@ -34,9 +34,9 @@ public class MailSendSteps {
     private int port;
 
 
-    @Given("user visits send page")
+    @Given("user visits our homepage")
     public void userVisitsSendPage() {
-        driver.get("http://localhost:" + port + "/send");
+        driver.get("http://localhost:" + port);
     }
 
     @Given("^address is \"([^\"]*)\"$")

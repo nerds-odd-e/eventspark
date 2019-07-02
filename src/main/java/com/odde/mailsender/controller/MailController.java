@@ -29,22 +29,27 @@ public class MailController {
     @Autowired
     private AddressBookService addressBookService;
 
-    @GetMapping("/send")
-    public String send(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
-        return "send";
+    @GetMapping("")
+    public String defaultEndpoint(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public String goToHome(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
+        return "home";
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String sendEmail(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "send";
+            return "home";
         }
 
         try {
             if (!form.isTemplate()) {
                 mailService.sendMultiple(Arrays.stream(form.getAddresses()).map(form::createNormalMail).collect(Collectors.toList()));
-                return "redirect:/send";
+                return "redirect:/home";
             }
 
             List<MailInfo> mails = new ArrayList<>();
@@ -55,10 +60,10 @@ public class MailController {
                 mails.add(form.createRenderedMail(addressBookService.findByAddress(address)));
             }
             mailService.sendMultiple(mails);
-            return "redirect:/send";
+            return "redirect:/home";
         } catch (Exception e) {
             result.rejectValue("", "", e.getMessage());
-            return "send";
+            return "home";
         }
     }
 
