@@ -1,17 +1,17 @@
 package com.odde.mailsender.service;
 
 public class PreviewBuilder {
-    PreviewInfo preview;
+    PreviewRequest preview;
 
-    public PreviewBuilder(PreviewInfo previewInfo){
-        preview = previewInfo;
+    public PreviewBuilder(PreviewRequest previewRequest){
+        preview = previewRequest;
     }
 
     public static PreviewBuilder validPreview(){
-        return new PreviewBuilder(new PreviewInfo("eventspark@gmx.com", "subject", "some body."));
+        return new PreviewBuilder(new PreviewRequest("eventspark@gmx.com", "subject", "some body."));
     }
 
-    public PreviewInfo build() {
+    public PreviewRequest build() {
         return preview;
     }
 

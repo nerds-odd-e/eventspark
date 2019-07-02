@@ -1,14 +1,14 @@
 package com.odde.mailsender.service;
 
-public class PreviewInfo {
+public class PreviewRequest {
     private String to;
     private String subject;
     private String body;
 
-    public PreviewInfo() {
+    public PreviewRequest() {
     }
 
-    public PreviewInfo(String to, String subject, String body) {
+    public PreviewRequest(String to, String subject, String body) {
         this.to = to;
         this.subject = subject;
         this.body = body;

@@ -2,6 +2,7 @@ package com.odde.mailsender.form;
 
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.MailInfo;
+import com.odde.mailsender.service.PreviewRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -69,11 +70,8 @@ public class PreviewForm {
 //        return StringUtils.contains(getSubject(), "$name") || StringUtils.contains(getBody(), "$name");
 //    }
 //
-//    public MailInfo createRenderedMail(AddressItem addressItem) {
-//        return new MailInfo("eventspark@gmx.com", addressItem.getMailAddress(), renderSubjectTemplate(addressItem), renderBodyTemplate(addressItem));
-//    }
-//
-//    public MailInfo createNormalMail(String address) {
-//        return new MailInfo("eventspark@gmx.com", address, getSubject(), getBody());
-//    }
+    public PreviewRequest createPreviewInfo(AddressItem addressItem) {
+        return new PreviewRequest(null, null, null);
+    }
+
 }

@@ -1,8 +1,7 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.MailService;
-import com.odde.mailsender.service.PreviewInfo;
+import com.odde.mailsender.service.PreviewRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -22,6 +20,10 @@ import java.util.List;
 
 import static com.odde.mailsender.service.PreviewBuilder.validPreview;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -30,36 +32,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PreviewControllerTest {
 
+    @MockBean
+    private MailService mailService;
+
     @Autowired
     private MockMvc mvc;
 
     @Test
     public void showPreviewPage() throws Exception {
 
-        PreviewInfo previewInfo = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
-                .param("address", previewInfo.getTo())
-                .param("subject", previewInfo.getSubject())
-                .param("body", previewInfo.getBody()))
+                .param("address", previewRequest.getTo())
+                .param("subject", previewRequest.getSubject())
+                .param("body", previewRequest.getBody()))
                 .andExpect(view().name("preview"))
                 .andReturn();
+
+        //verify(mailService, times(1)).preview(null);
 
     }
 
     @Test
     public void testAddressRequired() throws Exception {
 
-        PreviewInfo previewInfo = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
-                .param("subject", previewInfo.getSubject())
-                .param("body", previewInfo.getBody()))
+                .param("subject", previewRequest.getSubject())
+                .param("body", previewRequest.getBody()))
                 .andExpect(view().name("preview"))
                 .andReturn();
 
         assertErrorMessage(resultActions, "address", "{0} may not be empty");
+        verify(mailService, never()).preview(any());
     }
+
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
         ModelAndView mav = mvcResult.getModelAndView();
