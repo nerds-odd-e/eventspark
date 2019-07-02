@@ -1,15 +1,9 @@
 Feature: Import Csv
 
   Background:
-    Given user visits send page
+    Given user visits import page
 
   # success case
-  @developing
-  Scenario: move to import page
-    Given open contact list page
-    When click link
-    Then move to import page
-
   # upload csv
   @developing
   Scenario Outline: upload csv

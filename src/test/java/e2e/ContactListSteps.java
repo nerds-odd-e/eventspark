@@ -96,4 +96,15 @@ public class ContactListSteps {
     public void userVisitsContactPage() {
         driver.get("http://localhost:" + port + "/contact-list");
     }
+
+    @When("click link")
+    public void click_link() {
+        driver.findElement(By.id("import-csv")).click();
+    }
+
+    @Then("move to import page")
+    public void move_to_import_page() {
+        String url = driver.getCurrentUrl();
+        Assert.assertEquals("import-csv", url.substring(url.length() - 10));
+    }
 }
