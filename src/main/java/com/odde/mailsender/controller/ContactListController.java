@@ -52,6 +52,6 @@ public class ContactListController {
     @PostMapping("/create-mail")
     public String createEmail(@RequestParam(required = false) String[] mailAddress, Model model) {
         model.addAttribute("form", MailSendForm.create(mailAddress));
-        return "send";
+        return "home";
     }
 }

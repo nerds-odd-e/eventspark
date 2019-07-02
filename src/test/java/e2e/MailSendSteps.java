@@ -34,9 +34,9 @@ public class MailSendSteps {
     private int port;
 
 
-    @Given("user visits send page")
+    @Given("user visits our homepage")
     public void userVisitsSendPage() {
-        driver.get("http://localhost:" + port + "/send");
+        driver.get("http://localhost:" + port);
     }
 
     @Given("^address is \"([^\"]*)\"$")
@@ -57,6 +57,11 @@ public class MailSendSteps {
     @When("^send$")
     public void send() throws Throwable {
         driver.findElement(By.id("send")).click();
+    }
+
+    @When("^preview$")
+    public void preview() throws Throwable {
+        driver.findElement(By.id("preview")).click();
     }
 
     @Then("^error_area is \"([^\"]*)\"$")
@@ -103,4 +108,21 @@ public class MailSendSteps {
         Assert.assertTrue(actual.contains(errorMessage));
     }
 
+    @Then("^show preview window")
+    public void showPreviewWindow() {
+        String currentUrl = driver.getCurrentUrl();
+        assertThat(currentUrl, containsString("/preview"));
+    }
+
+    @And("^variables are replaced with \"([^\"]*)\" in body$")
+    public void variablesAreReplacedInBody(String name) {
+        String body = driver.findElement(By.id("body")).getText();
+        assertThat(body, is("Hi " + name));
+    }
+
+    @And("^variables are replaced with \"([^\"]*)\" in subject$")
+    public void variablesAreReplacedInSubject(String name) {
+        String subject = driver.findElement(By.id("subject")).getText();
+        assertThat(subject, is("Hi " + name));
+    }
 }

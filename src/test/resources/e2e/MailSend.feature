@@ -1,7 +1,7 @@
 Feature: Mail Send
 
   Background:
-    Given user visits send page
+    Given user visits our homepage
 
   # success case
   Scenario: send mail success two
@@ -27,6 +27,18 @@ Feature: Mail Send
       | from               | to              | subject  | body     |
       | eventspark@gmx.com | user1@gmail.com | Hi user1 | Hi user1 |
       | eventspark@gmx.com | user2@gmail.com | Hi user2 | Hi user2 |
+
+  # preview
+  # success case
+  @developing
+  Scenario: preview single address
+    Given subject is "Hi $name"
+    And address is "user1@gmail.com"
+    And body is "Hi $name"
+    When preview
+    Then show preview window
+    And variables are replaced with "user1" in body
+    And variables are replaced with "user1" in subject
 
 # 1 field error
   Scenario: address is empty

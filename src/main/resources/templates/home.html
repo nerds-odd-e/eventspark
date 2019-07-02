@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Eventspark</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <script th:src="@{/lib/jquery-3.2.1.js}"></script>
+    <script th:src="@{/js/send.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -16,7 +18,7 @@
                 <li role="presentation"><a href="/contact-list">Contact List</a></li>
             </ul>
 
-            <form action="/send" method="post" th:object="${form}">
+            <form id="form" method="post" th:object="${form}">
                 <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">Error</h3>
@@ -43,7 +45,8 @@
                     <label for="body">Body</label>
                     <textarea class="form-control" name="body" id="body" placeholder="body" rows="10" th:text="${form.body}"></textarea>
                 </div>
-                <button type="submit" id="send" class="btn btn-default">Send</button>
+                <button type="button" id="send" class="btn btn-default">Send</button>
+                <button type="button" id="preview" class="btn btn-default">Preview</button>
             </form>
         </div>
         <div class="col-md-3"></div>

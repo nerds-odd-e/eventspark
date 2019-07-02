@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Eventspark</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h1>Mail Preview</h1>
+
+                <form action="/home" method="get" th:object="${form}">
+
+                    <div class="body" th:text="${msgString}"></div>
+
+                    <button type="submit" id="back" class="btn btn-default">Back</button>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</body>
+</html>

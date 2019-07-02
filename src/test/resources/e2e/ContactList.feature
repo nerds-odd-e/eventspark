@@ -59,3 +59,9 @@ Feature: Contact List
     Given checked all ContactList
     When create email
     Then MailSender address is "user1@gmail.com;user2@gmail.com;noname@gmail.com"
+
+# Move to import csv
+  Scenario: move to import page
+    Given No ContactList is checked
+    When click link
+    Then move to import page
