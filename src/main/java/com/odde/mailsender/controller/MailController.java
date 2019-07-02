@@ -29,8 +29,13 @@ public class MailController {
     @Autowired
     private AddressBookService addressBookService;
 
+    @GetMapping("")
+    public String defaultEndpoint(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
+        return "redirect:/home";
+    }
+
     @GetMapping("/home")
-    public String send(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
+    public String goToHome(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
         return "home";
     }
 

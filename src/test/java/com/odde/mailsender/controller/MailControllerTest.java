@@ -38,8 +38,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,6 +60,13 @@ public class MailControllerTest {
     public void setUp() {
         File file = new File(AddressBook.FILE_PATH);
         boolean isDelete = file.delete();
+    }
+
+    @Test
+    public void goToHome() throws Exception {
+        mvc.perform(get(""))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"));
     }
 
     @Test
