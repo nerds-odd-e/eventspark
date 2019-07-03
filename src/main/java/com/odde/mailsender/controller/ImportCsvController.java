@@ -36,25 +36,25 @@ public class ImportCsvController {
         return "import-csv";
     }
 
-    @PostMapping("/sample-import-csv")
-    public String getImportCsvSample(@RequestParam("csvfile") MultipartFile multipartFile, Model model) {
-
-        // Cucumber を通すためのダミーの仮実装
-        try {
-            AddressBook addressBook = new AddressBook();
-            addressBook.load();
-            addressBook.add(new AddressItem("test1@example.com", "test1"));
-            addressBook.save();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:/contact-list";
-    }
+//    @PostMapping("/sample-import-csv")
+//    public String getImportCsvSample(@RequestParam("csvfile") MultipartFile multipartFile, Model model) {
+//
+//        // Cucumber を通すためのダミーの仮実装
+//        try {
+//            AddressBook addressBook = new AddressBook();
+//            addressBook.load();
+//            addressBook.add(new AddressItem("test1@example.com", "test1"));
+//            addressBook.save();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "redirect:/contact-list";
+//    }
 
     @PostMapping("/import-csv")
     ModelAndView postCsv(
             @RequestParam("file") MultipartFile multipartFile,
-            @RequestParam("force") String force) {
+            @RequestParam(name = "force", required = false) String force) {
         ModelAndView model = new ModelAndView();
         String filename = multipartFile.getOriginalFilename();
         if (!filename.endsWith(".csv")) {
@@ -73,10 +73,11 @@ public class ImportCsvController {
         }
 
         if (!Boolean.valueOf(force)) {
-            List<String> list = fileCheckService.checkUploadList(addressItems);
-            if (!list.isEmpty()) {
+            List<String> errors = fileCheckService.checkUploadList(addressItems);
+            if (!errors.isEmpty()) {
                 model.setViewName("import-csv");
-                model.setStatus(HttpStatus.ACCEPTED);
+                model.addObject("errors", errors);
+                model.setStatus(HttpStatus.OK);
                 return model;
             }
         }
