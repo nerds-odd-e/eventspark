@@ -22,7 +22,8 @@ public class ImportCsvSteps {
     }
 
     @When("click import button")
-    public void click_import_button() {
+    public void click_import_button() throws Exception {
+        //Thread.sleep(5000);
         driver.findElement(By.id("import")).click();
     }
 

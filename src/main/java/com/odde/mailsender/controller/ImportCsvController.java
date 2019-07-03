@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
 @Controller
 public class ImportCsvController {
 
-    //@Autowired
-    //private AddressBookService addressBookService;
+    @Autowired
+    private AddressBookService addressBookService;
 
     @GetMapping("/import-csv")
     public String getImportCsv() {
@@ -27,4 +28,9 @@ public class ImportCsvController {
         return "import-csv";
     }
 
+    @PostMapping("/sample-import-csv")
+    public String getImportCsvSample(@RequestParam("csvfile") MultipartFile multipartFile, Model model) {
+        //model.addAttribute("contactList", addressBookService.get());
+        return "redirect:/contact-list";
+    }
 }
