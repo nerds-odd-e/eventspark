@@ -1,6 +1,5 @@
 package e2e;
 
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class PreviewSteps {
@@ -40,4 +40,44 @@ public class PreviewSteps {
     public void pressBackToHomeButton() {
         driver.findElement(By.id("back-to-home")).click();
     }
+
+    @When("click next button")
+    public void clickNextButton() {
+        driver.findElement(By.id("next")).click();
+    }
+
+    @When("click previous button")
+    public void clickPreviousButton() {
+        driver.findElement(By.id("prev")).click();
+    }
+
+    @Then("previous button does not exist")
+    public void previousButtonDoesNotExist() {
+        assertThat(driver.findElements(By.id("prev")).size(), is(0));
+    }
+
+    @Then("next button does not exist")
+    public void nextButtonDoesNotExist() {
+        assertThat(driver.findElements(By.id("next")).size(), is(0));
+    }
+
+    @Then("previewed address is \"([^\"]*)\"$")
+    public void previewedAddressIs(String address) {
+        String previewedAddress = driver.findElement(By.id("address-preview")).getText();
+        assertThat(previewedAddress, is(address));
+    }
+
+
+    @Then("^variables are replaced with \"([^\"]*)\" in body$")
+    public void variablesAreReplacedInBody(String name) {
+        String body = driver.findElement(By.id("body-preview")).getText();
+        assertThat(body, is("Hello " + name));
+    }
+
+    @Then("^variables are replaced with \"([^\"]*)\" in subject$")
+    public void variablesAreReplacedInSubject(String name) {
+        String subject = driver.findElement(By.id("subject-preview")).getText();
+        assertThat(subject, is("Hi " + name));
+    }
+
 }

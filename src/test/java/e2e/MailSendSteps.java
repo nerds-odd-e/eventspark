@@ -96,16 +96,4 @@ public class MailSendSteps {
         String actual = driver.findElement(By.id("error-area")).getText();
         Assert.assertTrue(actual.contains(errorMessage));
     }
-
-    @And("^variables are replaced with \"([^\"]*)\" in body$")
-    public void variablesAreReplacedInBody(String name) {
-        String body = driver.findElement(By.id("body-preview")).getText();
-        assertThat(body, is("Hi " + name));
-    }
-
-    @And("^variables are replaced with \"([^\"]*)\" in subject$")
-    public void variablesAreReplacedInSubject(String name) {
-        String subject = driver.findElement(By.id("subject-preview")).getText();
-        assertThat(subject, is("Hi " + name));
-    }
 }
