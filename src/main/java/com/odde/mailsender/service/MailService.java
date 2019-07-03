@@ -5,5 +5,4 @@ import java.util.List;
 public interface MailService {
     void send(MailInfo mailInfo) throws Exception;
     void sendMultiple(List<MailInfo> mailInfoList) throws Exception;
-    void preview(PreviewRequest previewRequest) throws Exception;
 }

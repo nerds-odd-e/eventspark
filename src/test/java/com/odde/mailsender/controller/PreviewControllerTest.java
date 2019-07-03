@@ -3,8 +3,8 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.MailService;
-import com.odde.mailsender.service.PreviewRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,12 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.util.List;
 
-import static com.odde.mailsender.service.PreviewBuilder.validPreview;
-import static net.bytebuddy.matcher.ElementMatchers.is;
+import static com.odde.mailsender.service.MailBuilder.validMail;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -56,7 +52,7 @@ public class PreviewControllerTest {
     @Test
     public void showPreviewPageWithoutParam() throws Exception {
 
-        PreviewRequest previewRequest = validPreview().withSubject("Hello name").withBody("Hi name").withTo("foo@gmx.com").build();
+        MailInfo previewRequest = validMail().withSubject("Hello name").withBody("Hi name").withTo("foo@gmx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
                 .param("address", previewRequest.getTo())
@@ -67,8 +63,6 @@ public class PreviewControllerTest {
                 .andExpect(model().attribute("subject", "Hello name"))
                 .andExpect(model().attribute("body", "Hi name"))
                 .andReturn();
-
-        //verify(mailService, times(1)).preview(null);
     }
 
     @Test
@@ -76,7 +70,7 @@ public class PreviewControllerTest {
 
         addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
 
-        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com").build();
+        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
                 .param("address", previewRequest.getTo())
@@ -87,14 +81,12 @@ public class PreviewControllerTest {
                 .andExpect(model().attribute("subject", "Hello Aki"))
                 .andExpect(model().attribute("body", "Hi Aki"))
                 .andReturn();
-
-        //verify(mailService, times(1)).preview(null);
     }
 
     @Test
     public void testAddressRequired() throws Exception {
 
-        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
                 .param("subject", previewRequest.getSubject())
@@ -103,7 +95,6 @@ public class PreviewControllerTest {
                 .andReturn();
 
         assertErrorMessage(resultActions, "address", "{0} may not be empty");
-        verify(mailService, never()).preview(any());
     }
 
 

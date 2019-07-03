@@ -59,9 +59,4 @@ public class MailServiceImpl implements MailService {
         simpleEmail.setMsg(mailInfo.getBody());
         simpleEmail.addTo(mailInfo.getTo());
     }
-
-    @Override
-    public void preview(PreviewRequest previewRequest) throws Exception {
-
-    }
 }
