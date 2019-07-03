@@ -56,7 +56,7 @@ public class MailController {
 
             List<MailInfo> mails = new ArrayList<>();
             for (String address : form.getAddresses()) {
-                if (contactNameExists(addressBookService.findByAddress(address)))
+                if (contactNameNotExists(addressBookService.findByAddress(address)))
                     throw new Exception("When you use template, choose email from contract list that has a name");
 
                 mails.add(form.createRenderedMail(addressBookService.findByAddress(address)));
@@ -75,7 +75,7 @@ public class MailController {
     }
 
 
-    private boolean contactNameExists(AddressItem addressItem) {
+    private boolean contactNameNotExists(AddressItem addressItem) {
         return addressItem == null || StringUtils.isEmpty(addressItem.getName());
     }
 
