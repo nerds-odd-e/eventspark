@@ -1,5 +1,7 @@
 package com.odde.mailsender.service;
 
+import java.util.Objects;
+
 public class MailTemplate {
     private String subject;
     private String body;
@@ -15,5 +17,19 @@ public class MailTemplate {
 
     public String getBody() {
         return body;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MailTemplate that = (MailTemplate) o;
+        return Objects.equals(subject, that.subject) &&
+                Objects.equals(body, that.body);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subject, body);
     }
 }
