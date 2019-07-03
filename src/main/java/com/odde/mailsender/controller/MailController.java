@@ -5,6 +5,7 @@ import com.odde.mailsender.form.MailSendForm;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.MailTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,10 @@ public class MailController {
 
     @PostMapping(value = "/load")
     public String loadTemplate(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model){
+        MailTemplate template = mailService.getTemplate();
+
+        form.setSubject(template.getSubject());
+        form.setBody(template.getBody());
         return "home";
     }
 
