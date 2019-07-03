@@ -16,7 +16,11 @@
 
                     <div class="body" th:text="${msgString}"></div>
 
-                    <button type="submit" id="back" class="btn btn-default">Back</button>
+                    <input class="invisible" type="hidden" name="address" id="address" th:value="${form.address}" />
+                    <input class="invisible" type="hidden" name="subject" id="subject" th:value="${form.subject}" />
+                    <input class="invisible" type="hidden" name="body" id="body" th:value="${form.body}" />
+
+                    <button type="submit" id="back-to-home" class="btn btn-default">Back To Home</button>
                 </form>
             </div>
             <div class="col-md-3"></div>

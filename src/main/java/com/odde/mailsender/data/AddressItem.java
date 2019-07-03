@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class AddressItem implements Serializable {
 
@@ -22,6 +23,29 @@ public class AddressItem implements Serializable {
     public AddressItem(@JsonProperty("mailAddress") String mailAddress, @JsonProperty("name") String name) {
         this.mailAddress = mailAddress;
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressItem that = (AddressItem) o;
+        return Objects.equals(mailAddress, that.mailAddress) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mailAddress, name);
+    }
+
+    @Override
+    public String toString() {
+        return "AddressItem{" +
+                "mailAddress='" + mailAddress + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public String getMailAddress() {
