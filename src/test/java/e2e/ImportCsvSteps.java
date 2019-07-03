@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import static org.hamcrest.core.Is.is;
+
 public class ImportCsvSteps {
     @Autowired
     private WebDriver driver;
@@ -69,6 +71,17 @@ public class ImportCsvSteps {
         String actual = driver.findElement(By.id("success-area")).getText();
         Assert.assertEquals(string, actual);
     }
+
+
+    @Then("ContactList multiple values are added {string}")
+    public void contactlist_multiple_values_are_added(String string) {
+        String[] values = string.split(";");
+        for (String v: values) {
+             String html = driver.findElement(By.id("address-list")).getText();
+            Assert.assertThat(html.contains(v), is(true));
+        }
+    }
+
 
     @Then("list has name {string}")
     public void list_has_name(String string) {

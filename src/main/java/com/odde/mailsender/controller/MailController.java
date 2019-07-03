@@ -5,6 +5,7 @@ import com.odde.mailsender.form.MailSendForm;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.MailTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,7 +57,7 @@ public class MailController {
 
             List<MailInfo> mails = new ArrayList<>();
             for (String address : form.getAddresses()) {
-                if (contactNameExists(addressBookService.findByAddress(address)))
+                if (contactNameNotExists(addressBookService.findByAddress(address)))
                     throw new Exception("When you use template, choose email from contract list that has a name");
 
                 mails.add(form.createRenderedMail(addressBookService.findByAddress(address)));
@@ -71,11 +72,15 @@ public class MailController {
 
     @PostMapping(value = "/load")
     public String loadTemplate(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model){
+        MailTemplate template = mailService.getTemplate();
+
+        form.setSubject(template.getSubject());
+        form.setBody(template.getBody());
         return "home";
     }
 
 
-    private boolean contactNameExists(AddressItem addressItem) {
+    private boolean contactNameNotExists(AddressItem addressItem) {
         return addressItem == null || StringUtils.isEmpty(addressItem.getName());
     }
 

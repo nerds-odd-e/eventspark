@@ -67,4 +67,13 @@ public class MailServiceImplTest {
         assertThat(messageTwo.getContent().toString().trim(), is(mailInfoList.get(1).getBody()));
     }
 
+    @Test
+    public void getTemplate() {
+        MailTemplate expected = new MailTemplate(
+                "hello $name",
+                "hello $name, this is the fixed template."
+        );
+
+        assertThat(service.getTemplate(), is(expected));
+    }
 }

@@ -23,16 +23,4 @@ public class MailTemplateSteps {
         driver.findElement(By.id("load-template")).click();
     }
 
-    @Then("^subject becomes \"([^\"]*)\"$")
-    public void check_subject(String subject) {
-        String fieldValue = driver.findElement(By.id("subject")).getText();
-        assertTrue(fieldValue.contains(subject));
-    }
-
-    @And("^body becomes \"([^\"]*)\"$")
-    public void check_body(String body) {
-        String fieldValue = driver.findElement(By.id("body")).getText();
-        assertTrue(fieldValue.contains(body));
-    }
-
 }
