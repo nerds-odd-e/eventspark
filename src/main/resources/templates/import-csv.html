@@ -15,20 +15,21 @@
         <div class="col-md-6">
             <h1>Import CSV</h1>
 
-            <!--form action="/import-csv" method="post" th:object="${form}">
-                <div-- th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
+            <!--form action="/import-csv" method="post" th:object="${form}" -->
+            <!-- test 用モック -->
+                <div class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">Error</h3>
                     </div>
                     <div class="panel-body" id="error-area">
                         <ul >
-                            <li th:each="error : ${#fields.detailedErrors()}">
-                                <span th:text="${error.message}"></span>
+                            <li>
+                                <span>File format is wrong</span>
                             </li>
 
                         </ul>
                     </div>
-                </div-->
+                </div>
                 <div class="form-group">
                     <label for="csvfile">Select CSV file</label>
                     <form action="/sample-import-csv" enctype="multipart/form-data" method="post">
