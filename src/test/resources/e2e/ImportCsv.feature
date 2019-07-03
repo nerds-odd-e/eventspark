@@ -5,7 +5,7 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @developing @focus
+  @developing
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button

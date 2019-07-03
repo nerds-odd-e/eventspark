@@ -71,7 +71,7 @@ public class MailController {
     }
 
     @PostMapping(value = "/load")
-    public String loadTemplate(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model){
+    public String loadTemplate(@ModelAttribute("form") MailSendForm form, BindingResult result, Model model){
         MailTemplate template = mailService.getTemplate();
 
         form.setSubject(template.getSubject());
