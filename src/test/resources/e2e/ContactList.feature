@@ -58,7 +58,7 @@ Feature: Contact List
   Scenario: check all addresses
     Given checked all ContactList
     When create email
-    Then MailSender address is "user1@gmail.com;user2@gmail.com;noname@gmail.com"
+    Then MailSender address is "user1@gmail.com;user2@gmail.com;user3@gmail.com;noname@gmail.com"
 
 # Move to import csv
   Scenario: move to import page

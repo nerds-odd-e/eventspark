@@ -34,6 +34,7 @@ public class SpringIntegrationTest {
         new File(AddressBook.FILE_PATH).delete();
         addressBookService.add(new AddressItem("user1@gmail.com", "user1"));
         addressBookService.add(new AddressItem("user2@gmail.com", "user2"));
+        addressBookService.add(new AddressItem("user3@gmail.com", "user3"));
         addressBookService.add(new AddressItem("noname@gmail.com", ""));
     }
 
