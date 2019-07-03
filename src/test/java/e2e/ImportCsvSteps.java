@@ -66,7 +66,7 @@ public class ImportCsvSteps {
 
     @Then("show message {string}")
     public void show_message(String string) {
-        String actual = driver.findElement(By.id("info-area")).getText();
+        String actual = driver.findElement(By.id("success-area")).getText();
         Assert.assertEquals(string, actual);
     }
 

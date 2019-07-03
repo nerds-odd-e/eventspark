@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -39,12 +36,12 @@ public class MailController {
         return "home";
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.POST)
+    @PostMapping(value = "/home")
     public String goBackToHome(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
         return "home";
     }
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @PostMapping(value = "/send")
     public String sendEmail(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
@@ -71,6 +68,12 @@ public class MailController {
             return "home";
         }
     }
+
+    @PostMapping(value = "/load")
+    public String loadTemplate(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model){
+        return "home";
+    }
+
 
     private boolean contactNameExists(AddressItem addressItem) {
         return addressItem == null || StringUtils.isEmpty(addressItem.getName());

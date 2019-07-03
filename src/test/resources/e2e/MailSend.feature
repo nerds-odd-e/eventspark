@@ -30,7 +30,6 @@ Feature: Mail Send
 
   # preview
   # success case
-  @developing
   Scenario: preview single address
     Given subject is "Hi $name"
     And address is "user1@gmail.com"

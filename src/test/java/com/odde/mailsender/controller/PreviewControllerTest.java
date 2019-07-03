@@ -83,19 +83,19 @@ public class PreviewControllerTest {
                 .andReturn();
     }
 
-    @Test
-    public void testAddressRequired() throws Exception {
-
-        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
-
-        MvcResult resultActions = mvc.perform(post("/preview")
-                .param("subject", previewRequest.getSubject())
-                .param("body", previewRequest.getBody()))
-                .andExpect(view().name("preview"))
-                .andReturn();
-
-        assertErrorMessage(resultActions, "address", "{0} may not be empty");
-    }
+//    @Test
+//    public void testAddressRequired() throws Exception {
+//
+//        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+//
+//        MvcResult resultActions = mvc.perform(post("/preview")
+//                .param("subject", previewRequest.getSubject())
+//                .param("body", previewRequest.getBody()))
+//                .andExpect(view().name("preview"))
+//                .andReturn();
+//
+//        assertErrorMessage(resultActions, "address", "{0} may not be empty");
+//    }
 
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {

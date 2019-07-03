@@ -5,14 +5,14 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @developing @focus
+  @developing
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
     Then move to contact list
-    And show message "<result> added"
-    And list has email "<address>"
+    And show message "added <result> contacts"
     And list has name "<name>"
+    And list has email "<address>"
 
     Examples:
       | filename     | result | name              | address                                                |
@@ -37,7 +37,7 @@ Feature: Import Csv
     Given select "<filename>" CSV
     When click import button
     Then move to contact list
-    And show message "<result> added"
+    And show message "added <result> contacts"
     And list has name "<name>"
     And list has email "<address>"
     And show warn message "<warn>"

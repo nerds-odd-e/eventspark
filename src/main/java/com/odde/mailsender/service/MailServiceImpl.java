@@ -40,6 +40,12 @@ public class MailServiceImpl implements MailService {
         }
     }
 
+    @Override
+    public MailTemplate getTemplate() {
+        // wip
+        return null;
+    }
+
     private SimpleEmail setupEmailEnvironment() {
         SimpleEmail simpleEmail = new SimpleEmail();
         simpleEmail.setHostName(mailHost);
