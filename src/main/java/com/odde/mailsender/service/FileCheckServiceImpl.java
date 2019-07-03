@@ -68,22 +68,20 @@ public class FileCheckServiceImpl implements FileCheckService {
         for(int i = 0; i < uploadList.size(); i++) {
             AddressItem item = uploadList.get(i);
             if (!duplicatedMap.containsKey(item.getMailAddress())) {
-                List<Integer> sss = new ArrayList<>();
-                sss.add(i + 1);
-                duplicatedMap.put(item.getMailAddress(), sss);
+                List<Integer> duplicatedRecords = new ArrayList<>();
+                duplicatedRecords.add(i + 1);
+                duplicatedMap.put(item.getMailAddress(), duplicatedRecords);
                 continue;
             }
-            List<Integer> s = duplicatedMap.get(item.getMailAddress());
-            s.add(i + 1);
+            duplicatedMap.get(item.getMailAddress()).add(i + 1);
         }
+        StringJoiner joiner = new StringJoiner(" and ");
         for (String key :duplicatedMap.keySet()) {
             if (duplicatedMap.get(key).size() > 1) {
-                StringJoiner sj = new StringJoiner(" and ");
-                duplicatedMap.get(key).stream().forEach(i -> sj.add(String.valueOf(i)));
-                result.add(String.format("%s rows are duplicated with %s", sj.toString(), key));
+                duplicatedMap.get(key).stream().forEach(i -> joiner.add(String.valueOf(i)));
+                result.add(String.format("%s rows are duplicated with %s", joiner.toString(), key));
             }
         }
-
         return result;
     }
 
