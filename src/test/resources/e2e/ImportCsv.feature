@@ -11,8 +11,8 @@ Feature: Import Csv
     When click import button
     Then move to contact list
     And show message "<result> added"
-    And list has name "<name>"
     And list has email "<address>"
+    And list has name "<name>"
 
     Examples:
       | filename     | result | name              | address                                                |

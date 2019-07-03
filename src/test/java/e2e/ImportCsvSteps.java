@@ -24,14 +24,13 @@ public class ImportCsvSteps {
 
     @When("click import button")
     public void click_import_button() throws Exception {
-        //Thread.sleep(5000);
         driver.findElement(By.id("import")).click();
     }
 
     @Then("move to contact list")
-    public void move_to_contact_list() {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new cucumber.api.PendingException();
+    public void move_to_contact_list() throws Exception {
+        String actual = driver.findElement(By.id("contact-list-title")).getText();
+        Assert.assertEquals("Contact List", actual);
     }
 //
 //    @Then("show message {string}")
