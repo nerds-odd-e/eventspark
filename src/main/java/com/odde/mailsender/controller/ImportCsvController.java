@@ -1,38 +1,77 @@
 package com.odde.mailsender.controller;
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.form.ContactListForm;
-import com.odde.mailsender.form.MailSendForm;
 import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.service.FileCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ImportCsvController {
 
-    //@Autowired
-    //private AddressBookService addressBookService;
+    @Autowired
+    private FileCheckService fileCheckService;
+
+    @Autowired
+    private AddressBookService addressBookService;
 
     @GetMapping("/import-csv")
-    public String getImportCsv() {
+    String getImportCsv() {
         //model.addAttribute("contactList", addressBookService.get());
         return "import-csv";
     }
 
     @PostMapping("/import-csv")
-    public ModelAndView postCsv(
+    ModelAndView postCsv(
             @RequestParam("file") MultipartFile multipartFile,
             @RequestParam("force") String force) {
-        ModelAndView model = new ModelAndView("contact-list");
+        ModelAndView model = new ModelAndView();
+        String filename = multipartFile.getOriginalFilename();
+        if (!filename.endsWith(".csv")) {
+            model.setViewName("import-csv");
+            model.setStatus(HttpStatus.BAD_REQUEST);
+            return model;
+        }
+        List<AddressItem> addressItems = null;
+        try {
+            MappingIterator<AddressItem> personIter = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).readValues(multipartFile.getInputStream());
+            addressItems = personIter.readAll();
+        } catch (IOException e) {
+            model.setViewName("import-csv");
+            model.setStatus(HttpStatus.BAD_REQUEST);
+            return model;
+        }
+
+        if (!Boolean.valueOf(force)) {
+            List<String> list = fileCheckService.checkUploadList(addressItems);
+            if (!list.isEmpty()) {
+                model.setViewName("import-csv");
+                model.setStatus(HttpStatus.ACCEPTED);
+                return model;
+            }
+        }
+
+        addressItems.stream().forEach(addressItem -> {
+            try {
+                addressBookService.add(addressItem);
+            } catch (Exception e) {
+                // TODO:atode
+                e.printStackTrace();
+            }
+        });
+
+        model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());
         return model;
     }

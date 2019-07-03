@@ -71,6 +71,7 @@ dependencies {
     compile('com.fasterxml.jackson.core:jackson-core:2.9.0')
     compile('com.fasterxml.jackson.core:jackson-databind:2.9.0')
     compile('com.fasterxml.jackson.core:jackson-annotations:2.9.0')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile(
             'com.icegreen:greenmail:1.5.10',

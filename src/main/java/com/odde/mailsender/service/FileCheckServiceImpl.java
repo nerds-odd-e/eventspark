@@ -21,14 +21,6 @@ public class FileCheckServiceImpl implements FileCheckService {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + ")*)?$";
 
     @Override
-    public List<AddressItem> loadContactList(Path csvFile) throws IOException {
-        return Files.readAllLines(csvFile).stream().map(line -> {
-            String[] s = line.split(",");
-            return new AddressItem(s[0], s[1]);
-        }).collect(Collectors.toList());
-    }
-
-    @Override
     public List<String> checkUploadList(List<AddressItem> uploadList) {
         List<String> errors = new ArrayList<>();
 

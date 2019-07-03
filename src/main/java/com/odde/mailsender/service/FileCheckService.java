@@ -7,8 +7,5 @@ import java.nio.file.Path;
 import java.util.List;
 
 public interface FileCheckService {
-
-    List<AddressItem> loadContactList(Path csvFile) throws IOException;
-
     List<String> checkUploadList(List<AddressItem> uploadList);
 }

@@ -32,24 +32,6 @@ public class FileCheckServiceTest {
     private FileCheckService target;
 
     @Test
-    public void loadContactFile() throws Exception {
-        List<AddressItem> expected = new ArrayList<>();
-
-        expected.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
-        expected.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
-        List<AddressItem> actual = target.loadContactList(Paths.get("src/test/resources/contact_list.csv"));
-
-        assertThat(expected, is(actual));
-    }
-
-    @Test
-    public void loadContactFileNotFound() throws Exception {
-        expectedException.expect(IOException.class);
-
-        target.loadContactList(Paths.get("src/test/resources/contact_listXXXX.csv"));
-    }
-
-    @Test
     public void checkSuccessful() throws Exception {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
