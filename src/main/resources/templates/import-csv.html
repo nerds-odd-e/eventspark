@@ -32,12 +32,13 @@
                 </div>
                 <div class="form-group">
                     <label for="csvfile">Select CSV file</label>
-                    <form action="/sample-import-csv" enctype="multipart/form-data" method="post">
+                    <form action="/sample-import-csv" enctype="multipart/form-data" method="post" th:action="@{/import-csv}">
                         <table>
                             <tr>
                                 <td>
-                                    <input type="file" class="form-control" name="csvfile" id="csvfile"
-                                           placeholder="csvfile"/>
+                                    <input type="file" class="form-control" name="file" id="csvfile"
+                                           placeholder="csvfile" multiple/>
+                                    <input type="hidden" name="force" value="false">
                                 </td>
                                 <td>
                                     <button type="submit" id="import" class="btn btn-default">Import</button>
