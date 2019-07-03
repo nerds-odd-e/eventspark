@@ -191,6 +191,18 @@ public class MailControllerTest {
         assertTrue(contentAsString.contains("Hello $name"));
     }
 
+    @Test
+    public void loadTemplate() throws Exception {
+        mvc.perform(post("/load")
+                .param("from", "")
+                .param("address", "test@hoge.co.jp")
+                .param("subject", "Hi $name")
+                .param("body", "Hello $name"))
+                .andExpect(view().name("home"))
+                .andReturn();
+    }
+
+
     private ResultActions getPerform(MailInfo mailInfo) throws Exception {
         return mvc.perform(post("/send")
                 .param("from", mailInfo.getFrom())
