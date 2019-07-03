@@ -25,8 +25,6 @@ Feature: Preview
     And subject is filled with "Hi $name"
     And body is filled with "Hello $name"
 
-  @developing
-  @focus
   Scenario: preview multiple address forward and backward
     Given subject is "Hi $name"
     And address is "user1@gmail.com;user2@gmail.com;user3@gmail.com"
