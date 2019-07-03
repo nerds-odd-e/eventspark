@@ -127,14 +127,13 @@ public class MailSendSteps {
 
     @And("^variables are replaced with \"([^\"]*)\" in body$")
     public void variablesAreReplacedInBody(String name) {
-//        String body = driver.findElement(By.id("body")).getText();
-        String body = driver.findElement(By.id("body")).getText();
+        String body = driver.findElement(By.id("body-preview")).getText();
         assertThat(body, is("Hi " + name));
     }
 
     @And("^variables are replaced with \"([^\"]*)\" in subject$")
     public void variablesAreReplacedInSubject(String name) {
-        String subject = driver.findElement(By.id("subject")).getText();
+        String subject = driver.findElement(By.id("subject-preview")).getText();
         assertThat(subject, is("Hi " + name));
     }
 
