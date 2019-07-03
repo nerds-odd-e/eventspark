@@ -16,37 +16,30 @@ import javax.validation.Valid;
 @Controller
 public class PreviewController {
     @Autowired
-    private MailService mailService;
-    @Autowired
     private AddressBookService addressBookService;
 
     @PostMapping("/preview")
     public String preview(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model) {
 
-        if (result.hasErrors()) {
-            // TODO 後で見直す。
-            return "preview";
-        }
+//        if (result.hasErrors()) {
+//            return "preview";
+//        }
 
 
         if(form.isTemplate()) {
             MailInfo info = form.createRenderedMail(addressBookService.findByAddress(form.getAddress()));
-            model.addAttribute("address", info.getTo());
-            model.addAttribute("subject", info.getSubject());
-            model.addAttribute("body", info.getBody());
+            setModelAttributes(model, info.getTo(), info.getSubject(), info.getBody());
         } else {
-            model.addAttribute("address", form.getAddress());
-            model.addAttribute("subject", form.getSubject());
-            model.addAttribute("body", form.getBody());
-        }
-
-
-        try {
-            //mailService.preview(form.createPreviewInfo(null));
-        } catch (Exception e) {
-            e.printStackTrace();
+            setModelAttributes(model, form.getAddress(), form.getSubject(), form.getBody());
         }
 
         return "preview";
     }
+
+    private void setModelAttributes(Model model, String address, String subject, String body) {
+        model.addAttribute("address", address);
+        model.addAttribute("subject", subject);
+        model.addAttribute("body", body);
+    }
+
 }

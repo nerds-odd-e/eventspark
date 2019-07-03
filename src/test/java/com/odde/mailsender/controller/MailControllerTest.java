@@ -1,10 +1,7 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.AddressBook;
-import com.odde.mailsender.service.AddressBookService;
-import com.odde.mailsender.service.MailBuilder;
-import com.odde.mailsender.service.MailInfo;
-import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.*;
 import com.odde.mailsender.data.AddressItem;
 import org.apache.commons.mail.EmailException;
 import org.junit.Before;
@@ -190,6 +187,31 @@ public class MailControllerTest {
         assertTrue(contentAsString.contains("Hi $name"));
         assertTrue(contentAsString.contains("Hello $name"));
     }
+
+    @Test
+    public void loadTemplate() throws Exception {
+        String expectedSubject = "Hi $name, How are you?";
+        String expectedBody = "Hello $name, How are you?";
+        MailTemplate mailTemplate = new MailTemplate(expectedSubject, expectedBody);
+
+        when(mailService.getTemplate()).thenReturn(mailTemplate);
+
+        MvcResult mvcResult = mvc.perform(post("/load")
+                .param("from", "")
+                .param("address", "test@hoge.co.jp")
+                .param("subject", "Hi $name")
+                .param("body", "Hello $name"))
+                .andExpect(view().name("home"))
+                .andReturn();
+
+        verify(mailService, times(1)).getTemplate();
+
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        assertTrue(contentAsString.contains("test@hoge.co.jp"));
+        assertTrue(contentAsString.contains(expectedSubject));
+        assertTrue(contentAsString.contains(expectedBody));
+    }
+
 
     private ResultActions getPerform(MailInfo mailInfo) throws Exception {
         return mvc.perform(post("/send")

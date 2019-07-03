@@ -16,6 +16,7 @@ public class MailServiceImpl implements MailService {
     private Integer smtpPort;
     @Value("${smtp.ssl.enable}")
     private Boolean sslEnable;
+
     private static final String CHARSET = "ISO-2022-JP";
     private static final String SENDER_NAME = "eventspark@gmx.com";
     private static final String PASSWORD = "scrumdeveloper2019";
@@ -38,6 +39,14 @@ public class MailServiceImpl implements MailService {
         for (MailInfo mailInfo : mailInfoList) {
             send(mailInfo);
         }
+    }
+
+    @Override
+    public MailTemplate getTemplate() {
+        return new MailTemplate(
+                MailTemplate.TEMPLATE_SUBJECT,
+                MailTemplate.TEMPLATE_BODY
+        );
     }
 
     private SimpleEmail setupEmailEnvironment() {

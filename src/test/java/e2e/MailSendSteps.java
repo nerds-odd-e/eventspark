@@ -33,12 +33,6 @@ public class MailSendSteps {
     @LocalServerPort
     private int port;
 
-
-    @Given("user visits our homepage")
-    public void userVisitsSendPage() {
-        driver.get("http://localhost:" + port);
-    }
-
     @Given("^address is \"([^\"]*)\"$")
     public void address_is(String address) throws Throwable {
         driver.findElement(By.id("address")).sendKeys(address);
@@ -57,16 +51,6 @@ public class MailSendSteps {
     @When("^send$")
     public void send() throws Throwable {
         driver.findElement(By.id("send")).click();
-    }
-
-    @When("^preview$")
-    public void preview() throws Throwable {
-        driver.findElement(By.id("preview")).click();
-    }
-
-    @When("press back to home button")
-    public void pressBackToHomeButton() {
-        driver.findElement(By.id("back-to-home")).click();
     }
 
     @Then("^error_area is \"([^\"]*)\"$")
@@ -113,46 +97,15 @@ public class MailSendSteps {
         Assert.assertTrue(actual.contains(errorMessage));
     }
 
-    @Then("^show preview window")
-    public void showPreviewWindow() {
-        String currentUrl = driver.getCurrentUrl();
-        assertThat(currentUrl, containsString("/preview"));
-    }
-
-    @Then("^show home window")
-    public void showHomeWindow() {
-        String currentUrl = driver.getCurrentUrl();
-        assertThat(currentUrl, containsString("/home"));
-    }
-
     @And("^variables are replaced with \"([^\"]*)\" in body$")
     public void variablesAreReplacedInBody(String name) {
-//        String body = driver.findElement(By.id("body")).getText();
-        String body = driver.findElement(By.id("body")).getText();
+        String body = driver.findElement(By.id("body-preview")).getText();
         assertThat(body, is("Hi " + name));
     }
 
     @And("^variables are replaced with \"([^\"]*)\" in subject$")
     public void variablesAreReplacedInSubject(String name) {
-        String subject = driver.findElement(By.id("subject")).getText();
+        String subject = driver.findElement(By.id("subject-preview")).getText();
         assertThat(subject, is("Hi " + name));
-    }
-
-    @And("address is filled with \"([^\"]*)\"")
-    public void addressIsFilledWith(String address) {
-        String actual = driver.findElement(By.id("address")).getAttribute("value");
-        assertThat(actual, is(address));
-    }
-
-    @And("subject is filled with \"([^\"]*)\"")
-    public void subjectIsFilledWith(String subject) {
-        String actual = driver.findElement(By.id("subject")).getAttribute("value");
-        assertThat(actual, is(subject));
-    }
-
-    @And("body is filled with \"([^\"]*)\"")
-    public void bodyIsFilledWith(String body) {
-        String actual = driver.findElement(By.id("body")).getAttribute("value");
-        assertThat(actual, is(body));
     }
 }
