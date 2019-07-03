@@ -54,7 +54,7 @@ public class PreviewControllerTest {
 
         MailInfo previewRequest = validMail().withSubject("Hello name").withBody("Hi name").withTo("foo@gmx.com").build();
 
-        MvcResult resultActions = mvc.perform(post("/preview")
+        MvcResult resultActions = mvc.perform(post("/preview/0")
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
@@ -72,7 +72,7 @@ public class PreviewControllerTest {
 
         MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com").build();
 
-        MvcResult resultActions = mvc.perform(post("/preview")
+        MvcResult resultActions = mvc.perform(post("/preview/0")
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
