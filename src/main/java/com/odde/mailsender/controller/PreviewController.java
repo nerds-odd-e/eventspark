@@ -22,22 +22,28 @@ public class PreviewController {
     @PostMapping("/preview/{index}")
     public String preview(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model, @PathVariable int index) {
 
-        String address = form.getAddresses()[index];
+        String[] addressArr = form.getAddresses();
+        String address = addressArr[index];
 
         if(form.isTemplate()) {
             MailInfo info = form.createRenderedMail(addressBookService.findByAddress(address));
-            setModelAttributes(model, info.getTo(), info.getSubject(), info.getBody());
+            setModelAttributes(model, info.getTo(), info.getSubject(), info.getBody(), index, addressArr.length);
         } else {
-            setModelAttributes(model, address, form.getSubject(), form.getBody());
+            setModelAttributes(model, address, form.getSubject(), form.getBody(), index, addressArr.length);
         }
 
         return "preview";
     }
 
-    private void setModelAttributes(Model model, String address, String subject, String body) {
+    private void setModelAttributes(Model model, String address, String subject, String body, int index, int arrLength) {
         model.addAttribute("address", address);
         model.addAttribute("subject", subject);
         model.addAttribute("body", body);
+
+        model.addAttribute("prevIndex", index - 1);
+        model.addAttribute("nextIndex", index + 1);
+        model.addAttribute("showPrev", index > 0);
+        model.addAttribute("showNext", index < arrLength - 1);
     }
 
 }

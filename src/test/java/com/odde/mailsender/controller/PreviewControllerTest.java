@@ -58,10 +58,16 @@ public class PreviewControllerTest {
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
+
                 .andExpect(view().name("preview"))
                 .andExpect(model().attribute("address", "foo@gmx.com"))
                 .andExpect(model().attribute("subject", "Hello name"))
                 .andExpect(model().attribute("body", "Hi name"))
+
+                .andExpect(model().attribute("prevIndex", -1))
+                .andExpect(model().attribute("nextIndex", 1))
+                .andExpect(model().attribute("showPrev", false))
+                .andExpect(model().attribute("showNext", false))
                 .andReturn();
     }
 
@@ -76,10 +82,16 @@ public class PreviewControllerTest {
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
+
                 .andExpect(view().name("preview"))
                 .andExpect(model().attribute("address", "eventspark@gmx.com"))
                 .andExpect(model().attribute("subject", "Hello Aki"))
                 .andExpect(model().attribute("body", "Hi Aki"))
+
+                .andExpect(model().attribute("prevIndex", -1))
+                .andExpect(model().attribute("nextIndex", 1))
+                .andExpect(model().attribute("showPrev", false))
+                .andExpect(model().attribute("showNext", false))
                 .andReturn();
     }
 
@@ -92,10 +104,16 @@ public class PreviewControllerTest {
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
+
                 .andExpect(view().name("preview"))
                 .andExpect(model().attribute("address", "hoge@fuga.com"))
                 .andExpect(model().attribute("subject", "Hello name"))
                 .andExpect(model().attribute("body", "Hi name"))
+
+                .andExpect(model().attribute("prevIndex", 0))
+                .andExpect(model().attribute("nextIndex", 2))
+                .andExpect(model().attribute("showPrev", true))
+                .andExpect(model().attribute("showNext", false))
                 .andReturn();
     }
 
@@ -110,10 +128,16 @@ public class PreviewControllerTest {
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
+
                 .andExpect(view().name("preview"))
                 .andExpect(model().attribute("address", "eventspark@gmx.com"))
                 .andExpect(model().attribute("subject", "Hello Aki"))
                 .andExpect(model().attribute("body", "Hi Aki"))
+
+                .andExpect(model().attribute("prevIndex", 0))
+                .andExpect(model().attribute("nextIndex", 2))
+                .andExpect(model().attribute("showPrev", true))
+                .andExpect(model().attribute("showNext", false))
                 .andReturn();
     }
 
