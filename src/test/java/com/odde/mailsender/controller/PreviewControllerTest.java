@@ -83,20 +83,39 @@ public class PreviewControllerTest {
                 .andReturn();
     }
 
-//    @Test
-//    public void testAddressRequired() throws Exception {
-//
-//        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
-//
-//        MvcResult resultActions = mvc.perform(post("/preview")
-//                .param("subject", previewRequest.getSubject())
-//                .param("body", previewRequest.getBody()))
-//                .andExpect(view().name("preview"))
-//                .andReturn();
-//
-//        assertErrorMessage(resultActions, "address", "{0} may not be empty");
-//    }
+    @Test
+    public void showPreviewPage1WithoutParam() throws Exception {
+        MailInfo previewRequest = validMail().withSubject("Hello name").withBody("Hi name")
+                .withTo("foo@gmx.com;hoge@fuga.com").build();
 
+        MvcResult resultActions = mvc.perform(post("/preview/1")
+                .param("address", previewRequest.getTo())
+                .param("subject", previewRequest.getSubject())
+                .param("body", previewRequest.getBody()))
+                .andExpect(view().name("preview"))
+                .andExpect(model().attribute("address", "hoge@fuga.com"))
+                .andExpect(model().attribute("subject", "Hello name"))
+                .andExpect(model().attribute("body", "Hi name"))
+                .andReturn();
+    }
+
+    @Test
+    public void showPreviewPage1WithParam() throws Exception {
+        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
+
+        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name")
+                .withTo("hoge@fuga.com;eventspark@gmx.com").build();
+
+        MvcResult resultActions = mvc.perform(post("/preview/1")
+                .param("address", previewRequest.getTo())
+                .param("subject", previewRequest.getSubject())
+                .param("body", previewRequest.getBody()))
+                .andExpect(view().name("preview"))
+                .andExpect(model().attribute("address", "eventspark@gmx.com"))
+                .andExpect(model().attribute("subject", "Hello Aki"))
+                .andExpect(model().attribute("body", "Hi Aki"))
+                .andReturn();
+    }
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
         ModelAndView mav = mvcResult.getModelAndView();

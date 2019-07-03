@@ -22,16 +22,13 @@ public class PreviewController {
     @PostMapping("/preview/{index}")
     public String preview(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model, @PathVariable int index) {
 
-//        if (result.hasErrors()) {
-//            return "preview";
-//        }
-
+        String address = form.getAddresses()[index];
 
         if(form.isTemplate()) {
-            MailInfo info = form.createRenderedMail(addressBookService.findByAddress(form.getAddress()));
+            MailInfo info = form.createRenderedMail(addressBookService.findByAddress(address));
             setModelAttributes(model, info.getTo(), info.getSubject(), info.getBody());
         } else {
-            setModelAttributes(model, form.getAddress(), form.getSubject(), form.getBody());
+            setModelAttributes(model, address, form.getSubject(), form.getBody());
         }
 
         return "preview";
