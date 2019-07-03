@@ -77,29 +77,15 @@ public class ImportCsvSteps {
     public void contactlist_multiple_values_are_added(String string) {
         String[] values = string.split(";");
         for (String v: values) {
-             String html = driver.findElement(By.id("address-list")).getText();
+            String html = driver.findElement(By.id("address-list")).getText();
             Assert.assertThat(html.contains(v), is(true));
         }
     }
 
-
-    @Then("list has name {string}")
-    public void list_has_name(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        String actual = driver.findElement(By.id("name3")).getText();
-        Assert.assertEquals(string, actual);
-    }
-
-    @Then("list has email {string}")
-    public void list_has_email(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
     @Then("show warn message {string}")
     public void show_warn_message(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        String actual = driver.findElement(By.id("warning-area")).getText();
+        Assert.assertEquals(string, actual);
     }
 
     @When("click import button and display warning and click yes")

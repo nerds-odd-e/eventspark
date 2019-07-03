@@ -37,8 +37,8 @@ Feature: Import Csv
     When click import button
     Then move to contact list
     And show message "added <result> contacts"
-    And list has name "<name>"
-    And list has email "<address>"
+    And ContactList multiple values are added "<name>"
+    And ContactList multiple values are added "<address>"
     And show warn message "<warn>"
     Examples:
       | filename               | result | name    | address                  | warn |
@@ -50,8 +50,8 @@ Feature: Import Csv
     When click import button
     Then move to contact list
     And show message "<result> added"
-    And list has name "<name>"
-    And list has email "<address>"
+    And ContactList multiple values are added "<name>"
+    And ContactList multiple values are added "<address>"
     And show warn message "<warn>"
     Examples:
       | filename               | result | name    | address                  | warn |
@@ -63,8 +63,8 @@ Feature: Import Csv
     When click import button and display warning and click yes
     Then move to contact list
     And show message "<result> added"
-    And list has name "<name>"
-    And list has email "<address>"
+    And ContactList multiple values are added "<name>"
+    And ContactList multiple values are added "<address>"
     And show warn message "<warn>"
     Examples:
       | filename     | result | name              | address                                         |
