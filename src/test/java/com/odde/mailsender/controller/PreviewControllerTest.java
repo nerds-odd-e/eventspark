@@ -19,12 +19,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import static com.odde.mailsender.service.PreviewBuilder.validPreview;
+import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
@@ -48,9 +49,15 @@ public class PreviewControllerTest {
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
                 .andExpect(view().name("preview"))
+                .andExpect(model().attribute("address", "hoge@google.com"))
+                .andExpect(model().attribute("subject", "subject"))
+                .andExpect(model().attribute("body", "honbun"))
                 .andReturn();
 
         //verify(mailService, times(1)).preview(null);
+
+
+
 
     }
 

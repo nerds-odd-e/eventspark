@@ -27,6 +27,10 @@ public class PreviewController {
         }
 
 
+        model.addAttribute("address", "hoge@google.com");
+        model.addAttribute("subject", "subject");
+        model.addAttribute("body", "honbun");
+
         try {
             mailService.preview(form.createPreviewInfo(null));
         } catch (Exception e) {
