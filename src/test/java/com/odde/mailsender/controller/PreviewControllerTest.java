@@ -1,7 +1,11 @@
 package com.odde.mailsender.controller;
 
+import com.odde.mailsender.data.AddressBook;
+import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailService;
 import com.odde.mailsender.service.PreviewRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.util.List;
 
 import static com.odde.mailsender.service.PreviewBuilder.validPreview;
@@ -37,28 +42,53 @@ public class PreviewControllerTest {
     private MailService mailService;
 
     @Autowired
+    private AddressBookService addressBookService;
+
+    @Autowired
     private MockMvc mvc;
 
-    @Test
-    public void showPreviewPage() throws Exception {
+    @Before
+    public void setUp() {
+        File file = new File(AddressBook.FILE_PATH);
+        boolean isDelete = file.delete();
+    }
 
-        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+    @Test
+    public void showPreviewPageWithoutParam() throws Exception {
+
+        PreviewRequest previewRequest = validPreview().withSubject("Hello name").withBody("Hi name").withTo("foo@gmx.com").build();
 
         MvcResult resultActions = mvc.perform(post("/preview")
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
                 .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", "hoge@google.com"))
-                .andExpect(model().attribute("subject", "subject"))
-                .andExpect(model().attribute("body", "honbun"))
+                .andExpect(model().attribute("address", "foo@gmx.com"))
+                .andExpect(model().attribute("subject", "Hello name"))
+                .andExpect(model().attribute("body", "Hi name"))
                 .andReturn();
 
         //verify(mailService, times(1)).preview(null);
+    }
 
+    @Test
+    public void showPreviewPageWithParam() throws Exception {
 
+        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
 
+        PreviewRequest previewRequest = validPreview().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com").build();
 
+        MvcResult resultActions = mvc.perform(post("/preview")
+                .param("address", previewRequest.getTo())
+                .param("subject", previewRequest.getSubject())
+                .param("body", previewRequest.getBody()))
+                .andExpect(view().name("preview"))
+                .andExpect(model().attribute("address", "eventspark@gmx.com"))
+                .andExpect(model().attribute("subject", "Hello Aki"))
+                .andExpect(model().attribute("body", "Hi Aki"))
+                .andReturn();
+
+        //verify(mailService, times(1)).preview(null);
     }
 
     @Test
