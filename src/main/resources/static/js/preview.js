@@ -12,6 +12,5 @@ function changePreviewPage(e) {
 
     $previewForm
         .attr('action', '/preview/' + index)
-        .attr('method', 'post')
         .submit();
 }

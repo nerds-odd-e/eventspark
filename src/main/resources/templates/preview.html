@@ -14,8 +14,10 @@
             <div class="col-md-6">
                 <h1>Mail Preview</h1>
 
-                <button th:data-index="${prevIndex}" type="button" th:if="${showPrev}" id="prev" class="btn btn-default">Prev</button>
-                <button th:data-index="${nextIndex}" type="button" th:if="${showNext}" id="next" class="btn btn-default pull-right">Next</button>
+                <div class="clearfix">
+                    <button th:data-index="${prevIndex}" type="button" th:if="${showPrev}" id="prev" class="btn btn-default">Prev</button>
+                    <button th:data-index="${nextIndex}" type="button" th:if="${showNext}" id="next" class="btn btn-default pull-right">Next</button>
+                </div>
 
                 <hr>
 
@@ -26,7 +28,7 @@
 
                 <hr>
 
-                <form action="/home" method="get" id="form" th:object="${form}">
+                <form action="/home" method="post" id="form" th:object="${form}">
 
                     <input class="invisible" type="hidden" name="address" id="address" th:value="${form.address}" />
                     <input class="invisible" type="hidden" name="subject" id="subject" th:value="${form.subject}" />
