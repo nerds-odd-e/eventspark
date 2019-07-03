@@ -51,24 +51,21 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewPageWithoutParam() throws Exception {
+        PreviewParameter param = new PreviewParameter(
+                "Hello name",
+                "Hi name",
+                "foo@gmx.com",
+                "/preview/0",
+                "foo@gmx.com",
+                "Hello name",
+                "Hi name",
+                -1,
+                1,
+                false,
+                false
+        );
 
-        MailInfo previewRequest = validMail().withSubject("Hello name").withBody("Hi name").withTo("foo@gmx.com").build();
-
-        MvcResult resultActions = mvc.perform(post("/preview/0")
-                .param("address", previewRequest.getTo())
-                .param("subject", previewRequest.getSubject())
-                .param("body", previewRequest.getBody()))
-
-                .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", "foo@gmx.com"))
-                .andExpect(model().attribute("subject", "Hello name"))
-                .andExpect(model().attribute("body", "Hi name"))
-
-                .andExpect(model().attribute("prevIndex", -1))
-                .andExpect(model().attribute("nextIndex", 1))
-                .andExpect(model().attribute("showPrev", false))
-                .andExpect(model().attribute("showNext", false))
-                .andReturn();
+        assertPreviewPage(param);
     }
 
     @Test
@@ -76,68 +73,111 @@ public class PreviewControllerTest {
 
         addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
 
-        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com").build();
+        PreviewParameter param = new PreviewParameter(
+                "Hello $name",
+                "Hi $name",
+                "eventspark@gmx.com",
+                "/preview/0",
+                "eventspark@gmx.com",
+                "Hello Aki",
+                "Hi Aki",
+                -1,
+                1,
+                false,
+                false
+        );
 
-        MvcResult resultActions = mvc.perform(post("/preview/0")
-                .param("address", previewRequest.getTo())
-                .param("subject", previewRequest.getSubject())
-                .param("body", previewRequest.getBody()))
-
-                .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", "eventspark@gmx.com"))
-                .andExpect(model().attribute("subject", "Hello Aki"))
-                .andExpect(model().attribute("body", "Hi Aki"))
-
-                .andExpect(model().attribute("prevIndex", -1))
-                .andExpect(model().attribute("nextIndex", 1))
-                .andExpect(model().attribute("showPrev", false))
-                .andExpect(model().attribute("showNext", false))
-                .andReturn();
+        assertPreviewPage(param);
     }
 
     @Test
     public void showPreviewPage1WithoutParam() throws Exception {
-        MailInfo previewRequest = validMail().withSubject("Hello name").withBody("Hi name")
-                .withTo("foo@gmx.com;hoge@fuga.com").build();
 
-        MvcResult resultActions = mvc.perform(post("/preview/1")
-                .param("address", previewRequest.getTo())
-                .param("subject", previewRequest.getSubject())
-                .param("body", previewRequest.getBody()))
+        PreviewParameter param = new PreviewParameter(
+                "Hello name",
+                "Hi name",
+                "foo@gmx.com;hoge@fuga.com",
+                "/preview/1",
+                "hoge@fuga.com",
+                "Hello name",
+                "Hi name",
+                0,
+                2,
+                true,
+                false
+        );
 
-                .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", "hoge@fuga.com"))
-                .andExpect(model().attribute("subject", "Hello name"))
-                .andExpect(model().attribute("body", "Hi name"))
-
-                .andExpect(model().attribute("prevIndex", 0))
-                .andExpect(model().attribute("nextIndex", 2))
-                .andExpect(model().attribute("showPrev", true))
-                .andExpect(model().attribute("showNext", false))
-                .andReturn();
+        assertPreviewPage(param);
     }
 
     @Test
     public void showPreviewPage1WithParam() throws Exception {
         addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
 
-        MailInfo previewRequest = validMail().withSubject("Hello $name").withBody("Hi $name")
-                .withTo("hoge@fuga.com;eventspark@gmx.com").build();
+        PreviewParameter param = new PreviewParameter(
+                "Hello $name",
+                "Hi $name",
+                "hoge@fuga.com;eventspark@gmx.com",
+                "/preview/1",
+                "eventspark@gmx.com",
+                "Hello Aki",
+                "Hi Aki",
+                0,
+                2,
+                true,
+                false
+        );
 
-        MvcResult resultActions = mvc.perform(post("/preview/1")
+        assertPreviewPage(param);
+    }
+
+    private class PreviewParameter {
+        String subject;
+        String body;
+        String to;
+
+        String url;
+
+        String expectedAddress;
+        String expectedSubject;
+        String expectedBody;
+        int expectedPrevIndex;
+        int expectedNextIndex;
+        boolean expectedShowPrev;
+        boolean expectedShowNext;
+
+        public PreviewParameter(String subject, String body, String to, String url, String expectedAddress, String expectedSubject, String expectedBody, int expectedPrevIndex, int expectedNextIndex, boolean expectedShowPrev, boolean expectedShowNext) {
+            this.subject = subject;
+            this.body = body;
+            this.to = to;
+            this.url = url;
+            this.expectedAddress = expectedAddress;
+            this.expectedSubject = expectedSubject;
+            this.expectedBody = expectedBody;
+            this.expectedPrevIndex = expectedPrevIndex;
+            this.expectedNextIndex = expectedNextIndex;
+            this.expectedShowPrev = expectedShowPrev;
+            this.expectedShowNext = expectedShowNext;
+        }
+    }
+
+    private void assertPreviewPage(PreviewParameter previewParameter) throws Exception{
+        MailInfo previewRequest = validMail().withSubject(previewParameter.subject).withBody(previewParameter.body).withTo(previewParameter.to).build();
+
+        MvcResult resultActions = mvc.perform(post(previewParameter.url)
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
 
                 .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", "eventspark@gmx.com"))
-                .andExpect(model().attribute("subject", "Hello Aki"))
-                .andExpect(model().attribute("body", "Hi Aki"))
+                .andExpect(model().attribute("address", previewParameter.expectedAddress))
+                .andExpect(model().attribute("subject", previewParameter.expectedSubject))
+                .andExpect(model().attribute("body", previewParameter.expectedBody))
 
-                .andExpect(model().attribute("prevIndex", 0))
-                .andExpect(model().attribute("nextIndex", 2))
-                .andExpect(model().attribute("showPrev", true))
-                .andExpect(model().attribute("showNext", false))
+                .andExpect(model().attribute("prevIndex", previewParameter.expectedPrevIndex))
+                .andExpect(model().attribute("nextIndex", previewParameter.expectedNextIndex))
+                .andExpect(model().attribute("showPrev", previewParameter.expectedShowPrev))
+                .andExpect(model().attribute("showNext", previewParameter.expectedShowNext))
                 .andReturn();
     }
 
