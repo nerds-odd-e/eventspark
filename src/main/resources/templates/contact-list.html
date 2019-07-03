@@ -81,8 +81,8 @@
                         <th><input type="checkbox" id="all" onclick="new ContactList().checkAll()"/>&nbsp;Check All</th>
                     </tr>
                     <tr th:each="mail, stat : ${contactList}">
-                        <td th:text="${mail.name}"></td>
-                        <td><a href="#" th:text="${mail.mailAddress}"></a></td>
+                        <td th:id="${'name' + stat.index}" th:text="${mail.name}"></td>
+                        <td th:id="${'mailAddress' + stat.index}"><a href="#" th:text="${mail.mailAddress}"></a></td>
                         <td><input type="checkbox" name="mailAddress" th:id="${'address' + stat.index}" th:value="${mail.mailAddress}"/></td>
                     </tr>
                 </table>

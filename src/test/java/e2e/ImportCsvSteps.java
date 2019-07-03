@@ -23,12 +23,12 @@ public class ImportCsvSteps {
     }
 
     @When("click import button")
-    public void click_import_button() throws Exception {
+    public void click_import_button() {
         driver.findElement(By.id("import")).click();
     }
 
     @Then("move to contact list")
-    public void move_to_contact_list() throws Exception {
+    public void move_to_contact_list() {
         String actual = driver.findElement(By.id("contact-list-title")).getText();
         Assert.assertEquals("Contact List", actual);
     }
@@ -73,7 +73,8 @@ public class ImportCsvSteps {
     @Then("list has name {string}")
     public void list_has_name(String string) {
         // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        String actual = driver.findElement(By.id("name3")).getText();
+        Assert.assertEquals(string, actual);
     }
 
     @Then("list has email {string}")
