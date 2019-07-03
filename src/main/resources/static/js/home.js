@@ -6,7 +6,7 @@ $(function() {
 
     $previewBtn.on('click', function() {
         $form
-            .attr('action', '/preview')
+            .attr('action', '/preview/0')
             .submit();
     });
 

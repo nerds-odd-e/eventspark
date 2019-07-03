@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class PreviewSteps {
@@ -21,14 +20,14 @@ public class PreviewSteps {
 
 
     @When("^preview$")
-    public void preview() throws Throwable {
+    public void preview() {
         driver.findElement(By.id("preview")).click();
     }
 
-    @Then("^show preview window")
-    public void showPreviewWindow() {
+    @Then("^show preview (\\d+)")
+    public void showPreviewWindow(int index) {
         String currentUrl = driver.getCurrentUrl();
-        assertThat(currentUrl, containsString("/preview"));
+        assertThat(currentUrl, containsString("/preview/" + index));
     }
 
     @Then("^show home window")
