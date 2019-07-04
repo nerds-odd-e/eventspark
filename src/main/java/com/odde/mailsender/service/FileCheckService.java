@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface FileCheckService {
     List<String> checkUploadList(List<AddressItem> uploadList);
+
+    List<String> checkDuplicateAddress(List<AddressItem> uploadList);
+
 }

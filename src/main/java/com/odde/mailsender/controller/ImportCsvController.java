@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class ImportCsvController {
 
@@ -30,26 +32,18 @@ public class ImportCsvController {
     @Autowired
     private AddressBookService addressBookService;
 
+    @Autowired
+    private HttpSession session;
+
     @GetMapping("/import-csv")
-    String getImportCsv() {
-        //model.addAttribute("contactList", addressBookService.get());
+    String getImportCsv(@RequestParam(name = "force", required = false) String force) {
+
+        if (!Boolean.valueOf(force)) {
+            System.out.println("Hello WOrld");
+        }
+
         return "import-csv";
     }
-
-//    @PostMapping("/sample-import-csv")
-//    public String getImportCsvSample(@RequestParam("csvfile") MultipartFile multipartFile, Model model) {
-//
-//        // Cucumber を通すためのダミーの仮実装
-//        try {
-//            AddressBook addressBook = new AddressBook();
-//            addressBook.load();
-//            addressBook.add(new AddressItem("test1@example.com", "test1"));
-//            addressBook.save();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "redirect:/contact-list";
-//    }
 
     @PostMapping("/import-csv")
     ModelAndView postCsv(
@@ -77,7 +71,15 @@ public class ImportCsvController {
             if (!errors.isEmpty()) {
                 model.setViewName("import-csv");
                 model.addObject("errors", errors);
-                model.setStatus(HttpStatus.OK);
+//                model.setStatus(HttpStatus.OK);
+                return model;
+            }
+
+            List<String> duplicates = fileCheckService.checkDuplicateAddress(addressItems);
+            if (!duplicates.isEmpty()) {
+                model.setViewName("import-csv");
+                model.addObject("duplicates", duplicates);
+                session.setAttribute("addressItems", addressItems);
                 return model;
             }
         }

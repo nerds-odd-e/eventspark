@@ -27,14 +27,19 @@ public class FileCheckServiceImpl implements FileCheckService {
         List<String> checkMailAddressResult = checkMailAddress(uploadList);
         errors.addAll(checkMailAddressResult);
 
-        List<String> checkDuplicateInUploadListResult = checkDuplicateInUploadList(uploadList);
-        errors.addAll(checkDuplicateInUploadListResult);
+        return errors;
+    }
+
+    @Override
+    public List<String> checkDuplicateAddress(List<AddressItem> uploadList) {
+        List<String> errors = new ArrayList<>();
 
         List<String> checkDupliateWithStoredDataResult = checkDuplicateWithStoredData(uploadList);
         errors.addAll(checkDupliateWithStoredDataResult);
 
         return errors;
     }
+
 
     private List<String> checkDuplicateWithStoredData(List<AddressItem> uploadList) {
         List<String> errors = new ArrayList<>();
