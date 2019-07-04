@@ -93,7 +93,7 @@ public class ImportCsvControllerTest {
                 .param("force", "false")
                 .characterEncoding("UTF-8"))
                 .andExpect(view().name("import-csv"))
-                .andExpect(status().isAccepted())
+                .andExpect(status().isOk())
                 .andReturn();
     }
 
