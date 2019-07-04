@@ -1,0 +1,2 @@
+mail,name
+hoge@example.com,fuga

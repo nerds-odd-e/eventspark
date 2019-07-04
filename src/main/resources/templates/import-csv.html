@@ -5,7 +5,8 @@
     <title>Eventspark</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-    <script th:src="@{/lib/jquery-3.2.1.js}"></script>
+    <script th:src="@{/lib/jquery-3.2.1.js}" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--<script th:src="@{/js/contact-list.js}"></script>-->
 </head>
 <body>
@@ -14,64 +15,80 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <h1>Import CSV</h1>
-
-            <!--form action="/import-csv" method="post" th:object="${form}" -->
-            <!-- test 用モック -->
-            <!--<div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">-->
-                <div th:if="${errors}" class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Error</h3>
-                    </div>
-                    <div class="panel-body" id="error-area">
-                        <ul th:each="error: ${errors}">
-                            <li>
-                                <span th:text="${error}"></span>
-                            </li>
-                        </ul>
-                    </div>
+            <div th:if="${errors}" class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
                 </div>
-
-                <div th:if="${duplicates}" class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Error</h3>
-                    </div>
-                    <div class="panel-body" id="duplicate-area">
-                        <ul th:each="duplicate: ${duplicates}">
-                            <li>
-                                <span th:text="${duplicate}"></span>
-                            </li>
-                        </ul>
-
-                        <button type=“button” onclick="location.href='import-csv?force=true'">遷移！</button>
-                    </div>
+                <div class="panel-body" id="error-area">
+                    <ul th:each="error: ${errors}">
+                        <li>
+                            <span th:text="${error}"></span>
+                        </li>
+                    </ul>
                 </div>
-
-                <div class="form-group">
-                    <label for="csvfile">Select CSV file</label>
-                    <form action="/import-csv" enctype="multipart/form-data" method="post">
-                        <table>
-                            <tr>
-                                <td>
-                                    <input type="file" class="form-control" name="file" id="csvfile"
-                                           placeholder="csvfile" multiple/>
-                                    <input type="hidden" name="force" value="false">
-                                </td>
-                                <td>
-                                    <button type="submit" id="import" class="btn btn-default">Import</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-            <!--/form-->
-
+            </div>
+            <div class="form-group p-5">
+                <label for="csvfile">Select CSV file</label>
+                <form action="/import-csv" enctype="multipart/form-data" method="post">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="file" class="form-control" name="file" id="csvfile"
+                                       placeholder="csvfile" multiple/>
+                                <input type="hidden" name="force" value="false">
+                            </td>
+                            <td>
+                                <button type="submit" id="import" class="btn btn-default">Import</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
             <br/>
         </div>
         <div class="col-md-3"></div>
     </div>
 </div>
-<script>
+<div class="modal fade" id="duplicatedModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Duplicate data exists. May I overwrite it?</h5>
+                <ul th:each="duplicate: ${duplicates}">
+                    <li>
+                        <span th:text="${duplicate}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                <button id="forceButton" type="button" class="btn btn-primary">YES</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+var duplicates = /*[[${duplicates}]]*/ 'aaa,bbb';
+console.log(duplicates);
+$(function() {
+    if (duplicates) {
+        $('#duplicatedModal').modal('show');
+        $('#duplicatedMessage').text(duplicates)
+    }
+    $('#forceButton').on('click', function(){
+        $('<form/>', {action: '/import-from-session', method: 'post', enctype: 'multipart/form-data'})
+            .append($('<input/>', {type: 'hidden', name: 'force', value: 'true'}))
+            .appendTo(document.body)
+            .submit();
+    });
 
+});
+/*]]>*/
 </script>
 </body>
 </html>

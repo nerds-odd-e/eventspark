@@ -5,6 +5,7 @@ Feature: Import Csv
 
   # success case
   # upload csv
+  @focus
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
@@ -19,6 +20,7 @@ Feature: Import Csv
       | record_2.csv | 2      | test2;test3       | test2@example.com;test3@example.com                   |
 
   # error case
+  @focus
   Scenario Outline: upload uncorrect-format csv
     Given select "<filename>" CSV
     When click import button
@@ -27,6 +29,7 @@ Feature: Import Csv
       | filename                           | message |
       | error_format.csv                   | CSV must have 2 fields(mail,name).   |
       | no_header.csv                      | CSV file header requires mail,name.  |
+      | error_wrong.txt                    | Please specify csv file.             |
       | invalid_header.csv                 | CSV file header requires mail,name.  |
       | error_encode_binarydata.csv        | Uploaded file is binary data.        |
       | test_invalid_email.csv             | invalidemail.com is invalid address. |
@@ -42,5 +45,5 @@ Feature: Import Csv
     And ContactList multiple values are added "<address>"
     And show warn message "<warn>"
     Examples:
-      | filename                 | result | name                  | address                         |
+      | filename     | result | name              | address                                         |
       | test_overwrite_email.csv | 2      | overwrite1;overwrite2 | user1@gmail.com;user2@gmail.com |
