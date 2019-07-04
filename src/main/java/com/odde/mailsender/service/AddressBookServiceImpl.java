@@ -27,4 +27,9 @@ public class AddressBookServiceImpl implements AddressBookService {
     public AddressItem findByAddress(String address) {
         return addressBook.findByAddress(address);
     }
+
+    @Override
+    public int update(List<AddressItem> addressItems) {
+        return 0;
+    }
 }

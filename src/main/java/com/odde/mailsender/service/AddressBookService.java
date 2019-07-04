@@ -12,4 +12,6 @@ public interface AddressBookService {
     List<AddressItem> get();
 
     AddressItem findByAddress(String address);
+
+    int update(List<AddressItem> addressItems);
 }
