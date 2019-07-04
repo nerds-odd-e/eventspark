@@ -15,8 +15,8 @@
                 <h1>Mail Preview</h1>
 
                 <div class="text-right">
-                    <button th:data-index="${prevIndex}" type="button" th:disabled="${!showPrev}" id="prev" class="btn btn-default">Prev</button>
-                    <button th:data-index="${nextIndex}" type="button" th:disabled="${!showNext}" id="next" class="btn btn-default">Next</button>
+                    <button class="btn btn-default" id="prev" th:data-index="${previewNavigation.getPreviousIndex()}" th:disabled="${!previewNavigation.canShowPrevious()}" type="button">Prev</button>
+                    <button class="btn btn-default" id="next" th:data-index="${previewNavigation.getNextIndex()}" th:disabled="${!previewNavigation.canShowNext()}" type="button">Next</button>
                 </div>
 
                 <hr>

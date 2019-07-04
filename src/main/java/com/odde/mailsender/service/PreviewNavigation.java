@@ -1,5 +1,7 @@
 package com.odde.mailsender.service;
 
+import java.util.Objects;
+
 public class PreviewNavigation {
     private final int index;
     private final int maxIndex;
@@ -27,5 +29,19 @@ public class PreviewNavigation {
 
     public int getPreviousIndex() {
         return getIndex() - 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PreviewNavigation that = (PreviewNavigation) o;
+        return index == that.index &&
+                maxIndex == that.maxIndex;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, maxIndex);
     }
 }

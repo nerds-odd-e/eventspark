@@ -31,24 +31,21 @@ public class PreviewController {
 
         PreviewNavigation previewNavigation = new PreviewNavigation(index, addressArr.length - 1);
 
+        MailInfo info;
         if(form.isTemplate()) {
-            MailInfo info = form.createRenderedMail(addressBookService.findByAddress(address));
-            setModelAttributes(model, previewNavigation, info);
+            info = form.createRenderedMail(addressBookService.findByAddress(address));
         } else {
-            MailInfo info = new MailInfo(null, address, form.getSubject(), form.getBody());
-            setModelAttributes(model, previewNavigation, info);
+            info = new MailInfo(null, address, form.getSubject(), form.getBody());
         }
+
+        setModelAttributes(model, previewNavigation, info);
 
         return "preview";
     }
 
     private void setModelAttributes(Model model, PreviewNavigation previewNavigation, MailInfo mailInfo) {
         model.addAttribute("mailInfo", mailInfo);
-
-        model.addAttribute("prevIndex", previewNavigation.getPreviousIndex());
-        model.addAttribute("nextIndex", previewNavigation.getNextIndex());
-        model.addAttribute("showPrev", previewNavigation.canShowPrevious());
-        model.addAttribute("showNext", previewNavigation.canShowNext());
+        model.addAttribute("previewNavigation", previewNavigation);
     }
 
 
