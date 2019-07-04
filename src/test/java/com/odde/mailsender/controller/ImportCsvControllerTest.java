@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
@@ -47,63 +48,55 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードが成功した場合コンタクトリストに遷移すること() throws Exception {
-        MockMultipartFile csvFile = validContactCsvFile();
-
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
 
         doNothing().when(addressBookService).add(any());
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .param("force", "false")
-                .characterEncoding("UTF-8"))
+
+        performPost("/import-csv", validContactCsvFile())
                 .andExpect(view().name("contact-list"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
 
+    @Test
+    public void FileCheckServiceがNGの場合HTTP_OKが返ること() throws Exception {
+        List<String> expected = Arrays.asList("already registered hnk@example.com");
+        when(fileCheckService.checkUploadList(any())).thenReturn(expected);
+
+        performPost("/import-csv", validContactCsvFile())
+                .andExpect(view().name("import-csv"))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
 
     @Test
     public void アップロードファイルの拡張子がcsvでない場合responsecode400が返ること() throws Exception {
-        MockMultipartFile csvFile = contactCsvFileWithFilename("filename.txt");
-
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .param("force", "false")
-                .characterEncoding("UTF-8"))
-                .andExpect(model().attribute("errors", Arrays.asList("Please specify csv file.")))
+        String errorMessage = "Please specify csv file.";
+        performPost("/import-csv", contactCsvFileWithFilename("filename.txt"))
+                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
-
-
 
     @Test
-    //@Ignore("仕様見直し")
     public void アップロードファイルの中身が想定したcsvでない場合responsecode400が返ること() throws Exception {
-        MockMultipartFile csvFile = contactsCsvFileWithContent(invalid3Columns);
-
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .param("force", "false")
-                .characterEncoding("UTF-8"))
-                .andExpect(model().attribute("errors", Arrays.asList("CSV must have 2 fields(mail,name).")))
+        String errorMessage = "CSV must have 2 fields(mail,name).";
+        performPost("/import-csv", contactsCsvFileWithContent(invalid3Columns))
+                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
-
 
     @Test
     public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
-        MockMultipartFile csvFile = contactsCsvFileWithContent(invalidHeaderNamesContent);
+        String errorMessage = "CSV file header requires mail,name.";
 
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .characterEncoding("UTF-8"))
-                .andExpect(model().attribute("errors", Arrays.asList("CSV file header requires mail,name.")))
+        performPost("/import-csv", contactsCsvFileWithContent(invalidHeaderNamesContent))
+                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
@@ -111,35 +104,21 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードファイルがバイナリファイルの場合responsecode400が返ること() throws Exception {
-        MockMultipartFile csvFile = invalidCsvBinaryFile();
+        String errorMessage = "Uploaded file is binary data.";
 
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .characterEncoding("UTF-8"))
-                .andExpect(model().attribute("errors", Arrays.asList("Uploaded file is binary data.")))
+        performPost("/import-csv", invalidCsvBinaryFile())
+                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
-
-    @Test
-    public void FileCheckServiceがNGの場合HTTP_OKが返ること() throws Exception {
-
-        List<String> expected = Arrays.asList("already registered hnk@example.com");
-        when(fileCheckService.checkUploadList(any())).thenReturn(expected);
-
-
-        MockMultipartFile csvFile = validContactCsvFile();
-
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
+    private ResultActions performPost(String url, MockMultipartFile csvFile) throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.multipart(url)
                 .file(csvFile)
-                .param("force", "false")
-                .characterEncoding("UTF-8"))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isOk())
-                .andReturn();
+                .characterEncoding("UTF-8"));
     }
+
 
     private MockMultipartFile contactsCsvFileWithContent(String content) {
         return new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
