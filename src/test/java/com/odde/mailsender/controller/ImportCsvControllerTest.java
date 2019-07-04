@@ -116,7 +116,7 @@ public class ImportCsvControllerTest {
 
 
     @Test
-    public void アップロードファイルのヘッダがnameとaddressでない場合responsecode400が返ること() throws Exception {
+    public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
         String content = "hoge,fuga\nyamada,test@example.com";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
