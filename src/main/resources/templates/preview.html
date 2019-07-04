@@ -21,10 +21,10 @@
 
                 <hr>
 
-                <div><strong>To:</strong> <span th:text="${address}" id="address-preview"></span></div>
-                <h2 th:text="${subject}" id="subject-preview"></h2>
+                <div><strong>To:</strong> <span th:text="${mailInfo.to}" id="address-preview"></span></div>
+                <h2 th:text="${mailInfo.subject}" id="subject-preview"></h2>
                 <br>
-                <div th:text="${body}" id="body-preview"></div>
+                <div th:text="${mailInfo.body}" id="body-preview"></div>
 
                 <hr>
 

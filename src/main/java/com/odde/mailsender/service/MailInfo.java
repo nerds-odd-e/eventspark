@@ -65,14 +65,4 @@ public class MailInfo {
     public int hashCode() {
         return Objects.hash(from, to, subject, body);
     }
-
-    @Override
-    public String toString() {
-        return "MailInfo{" +
-                "from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", subject='" + subject + '\'' +
-                ", body='" + body + '\'' +
-                '}';
-    }
 }
