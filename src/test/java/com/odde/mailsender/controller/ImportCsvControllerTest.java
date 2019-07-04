@@ -3,7 +3,6 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.FileCheckService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,10 +41,13 @@ public class ImportCsvControllerTest {
     @MockBean
     private AddressBookService addressBookService;
 
+    String validContent = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
+    String invalid3Columns = "mail,name\nhnk@example.com,Hanako Suzuki,test\nty@example.com\tTaro Yamada";
+    String invalidHeaderNamesContent = "hoge,fuga\nyamada,test@example.com";
+
     @Test
     public void アップロードが成功した場合コンタクトリストに遷移すること() throws Exception {
-        String content = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+        MockMultipartFile csvFile = validContactCsvFile();
 
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
@@ -62,10 +63,10 @@ public class ImportCsvControllerTest {
                 .andReturn();
     }
 
+
     @Test
     public void アップロードファイルの拡張子がcsvでない場合responsecode400が返ること() throws Exception {
-        String content = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.txt", "text/plain", content.getBytes());
+        MockMultipartFile csvFile = contactCsvFileWithFilename("filename.txt");
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
@@ -77,11 +78,12 @@ public class ImportCsvControllerTest {
                 .andReturn();
     }
 
+
+
     @Test
     //@Ignore("仕様見直し")
     public void アップロードファイルの中身が想定したcsvでない場合responsecode400が返ること() throws Exception {
-        String content = "mail,name\nhnk@example.com,Hanako Suzuki,test\nty@example.com\tTaro Yamada";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+        MockMultipartFile csvFile = contactsCsvFileWithContent(invalid3Columns);
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
@@ -93,10 +95,10 @@ public class ImportCsvControllerTest {
                 .andReturn();
     }
 
+
     @Test
     public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
-        String content = "hoge,fuga\nyamada,test@example.com";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+        MockMultipartFile csvFile = contactsCsvFileWithContent(invalidHeaderNamesContent);
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
@@ -109,8 +111,7 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードファイルがバイナリファイルの場合responsecode400が返ること() throws Exception {
-        byte[] content = new byte[]{0,0,0,0,0};
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content);
+        MockMultipartFile csvFile = invalidCsvBinaryFile();
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
@@ -121,14 +122,15 @@ public class ImportCsvControllerTest {
                 .andReturn();
     }
 
+
     @Test
     public void FileCheckServiceがNGの場合HTTP_OKが返ること() throws Exception {
 
         List<String> expected = Arrays.asList("already registered hnk@example.com");
         when(fileCheckService.checkUploadList(any())).thenReturn(expected);
 
-        String content = "mail,name\nty@example.com,Taro Yamada\nty@example.com,Taro Yamada";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+
+        MockMultipartFile csvFile = validContactCsvFile();
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
@@ -137,6 +139,23 @@ public class ImportCsvControllerTest {
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    private MockMultipartFile contactsCsvFileWithContent(String content) {
+        return new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+    }
+
+    private MockMultipartFile validContactCsvFile() {
+        return new MockMultipartFile("file", "filename.csv", "text/plain", validContent.getBytes());
+    }
+
+    private MockMultipartFile contactCsvFileWithFilename(String filename) {
+        return new MockMultipartFile("file", filename, "text/plain", validContent.getBytes());
+    }
+
+    private MockMultipartFile invalidCsvBinaryFile() {
+        byte[] content = new byte[]{0,0,0,0,0};
+        return new MockMultipartFile("file", "filename.csv", "text/plain", content);
     }
 
 //    @Test
