@@ -9,6 +9,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 public class PreviewSteps {
@@ -51,14 +52,14 @@ public class PreviewSteps {
         driver.findElement(By.id("prev")).click();
     }
 
-    @Then("previous button does not exist")
-    public void previousButtonDoesNotExist() {
-        assertThat(driver.findElements(By.id("prev")).size(), is(0));
+    @Then("previous button is disabled")
+    public void previousButtonIsDisabled() {
+        assertFalse(driver.findElement(By.id("prev")).isEnabled());
     }
 
-    @Then("next button does not exist")
-    public void nextButtonDoesNotExist() {
-        assertThat(driver.findElements(By.id("next")).size(), is(0));
+    @Then("next button is disabled")
+    public void nextButtonIsDisabled() {
+        assertFalse(driver.findElement(By.id("next")).isEnabled());
     }
 
     @Then("previewed address is \"([^\"]*)\"$")

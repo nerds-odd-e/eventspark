@@ -34,7 +34,7 @@ Feature: Preview
     And previewed address is "user1@gmail.com"
     And variables are replaced with "user1" in body
     And variables are replaced with "user1" in subject
-    And previous button does not exist
+    And previous button is disabled
     When click next button
     Then show preview 1
     And previewed address is "user2@gmail.com"
@@ -45,7 +45,7 @@ Feature: Preview
     And previewed address is "user3@gmail.com"
     And variables are replaced with "user3" in body
     And variables are replaced with "user3" in subject
-    And next button does not exist
+    And next button is disabled
     When click previous button
     Then show preview 1
     And previewed address is "user2@gmail.com"
@@ -56,5 +56,5 @@ Feature: Preview
     And previewed address is "user1@gmail.com"
     And variables are replaced with "user1" in body
     And variables are replaced with "user1" in subject
-    And previous button does not exist
+    And previous button is disabled
 
