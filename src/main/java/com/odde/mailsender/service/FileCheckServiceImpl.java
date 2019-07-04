@@ -34,6 +34,9 @@ public class FileCheckServiceImpl implements FileCheckService {
     public List<String> checkDuplicateAddress(List<AddressItem> uploadList) {
         List<String> errors = new ArrayList<>();
 
+        List<String> checkDuplicateInUploadListResult = checkDuplicateInUploadList(uploadList);
+        errors.addAll(checkDuplicateInUploadListResult);
+
         List<String> checkDupliateWithStoredDataResult = checkDuplicateWithStoredData(uploadList);
         errors.addAll(checkDupliateWithStoredDataResult);
 
@@ -75,7 +78,7 @@ public class FileCheckServiceImpl implements FileCheckService {
         StringJoiner joiner = new StringJoiner(" and ");
         for (String key :duplicatedMap.keySet()) {
             if (duplicatedMap.get(key).size() > 1) {
-                duplicatedMap.get(key).stream().forEach(i -> joiner.add(String.valueOf(i)));
+                duplicatedMap.get(key).forEach(i -> joiner.add(String.valueOf(i)));
                 result.add(String.format("%s rows are duplicated with %s", joiner.toString(), key));
             }
         }

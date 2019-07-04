@@ -2,6 +2,7 @@ package com.odde.mailsender.service;
 
 import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,14 +28,21 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class FileCheckServiceTest {
 
+    private AddressBook addressBook;
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Autowired
     private FileCheckService target;
 
+    @Before
+    public void setUp() {
+        addressBook = new AddressBook();
+    }
+
     @Test
-    public void checkSuccessful() throws Exception {
+    public void checkSuccessful() {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
@@ -41,40 +50,37 @@ public class FileCheckServiceTest {
         List<String> actual = target.checkUploadList(uploadList);
 
         List<String> expected = new ArrayList<>();
-        assertThat(expected, is(actual));
+        assertThat(actual, is(expected));
 
     }
 
     @Test
-    public void checkFailedWithInvalidMailAddress() throws Exception {
+    public void checkFailedWithInvalidMailAddress() {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         uploadList.add(new AddressItem("shigeru.tatsuta#g.softbank.co.jp", "Shigeru Tatsuta"));
 
         List<String> actual = target.checkUploadList(uploadList);
 
-        List<String> expected = Arrays.asList("shigeru.tatsuta#g.softbank.co.jp is invalid address.");
-        assertThat(expected, is(actual));
+        List<String> expected = Collections.singletonList("shigeru.tatsuta#g.softbank.co.jp is invalid address.");
+        assertThat(actual, is(expected));
     }
 
-    @Ignore
     @Test
-    public void checkDuplicateMailAddressInUploadList() throws Exception {
+    public void checkDuplicateMailAddressInUploadList() {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami2"));
 
-        List<String> actual = target.checkUploadList(uploadList);
+        List<String> actual = target.checkDuplicateAddress(uploadList);
 
-        List<String> expected = Arrays.asList("1 and 3 rows are duplicated with jun.murakami@g.softbank.co.jp");
-        assertThat(expected, is(actual));
+        List<String> expected = Collections.singletonList("1 and 3 rows are duplicated with jun.murakami@g.softbank.co.jp");
+        assertThat(actual, is(expected));
     }
 
-    @Ignore
     @Test
     public void checkDuplicatedOneMailAddressStoredData() throws Exception {
-        AddressBook addressBook = new AddressBook();
         addressBook.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         addressBook.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
         addressBook.save();
@@ -82,19 +88,17 @@ public class FileCheckServiceTest {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
 
-        List<String> actual = target.checkUploadList(uploadList);
+        List<String> actual = target.checkDuplicateAddress(uploadList);
 
-        List<String> expected = Arrays.asList("already registered jun.murakami@g.softbank.co.jp");
-        assertThat(expected, is(actual));
+        List<String> expected = Collections.singletonList("already registered jun.murakami@g.softbank.co.jp");
+        assertThat(actual, is(expected));
 
         addressBook = new AddressBook();
         addressBook.save();
     }
 
-    @Ignore
     @Test
     public void checkDuplicatedMultiMailAddressStoredData() throws Exception {
-        AddressBook addressBook = new AddressBook();
         addressBook.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         addressBook.add(new AddressItem("ryota.saiga@g.softbank.co.jp", "Ryota Saiga"));
         addressBook.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
@@ -104,10 +108,10 @@ public class FileCheckServiceTest {
         uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
         uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
 
-        List<String> actual = target.checkUploadList(uploadList);
+        List<String> actual = target.checkDuplicateAddress(uploadList);
 
         List<String> expected = Arrays.asList("already registered jun.murakami@g.softbank.co.jp", "already registered shigeru.tatsuta@g.softbank.co.jp");
-        assertThat(expected, is(actual));
+        assertThat(actual, is(expected));
 
         addressBook = new AddressBook();
         addressBook.save();
