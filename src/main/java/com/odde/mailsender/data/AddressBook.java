@@ -5,6 +5,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddressBook {
 
@@ -91,17 +94,39 @@ public class AddressBook {
         return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
     }
 
-    public int update(List<AddressItem> addressItems) throws IOException {
-        for (AddressItem update: addressItems) {
-            for (AddressItem item : this.addressItems) {
-                if (item.getMailAddress().equals(update.getMailAddress())) {
-                    item.setName(update.getName());
-                    break;
-                }
-            }
-            this.addressItems.add(update);
-        }
+    public int update(List<AddressItem> requestAddressItems) throws IOException {
+        ArrayList<AddressItem> insertList = generateInsertItems(requestAddressItems);
+        ArrayList<AddressItem> updateList = generateUpdateItems(requestAddressItems);
+        updateName(updateList);
+        this.addressItems = Stream.concat(insertList.stream(), updateList.stream()).collect(Collectors.toList());
         save();
-        return addressItems.size();
+        return requestAddressItems.size();
+    }
+
+    private void updateName(ArrayList<AddressItem> updateList) {
+        updateList.forEach(item->{
+            Optional<AddressItem> target = this.addressItems.stream().filter(i -> i.getMailAddress().equals(item.getMailAddress())).findFirst();
+            target.get().setName(item.getName());
+        });
+    }
+
+    private ArrayList<AddressItem> generateUpdateItems(List<AddressItem> requestAddressItems) {
+        ArrayList<AddressItem> updateList = new ArrayList<>();
+        requestAddressItems.forEach(requestAddressItem->{
+            if(this.addressItems.stream().anyMatch(o->o.getMailAddress().equals(requestAddressItem.getMailAddress()))){
+                updateList.add((requestAddressItem));
+            }
+        });
+        return updateList;
+    }
+
+    private ArrayList<AddressItem> generateInsertItems(List<AddressItem> requestAddressItems) {
+        ArrayList<AddressItem> insertList = new ArrayList<>();
+        requestAddressItems.forEach(requestAddressItem->{
+            if(this.addressItems.stream().noneMatch(o->o.getMailAddress().equals(requestAddressItem.getMailAddress()))){
+                insertList.add((requestAddressItem));
+            }
+        });
+        return insertList;
     }
 }
