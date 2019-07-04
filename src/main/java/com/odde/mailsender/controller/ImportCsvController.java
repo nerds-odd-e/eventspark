@@ -64,6 +64,17 @@ public class ImportCsvController {
         try {
             MappingIterator<AddressItem> personIter = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).readValues(multipartFile.getInputStream());
             addressItems = personIter.readAll();
+
+            if (!addressItems.get(0).getMailAddress().equals("mail") ||
+               !addressItems.get(0).getName().equals("name") ) {
+                model.setViewName("import-csv");
+                model.setStatus(HttpStatus.BAD_REQUEST);
+                return model;
+            }else{
+                addressItems.remove(0);
+            }
+
+
         } catch (IOException e) {
             List<String> errors = Arrays.asList("Can't read uploaded file.");
             model.setViewName("import-csv");
