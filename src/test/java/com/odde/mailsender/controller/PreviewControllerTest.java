@@ -5,6 +5,7 @@ import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.PreviewNavigation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,6 @@ import java.util.List;
 import static com.odde.mailsender.service.MailBuilder.validMail;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -59,13 +59,8 @@ public class PreviewControllerTest {
                 "Hi name",
                 "foo@gmx.com",
                 "/preview/0",
-                "foo@gmx.com",
-                "Hello name",
-                "Hi name",
-                -1,
-                1,
-                false,
-                false
+                new MailInfo(null, "foo@gmx.com", "Hello name", "Hi name"),
+                new PreviewNavigation(0, 0)
         );
 
         assertPreviewPage(param);
@@ -81,13 +76,8 @@ public class PreviewControllerTest {
                 "Hi $name",
                 "eventspark@gmx.com",
                 "/preview/0",
-                "eventspark@gmx.com",
-                "Hello Aki",
-                "Hi Aki",
-                -1,
-                1,
-                false,
-                false
+                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
+                new PreviewNavigation(0, 0)
         );
 
         assertPreviewPage(param);
@@ -101,13 +91,8 @@ public class PreviewControllerTest {
                 "Hi name",
                 "foo@gmx.com;hoge@fuga.com",
                 "/preview/1",
-                "hoge@fuga.com",
-                "Hello name",
-                "Hi name",
-                0,
-                2,
-                true,
-                false
+                new MailInfo(null, "hoge@fuga.com", "Hello name", "Hi name"),
+                new PreviewNavigation(1, 1)
         );
 
         assertPreviewPage(param);
@@ -122,13 +107,8 @@ public class PreviewControllerTest {
                 "Hi $name",
                 "hoge@fuga.com;eventspark@gmx.com",
                 "/preview/1",
-                "eventspark@gmx.com",
-                "Hello Aki",
-                "Hi Aki",
-                0,
-                2,
-                true,
-                false
+                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
+                new PreviewNavigation(1, 1)
         );
 
         assertPreviewPage(param);
@@ -161,36 +141,6 @@ public class PreviewControllerTest {
         assertErrorMessage(resultActions, "subject", "{0} may not be empty");
     }
 
-    private class PreviewParameter {
-        String subject;
-        String body;
-        String to;
-
-        String url;
-
-        String expectedAddress;
-        String expectedSubject;
-        String expectedBody;
-        int expectedPrevIndex;
-        int expectedNextIndex;
-        boolean expectedShowPrev;
-        boolean expectedShowNext;
-
-        public PreviewParameter(String subject, String body, String to, String url, String expectedAddress, String expectedSubject, String expectedBody, int expectedPrevIndex, int expectedNextIndex, boolean expectedShowPrev, boolean expectedShowNext) {
-            this.subject = subject;
-            this.body = body;
-            this.to = to;
-            this.url = url;
-            this.expectedAddress = expectedAddress;
-            this.expectedSubject = expectedSubject;
-            this.expectedBody = expectedBody;
-            this.expectedPrevIndex = expectedPrevIndex;
-            this.expectedNextIndex = expectedNextIndex;
-            this.expectedShowPrev = expectedShowPrev;
-            this.expectedShowNext = expectedShowNext;
-        }
-    }
-
     private void assertPreviewPage(PreviewParameter previewParameter) throws Exception{
         MailInfo previewRequest = validMail().withSubject(previewParameter.subject).withBody(previewParameter.body).withTo(previewParameter.to).build();
 
@@ -200,15 +150,29 @@ public class PreviewControllerTest {
                 .param("body", previewRequest.getBody()))
 
                 .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", previewParameter.expectedAddress))
-                .andExpect(model().attribute("subject", previewParameter.expectedSubject))
-                .andExpect(model().attribute("body", previewParameter.expectedBody))
-
-                .andExpect(model().attribute("prevIndex", previewParameter.expectedPrevIndex))
-                .andExpect(model().attribute("nextIndex", previewParameter.expectedNextIndex))
-                .andExpect(model().attribute("showPrev", previewParameter.expectedShowPrev))
-                .andExpect(model().attribute("showNext", previewParameter.expectedShowNext))
+                .andExpect(model().attribute("mailInfo", previewParameter.expectedMailInfo))
+                .andExpect(model().attribute("previewNavigation", previewParameter.exptectedPreviewNavigation))
                 .andReturn();
+    }
+
+    private class PreviewParameter {
+        String subject;
+        String body;
+        String to;
+
+        String url;
+
+        MailInfo expectedMailInfo;
+        PreviewNavigation exptectedPreviewNavigation;
+
+        public PreviewParameter(String subject, String body, String to, String url, MailInfo expectedMailInfo, PreviewNavigation exptectedPreviewNavigation) {
+            this.subject = subject;
+            this.body = body;
+            this.to = to;
+            this.url = url;
+            this.expectedMailInfo = expectedMailInfo;
+            this.exptectedPreviewNavigation = exptectedPreviewNavigation;
+        }
     }
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {

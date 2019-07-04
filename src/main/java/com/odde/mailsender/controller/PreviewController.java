@@ -3,7 +3,7 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.form.MailSendForm;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
-import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.PreviewNavigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,25 +29,24 @@ public class PreviewController {
         String[] addressArr = form.getAddresses();
         String address = addressArr[index];
 
+        PreviewNavigation previewNavigation = new PreviewNavigation(index, addressArr.length - 1);
+
+        MailInfo info;
         if(form.isTemplate()) {
-            MailInfo info = form.createRenderedMail(addressBookService.findByAddress(address));
-            setModelAttributes(model, info.getTo(), info.getSubject(), info.getBody(), index, addressArr.length);
+            info = form.createRenderedMail(addressBookService.findByAddress(address));
         } else {
-            setModelAttributes(model, address, form.getSubject(), form.getBody(), index, addressArr.length);
+            info = new MailInfo(null, address, form.getSubject(), form.getBody());
         }
+
+        setModelAttributes(model, previewNavigation, info);
 
         return "preview";
     }
 
-    private void setModelAttributes(Model model, String address, String subject, String body, int index, int arrLength) {
-        model.addAttribute("address", address);
-        model.addAttribute("subject", subject);
-        model.addAttribute("body", body);
-
-        model.addAttribute("prevIndex", index - 1);
-        model.addAttribute("nextIndex", index + 1);
-        model.addAttribute("showPrev", index > 0);
-        model.addAttribute("showNext", index < arrLength - 1);
+    private void setModelAttributes(Model model, PreviewNavigation previewNavigation, MailInfo mailInfo) {
+        model.addAttribute("mailInfo", mailInfo);
+        model.addAttribute("previewNavigation", previewNavigation);
     }
+
 
 }
