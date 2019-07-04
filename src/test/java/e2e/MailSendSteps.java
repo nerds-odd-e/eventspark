@@ -6,6 +6,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import e2e.pages.HomePage;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -20,53 +21,45 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class MailSendSteps {
     @Autowired
-    private WebDriver driver;
-
-    @Autowired
     private GreenMail greenMail;
 
-    @LocalServerPort
-    private int port;
+    @Autowired
+    private HomePage homePage;
 
     @Given("^address is \"([^\"]*)\"$")
-    public void address_is(String address) throws Throwable {
-        driver.findElement(By.id("address")).sendKeys(address);
+    public void address_is(String address) {
+        homePage.fillAddressField(address);
     }
 
     @Given("^subject is \"([^\"]*)\"$")
-    public void subject_is(String subject) throws Throwable {
-        driver.findElement(By.id("subject")).sendKeys(subject);
+    public void subject_is(String subject) {
+        homePage.fillSubjectField(subject);
     }
 
     @Given("^body is \"([^\"]*)\"$")
-    public void body_is(String body) throws Throwable {
-        driver.findElement(By.id("body")).sendKeys(body);
+    public void body_is(String body) {
+        homePage.fillBodyField(body);
     }
 
     @When("^send$")
-    public void send() throws Throwable {
-        driver.findElement(By.id("send")).click();
+    public void send() {
+        homePage.sendEmail();
     }
 
     @Then("^error_area is \"([^\"]*)\"$")
-    public void error_area_is(String errorArea) throws Throwable {
-        String actual = driver.findElement(By.id("error-area")).getText();
-        Assert.assertEquals(errorArea, actual);
+    public void error_area_is(String errorArea) {
+        Assert.assertEquals(errorArea, homePage.getErrorText());
     }
 
     @Then("^error_area is none$")
-    public void error_area_is_none() throws Throwable {
-        try {
-            driver.findElement(By.id("error-area"));
-            fail();
-        } catch (NoSuchElementException e) {
-            /* こちらが正常系*/
-        }
+    public void error_area_is_none() {
+        assertFalse(homePage.errorAreaExists());
     }
 
     @Then("^should receive the following emails:$")
@@ -92,8 +85,7 @@ public class MailSendSteps {
     }
 
     @Then("^error_area contains \"([^\"]*)\"$")
-    public void error_areaContains(String errorMessage) throws Throwable {
-        String actual = driver.findElement(By.id("error-area")).getText();
-        Assert.assertTrue(actual.contains(errorMessage));
+    public void error_areaContains(String errorMessage) {
+        Assert.assertTrue(homePage.getErrorText().contains(errorMessage));
     }
 }

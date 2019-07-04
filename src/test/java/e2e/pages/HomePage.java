@@ -1,5 +1,6 @@
 package e2e.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -30,6 +31,12 @@ public class HomePage extends BasePage {
     @FindBy(how = How.CSS, using = "#preview")
     private WebElement previewButton;
 
+    @FindBy(how = How.CSS, using = "#send")
+    private WebElement sendButton;
+
+    @FindBy(how = How.CSS, using = "#error-area")
+    private WebElement errorArea;
+
     private String getPort() {
         return environment.getProperty("local.server.port");
     }
@@ -56,5 +63,29 @@ public class HomePage extends BasePage {
 
     private String getValue(WebElement webElement) {
         return webElement.getAttribute("value");
+    }
+
+    public void fillAddressField(String input) {
+        address.sendKeys(input);
+    }
+
+    public void fillSubjectField(String input) {
+        subject.sendKeys(input);
+    }
+
+    public void fillBodyField(String input) {
+        body.sendKeys(input);
+    }
+
+    public void sendEmail() {
+        sendButton.click();
+    }
+
+    public String getErrorText() {
+        return errorArea.getText();
+    }
+
+    public boolean errorAreaExists() {
+        return driver.findElements(By.id("error-area")).size() != 0;
     }
 }
