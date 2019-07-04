@@ -27,7 +27,7 @@ Feature: Import Csv
     Then show error "<message>" at import page
     Examples:
       | filename                           | message |
-      | error_format.csv                   | File format is wrong |
+      | error_format.csv                   | CSV file header requires name,address |
       | error_encode_binarydata.csv        | File format is wrong |
       | test_invalid_email.csv             | File format is wrong |
 

@@ -1,2 +1,3 @@
-test,invalidemail.com
-correct,correctemail@example.com
+mail,name
+invalidemail.com,test
+correctemail@example.com,correct
