@@ -4,8 +4,8 @@ import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 public class MailSendForm {
 
 
-    @NotEmpty
+    @NotEmpty(message = "{0} may not be empty")
     @Pattern(regexp = "^([_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + "(?:;" + "[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + ")*)?$", message = "{error.invalid.email}")
     private String address;
-    @NotEmpty
+    @NotEmpty(message = "{0} may not be empty")
     private String subject;
-    @NotEmpty
+    @NotEmpty(message = "{0} may not be empty")
     private String body;
 
     public String getAddress() {
