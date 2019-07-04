@@ -96,6 +96,7 @@ public class ImportCsvController {
         model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());
         model.addObject("contactList", addressBookService.get());
+        model.addObject("successCount", addressItems.size());
         return model;
     }
 }

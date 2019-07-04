@@ -29,20 +29,21 @@ Feature: Import Csv
       | filename                           | message |
       | error_format.csv                   | File format is wrong |
       | error_encode_binarydata.csv        | File format is wrong |
+      | test_invalid_email.csv             | File format is wrong |
 
-  # warn case
-  @developing
-  Scenario Outline: upload invalid email csv
-    Given select "<filename>" CSV
-    When click import button
-    Then move to contact list
-    And show message "added <result> contacts"
-    And ContactList multiple values are added "<name>"
-    And ContactList multiple values are added "<address>"
-    And show warn message "<warn>"
-    Examples:
-      | filename               | result | name    | address                  | warn |
-      | test_invalid_email.csv | 1      | correct | correctemail@example.com | invalidemail.com is invalid address. |
+#  # warn case
+#  @developing @focus
+#  Scenario Outline: upload invalid email csv
+#    Given select "<filename>" CSV
+#    When click import button
+#    Then move to contact list
+#    And show message "added <result> contacts"
+#    And ContactList multiple values are added "<name>"
+#    And ContactList multiple values are added "<address>"
+#    And show warn message "<warn>"
+#    Examples:
+#      | filename               | result | name    | address                  | warn |
+#      | test_invalid_email.csv | 1      | correct | correctemail@example.com | invalidemail.com is invalid address. |
 
   @developing
   Scenario Outline: upload duplicate email csv

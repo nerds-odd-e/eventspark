@@ -19,6 +19,18 @@
                 <li role="presentation" class="active"><a href="/contact-list">Contact List</a></li>
             </ul>
 
+            <div class="panel panel-success" th:if="${successCount != null}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Success</h3>
+                </div>
+                <div class="panel-body" id="success-area">
+                    <ul >
+                        <li>
+                            <span>added 1 contacts</span><!-- th:text="added ${successCount} contacts" -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <form action="/contact-list" method="post" th:object="${form}">
                 <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
                     <div class="panel-heading">
@@ -41,19 +53,6 @@
                         <ul >
                             <li>
                                 <span>invalidemail.com is invalid address.</span>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Success</h3>
-                    </div>
-                    <div class="panel-body" id="success-area">
-                        <ul >
-                            <li>
-                                <span>added 1 contacts</span>
                             </li>
 
                         </ul>
