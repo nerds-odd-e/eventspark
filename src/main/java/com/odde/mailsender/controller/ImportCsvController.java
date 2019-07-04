@@ -102,7 +102,6 @@ public class ImportCsvController {
             if (!errors.isEmpty()) {
                 model.setViewName("import-csv");
                 model.addObject("errors", errors);
-//                model.setStatus(HttpStatus.OK);
                 return model;
             }
 

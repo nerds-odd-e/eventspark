@@ -42,5 +42,5 @@ Feature: Import Csv
     And ContactList multiple values are added "<address>"
     And show warn message "<warn>"
     Examples:
-      | filename     | result | name              | address                                         |
+      | filename                 | result | name                  | address                         |
       | test_overwrite_email.csv | 2      | overwrite1;overwrite2 | user1@gmail.com;user2@gmail.com |

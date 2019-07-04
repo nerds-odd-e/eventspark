@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -59,28 +60,59 @@ public class ImportCsvControllerTest {
                 .file(csvFile)
                 .param("force", "false")
                 .characterEncoding("UTF-8"))
+                .andExpect(model().attribute("errors", Arrays.asList("Please specify csv file.")))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
     @Test
-    @Ignore("仕様見直し")
-    public void アップロードファイルの中身がcsvでない場合responsecode400が返ること() throws Exception {
-        String content = "mail,name\nhnk@example.com\tHanako Suzuki\nty@example.com\tTaro Yamada";
+    //@Ignore("仕様見直し")
+    public void アップロードファイルの中身が想定したcsvでない場合responsecode400が返ること() throws Exception {
+        String content = "mail,name\nhnk@example.com,Hanako Suzuki,test\nty@example.com\tTaro Yamada";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
                 .file(csvFile)
                 .param("force", "false")
                 .characterEncoding("UTF-8"))
+                .andExpect(model().attribute("errors", Arrays.asList("CSV must have 2 fields(mail,name).")))
                 .andExpect(view().name("import-csv"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
     @Test
-    public void FileCheckServiceがNGの場合responsecode202が返ること() throws Exception {
+    public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
+        String content = "hoge,fuga\nyamada,test@example.com";
+        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
+
+        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
+                .file(csvFile)
+                .characterEncoding("UTF-8"))
+                .andExpect(model().attribute("errors", Arrays.asList("CSV file header requires mail,name.")))
+                .andExpect(view().name("import-csv"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+
+    @Test
+    public void アップロードファイルがバイナリファイルの場合responsecode400が返ること() throws Exception {
+        byte[] content = new byte[]{0,0,0,0,0};
+        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content);
+
+        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
+                .file(csvFile)
+                .characterEncoding("UTF-8"))
+                .andExpect(model().attribute("errors", Arrays.asList("Uploaded file is binary data.")))
+                .andExpect(view().name("import-csv"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    public void FileCheckServiceがNGの場合HTTP_OKが返ること() throws Exception {
 
         List<String> expected = Arrays.asList("already registered hnk@example.com");
         when(fileCheckService.checkUploadList(any())).thenReturn(expected);
@@ -111,20 +143,6 @@ public class ImportCsvControllerTest {
                 .characterEncoding("UTF-8"))
                 .andExpect(view().name("contact-list"))
                 .andExpect(status().isOk())
-                .andReturn();
-    }
-
-
-    @Test
-    public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
-        String content = "hoge,fuga\nyamada,test@example.com";
-        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
-
-        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-                .file(csvFile)
-                .characterEncoding("UTF-8"))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 }
