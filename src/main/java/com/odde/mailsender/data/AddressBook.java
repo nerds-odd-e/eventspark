@@ -91,4 +91,17 @@ public class AddressBook {
         return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
     }
 
+    public int update(List<AddressItem> addressItems) throws IOException {
+        for (AddressItem update: addressItems) {
+            for (AddressItem item : this.addressItems) {
+                if (item.getMailAddress().equals(update.getMailAddress())) {
+                    item.setName(update.getName());
+                    break;
+                }
+            }
+            this.addressItems.add(update);
+        }
+        save();
+        return addressItems.size();
+    }
 }

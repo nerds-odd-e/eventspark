@@ -12,8 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.File;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -55,5 +56,17 @@ public class AddressBookServiceImplTest {
     public void getWhenNoItem() {
         List<AddressItem> addressItems = addressBookService.get();
         assertThat(addressItems.size(), is(0));
+    }
+
+    @Test
+    public void 重複があるとき名前が更新されること() throws Exception {
+        String mailAddress = "jun.murakami@g.softbank.co.jp";
+        String name = "jun";
+        addressBookService.add(new AddressItem(mailAddress, name));
+        addressBookService.update(singletonList(new AddressItem(mailAddress, "murakami")));
+
+        List<AddressItem> addressItems = addressBookService.get();
+        assertThat(addressItems.size(), is(1));
+        assertThat("murakami", is(addressItems.get(0).getName()));
     }
 }
