@@ -59,9 +59,7 @@ public class PreviewControllerTest {
                 "Hi name",
                 "foo@gmx.com",
                 "/preview/0",
-                "foo@gmx.com",
-                "Hello name",
-                "Hi name",
+                new MailInfo(null, "foo@gmx.com", "Hello name", "Hi name"),
                 -1,
                 1,
                 false,
@@ -81,9 +79,7 @@ public class PreviewControllerTest {
                 "Hi $name",
                 "eventspark@gmx.com",
                 "/preview/0",
-                "eventspark@gmx.com",
-                "Hello Aki",
-                "Hi Aki",
+                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
                 -1,
                 1,
                 false,
@@ -101,9 +97,7 @@ public class PreviewControllerTest {
                 "Hi name",
                 "foo@gmx.com;hoge@fuga.com",
                 "/preview/1",
-                "hoge@fuga.com",
-                "Hello name",
-                "Hi name",
+                new MailInfo(null, "hoge@fuga.com", "Hello name", "Hi name"),
                 0,
                 2,
                 true,
@@ -122,9 +116,7 @@ public class PreviewControllerTest {
                 "Hi $name",
                 "hoge@fuga.com;eventspark@gmx.com",
                 "/preview/1",
-                "eventspark@gmx.com",
-                "Hello Aki",
-                "Hi Aki",
+                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
                 0,
                 2,
                 true,
@@ -168,22 +160,18 @@ public class PreviewControllerTest {
 
         String url;
 
-        String expectedAddress;
-        String expectedSubject;
-        String expectedBody;
+        MailInfo expectedMailInfo;
         int expectedPrevIndex;
         int expectedNextIndex;
         boolean expectedShowPrev;
         boolean expectedShowNext;
 
-        public PreviewParameter(String subject, String body, String to, String url, String expectedAddress, String expectedSubject, String expectedBody, int expectedPrevIndex, int expectedNextIndex, boolean expectedShowPrev, boolean expectedShowNext) {
+        public PreviewParameter(String subject, String body, String to, String url, MailInfo expectedMailInfo, int expectedPrevIndex, int expectedNextIndex, boolean expectedShowPrev, boolean expectedShowNext) {
             this.subject = subject;
             this.body = body;
             this.to = to;
             this.url = url;
-            this.expectedAddress = expectedAddress;
-            this.expectedSubject = expectedSubject;
-            this.expectedBody = expectedBody;
+            this.expectedMailInfo = expectedMailInfo;
             this.expectedPrevIndex = expectedPrevIndex;
             this.expectedNextIndex = expectedNextIndex;
             this.expectedShowPrev = expectedShowPrev;
@@ -200,9 +188,7 @@ public class PreviewControllerTest {
                 .param("body", previewRequest.getBody()))
 
                 .andExpect(view().name("preview"))
-                .andExpect(model().attribute("address", previewParameter.expectedAddress))
-                .andExpect(model().attribute("subject", previewParameter.expectedSubject))
-                .andExpect(model().attribute("body", previewParameter.expectedBody))
+                .andExpect(model().attribute("mailInfo", previewParameter.expectedMailInfo))
 
                 .andExpect(model().attribute("prevIndex", previewParameter.expectedPrevIndex))
                 .andExpect(model().attribute("nextIndex", previewParameter.expectedNextIndex))

@@ -1,5 +1,7 @@
 package com.odde.mailsender.service;
 
+import java.util.Objects;
+
 public class MailInfo {
     private String from;
     private String to;
@@ -48,4 +50,29 @@ public class MailInfo {
         this.body = body;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MailInfo mailInfo = (MailInfo) o;
+        return Objects.equals(from, mailInfo.from) &&
+                Objects.equals(to, mailInfo.to) &&
+                Objects.equals(subject, mailInfo.subject) &&
+                Objects.equals(body, mailInfo.body);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, to, subject, body);
+    }
+
+    @Override
+    public String toString() {
+        return "MailInfo{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", subject='" + subject + '\'' +
+                ", body='" + body + '\'' +
+                '}';
+    }
 }
