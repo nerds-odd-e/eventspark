@@ -5,7 +5,6 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @focus
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
@@ -29,21 +28,9 @@ Feature: Import Csv
       | error_format.csv                   | CSV must have 2 fields(mail,name).   |
       | no_header.csv                      | CSV file header requires mail,name.  |
       | invalid_header.csv                 | CSV file header requires mail,name.  |
-      | error_encode_binarydata.csv        | File format is wrong.                |
+      | error_encode_binarydata.csv        | Uploaded file is binary data.        |
       | test_invalid_email.csv             | invalidemail.com is invalid address. |
-
-  @developing
-  Scenario Outline: upload duplicate email csv
-    Given select "<filename>" CSV
-    When click import button
-    Then move to contact list
-    And show message "<result> added"
-    And ContactList multiple values are added "<name>"
-    And ContactList multiple values are added "<address>"
-    And show warn message "<warn>"
-    Examples:
-      | filename               | result | name    | address                  | warn |
-      | test_duplicate_email.csv | 1      | correct1 | correctemail1@example.com | 3 rows are duplicated with duplicate@example.com |
+      | test_duplicate_email.csv           | 1 and 2 and 3 rows are duplicated with duplicate@example.com |
 
   @developing
   Scenario Outline: upload overwrite csv

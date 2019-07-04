@@ -70,10 +70,10 @@ public class FileCheckServiceTest {
     public void checkDuplicateMailAddressInUploadList() {
         List<AddressItem> uploadList = new ArrayList<>();
         uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        uploadList.add(new AddressItem("hnk@example.com,Hanako Suzuki", "Taro Yamada"));
+        uploadList.add(new AddressItem("hnk@example.com", "Taro Yamada"));
         uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki2"));
 
-        List<String> actual = target.checkDuplicateAddress(uploadList);
+        List<String> actual = target.checkUploadList(uploadList);
 
         List<String> expected = Collections.singletonList("1 and 3 rows are duplicated with ty@example.com");
         assertThat(actual, is(expected));

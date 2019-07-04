@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.CharConversionException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,8 +83,14 @@ public class ImportCsvController {
             model.addObject("errors", errors);
             model.setStatus(HttpStatus.BAD_REQUEST);
             return model;
+        } catch (CharConversionException e) {
+            List<String> errors = Arrays.asList("Uploaded file is binary data.");
+            model.setViewName("import-csv");
+            model.addObject("errors", errors);
+            model.setStatus(HttpStatus.BAD_REQUEST);
+            return model;
         } catch (IOException e) {
-            List<String> errors = Arrays.asList("File format is wrong.");
+            List<String> errors = Arrays.asList("Unexpected error, please retry.");
             model.setViewName("import-csv");
             model.addObject("errors", errors);
             model.setStatus(HttpStatus.BAD_REQUEST);
