@@ -144,35 +144,15 @@ public class PreviewControllerTest {
     private void assertPreviewPage(PreviewParameter previewParameter) throws Exception{
         MailInfo previewRequest = validMail().withSubject(previewParameter.subject).withBody(previewParameter.body).withTo(previewParameter.to).build();
 
-        MvcResult resultActions = mvc.perform(post(previewParameter.url)
+        mvc.perform(post(previewParameter.url)
                 .param("address", previewRequest.getTo())
                 .param("subject", previewRequest.getSubject())
                 .param("body", previewRequest.getBody()))
 
                 .andExpect(view().name("preview"))
                 .andExpect(model().attribute("mailInfo", previewParameter.expectedMailInfo))
-                .andExpect(model().attribute("previewNavigation", previewParameter.exptectedPreviewNavigation))
+                .andExpect(model().attribute("previewNavigation", previewParameter.expectedPreviewNavigation))
                 .andReturn();
-    }
-
-    private class PreviewParameter {
-        String subject;
-        String body;
-        String to;
-
-        String url;
-
-        MailInfo expectedMailInfo;
-        PreviewNavigation exptectedPreviewNavigation;
-
-        public PreviewParameter(String subject, String body, String to, String url, MailInfo expectedMailInfo, PreviewNavigation exptectedPreviewNavigation) {
-            this.subject = subject;
-            this.body = body;
-            this.to = to;
-            this.url = url;
-            this.expectedMailInfo = expectedMailInfo;
-            this.exptectedPreviewNavigation = exptectedPreviewNavigation;
-        }
     }
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
@@ -183,14 +163,32 @@ public class PreviewControllerTest {
 
         if (objectErrors.stream().filter(i -> i instanceof FieldError).count() > 0) {
             assertTrue(objectErrors.stream().map(i -> ((FieldError) i))
-                    .anyMatch(i -> i.getField() == null ?
-                            i.getDefaultMessage().equals(errorTemplateMessage) :
-                            i.getField().equals(errorMessage) && i.getDefaultMessage().equals(errorTemplateMessage)));
+                    .anyMatch(i -> i.getField().equals(errorMessage) && i.getDefaultMessage().equals(errorTemplateMessage)));
         } else {
             assertTrue(objectErrors.stream()
                     .anyMatch(i -> i.getDefaultMessage().equals(errorTemplateMessage)));
         }
 
 
+    }
+
+    private class PreviewParameter {
+        String subject;
+        String body;
+        String to;
+
+        String url;
+
+        MailInfo expectedMailInfo;
+        PreviewNavigation expectedPreviewNavigation;
+
+        private PreviewParameter(String subject, String body, String to, String url, MailInfo expectedMailInfo, PreviewNavigation expectedPreviewNavigation) {
+            this.subject = subject;
+            this.body = body;
+            this.to = to;
+            this.url = url;
+            this.expectedMailInfo = expectedMailInfo;
+            this.expectedPreviewNavigation = expectedPreviewNavigation;
+        }
     }
 }
