@@ -19,20 +19,7 @@
             </ul>
 
             <form id="form" method="post" th:object="${form}">
-                <div th:if="${#fields.hasAnyErrors()}" class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Error</h3>
-                    </div>
-                    <div class="panel-body" id="error-area">
-                        <ul >
-                            <li th:each="error : ${#fields.detailedErrors()}">
-                                <span th:text="${error.message}"></span>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-
+                <div id="parent" th:replace="error-panel"></div>
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" class="form-control" name="address" id="address" placeholder="address" th:value="${form.address}" />

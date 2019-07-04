@@ -1,0 +1,13 @@
+<div class="panel panel-danger" th:if="${#fields.hasAnyErrors()}">
+    <div class="panel-heading">
+        <h3 class="panel-title">Error</h3>
+    </div>
+    <div class="panel-body" id="error-area">
+        <ul >
+            <li th:each="error : ${#fields.detailedErrors()}">
+                <span th:text="${error.message}"></span>
+            </li>
+
+        </ul>
+    </div>
+</div>
