@@ -5,7 +5,6 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @focus
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
@@ -20,7 +19,6 @@ Feature: Import Csv
       | record_2.csv | 2      | test2;test3       | test2@example.com;test3@example.com                   |
 
   # error case
-  @focus
   Scenario Outline: upload uncorrect-format csv
     Given select "<filename>" CSV
     When click import button
@@ -35,15 +33,14 @@ Feature: Import Csv
       | test_invalid_email.csv             | invalidemail.com is invalid address. |
       | test_duplicate_email.csv           | 1 and 2 and 3 rows are duplicated with duplicate@example.com |
 
-  @developing
   Scenario Outline: upload overwrite csv
     Given select "<filename>" CSV
-    When click import button and display warning and click yes
+    When click import button
+    And click modal yes
     Then move to contact list
-    And show message "<result> added"
+    And show message "added <result> contacts"
     And ContactList multiple values are added "<name>"
     And ContactList multiple values are added "<address>"
-    And show warn message "<warn>"
     Examples:
       | filename     | result | name              | address                                         |
       | test_overwrite_email.csv | 2      | overwrite1;overwrite2 | user1@gmail.com;user2@gmail.com |

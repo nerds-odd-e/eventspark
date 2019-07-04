@@ -41,7 +41,6 @@ public class ImportCsvController {
 
     @GetMapping("/import-csv")
     String getImportCsv(@RequestParam(name = "force", required = false) String force) {
-
         return "import-csv";
     }
 
@@ -50,14 +49,12 @@ public class ImportCsvController {
         List <AddressItem> sessionAddressItems = (List<AddressItem>) session.getAttribute("addressItems");
         ModelAndView model = new ModelAndView();
         if (!sessionAddressItems.isEmpty()) {
-            sessionAddressItems.stream().forEach(addressItem -> {
-                try {
-                    addressBookService.add(addressItem);
-                } catch (Exception e) {
-                    // TODO:atode
-                    e.printStackTrace();
-                }
-            });
+            try {
+                addressBookService.update(sessionAddressItems);
+            } catch (IOException e) {
+                // TODO:atode
+                e.printStackTrace();
+            }
         }
         model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());

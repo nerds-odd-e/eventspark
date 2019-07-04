@@ -70,9 +70,10 @@ public class ImportCsvSteps {
         Assert.assertEquals(string, actual);
     }
 
-    @When("click import button and display warning and click yes")
-    public void click_import_button_and_display_warning_and_click_yes() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @When("click modal yes")
+    public void click_modal_yes() throws InterruptedException {
+        // Wait for the modal display
+        Thread.sleep(1000);
+        driver.findElement(By.id("forceButton")).click();
     }
 }
