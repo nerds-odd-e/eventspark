@@ -51,11 +51,11 @@ public class MailSendForm {
         return getAddress().split("\\s*;\\s*");
     }
 
-    public String renderSubjectTemplate(AddressItem addressItem) {
+    private String renderSubjectTemplate(AddressItem addressItem) {
         return StringUtils.replace(getSubject(), "$name", addressItem.getName());
     }
 
-    public String renderBodyTemplate(AddressItem addressItem) {
+    private String renderBodyTemplate(AddressItem addressItem) {
         return StringUtils.replace(getBody(), "$name", addressItem.getName());
     }
 
