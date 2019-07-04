@@ -2,6 +2,7 @@ package com.odde.mailsender.controller;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMappingException;
 import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.form.ContactListForm;
@@ -66,17 +67,23 @@ public class ImportCsvController {
             addressItems = personIter.readAll();
 
             if (!addressItems.get(0).getMailAddress().equals("mail") ||
-               !addressItems.get(0).getName().equals("name") ) {
+                    !addressItems.get(0).getName().equals("name")) {
+                List<String> errors = Arrays.asList("CSV file header requires mail,name.");
                 model.setViewName("import-csv");
+                model.addObject("errors", errors);
                 model.setStatus(HttpStatus.BAD_REQUEST);
                 return model;
-            }else{
+            } else {
                 addressItems.remove(0);
             }
-
-
+        } catch (CsvMappingException e) {
+            List<String> errors = Arrays.asList("CSV must have 2 fields(mail,name).");
+            model.setViewName("import-csv");
+            model.addObject("errors", errors);
+            model.setStatus(HttpStatus.BAD_REQUEST);
+            return model;
         } catch (IOException e) {
-            List<String> errors = Arrays.asList("Can't read uploaded file.");
+            List<String> errors = Arrays.asList("File format is wrong.");
             model.setViewName("import-csv");
             model.addObject("errors", errors);
             model.setStatus(HttpStatus.BAD_REQUEST);
