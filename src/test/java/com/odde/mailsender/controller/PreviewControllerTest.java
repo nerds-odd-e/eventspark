@@ -25,6 +25,9 @@ import java.util.List;
 
 import static com.odde.mailsender.service.MailBuilder.validMail;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -129,6 +132,33 @@ public class PreviewControllerTest {
         );
 
         assertPreviewPage(param);
+    }
+
+    @Test
+    public void showErrorIfEmptyForms() throws Exception {
+        MvcResult resultActions = mvc.perform(post("/preview/0")
+                .param("address", "")
+                .param("subject", "")
+                .param("body", ""))
+                .andExpect(view().name("home"))
+                .andReturn();
+
+        assertErrorMessage(resultActions, "address", "{0} may not be empty");
+        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
+        assertErrorMessage(resultActions, "body", "{0} may not be empty");
+    }
+
+    @Test
+    public void manyAddressWithInvalidAddressAndNoSubject() throws Exception {
+        MvcResult resultActions = mvc.perform(post("/preview/0")
+                .param("address", "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com")
+                .param("subject", "")
+                .param("body", ""))
+                .andExpect(view().name("home"))
+                .andReturn();
+
+        assertErrorMessage(resultActions, "address", "Address format is wrong");
+        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
     }
 
     private class PreviewParameter {

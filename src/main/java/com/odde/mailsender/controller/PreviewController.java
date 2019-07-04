@@ -22,6 +22,10 @@ public class PreviewController {
     @PostMapping("/preview/{index}")
     public String preview(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model, @PathVariable int index) {
 
+        if (result.hasErrors()) {
+            return "home";
+        }
+
         String[] addressArr = form.getAddresses();
         String address = addressArr[index];
 

@@ -99,6 +99,7 @@ Feature: Preview
     Then error_area is "Address format is wrong"
 
   # template error case
+  @developing
   Scenario Outline: replace $name error case
     Given subject is "<subject>"
     And address is "<addresses>"
