@@ -5,7 +5,6 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @developing
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
@@ -15,9 +14,9 @@ Feature: Import Csv
     And ContactList multiple values are added "<address>"
     Examples:
       | filename     | result | name              | address                                               |
-#      | record_0.csv | 0      |                   |                                                       |
+      | record_0.csv | 0      |                   |                                                       |
       | record_1.csv | 1      | test1             | test1@example.com                                     |
-#      | record_2.csv | 2      | test1;test2;test3 | test1@example.com;test2@example.com;test3@example.com |
+      | record_2.csv | 2      | test2;test3       | test2@example.com;test3@example.com                   |
 
   # error case
   @developing

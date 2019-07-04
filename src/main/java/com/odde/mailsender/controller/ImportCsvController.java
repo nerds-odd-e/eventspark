@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.ui.Model;
@@ -52,7 +54,9 @@ public class ImportCsvController {
         ModelAndView model = new ModelAndView();
         String filename = multipartFile.getOriginalFilename();
         if (!filename.endsWith(".csv")) {
+            List<String> errors = Arrays.asList("Please specify csv file.");
             model.setViewName("import-csv");
+            model.addObject("errors", errors);
             model.setStatus(HttpStatus.BAD_REQUEST);
             return model;
         }
@@ -61,7 +65,9 @@ public class ImportCsvController {
             MappingIterator<AddressItem> personIter = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).readValues(multipartFile.getInputStream());
             addressItems = personIter.readAll();
         } catch (IOException e) {
+            List<String> errors = Arrays.asList("Can't read uploaded file.");
             model.setViewName("import-csv");
+            model.addObject("errors", errors);
             model.setStatus(HttpStatus.BAD_REQUEST);
             return model;
         }
