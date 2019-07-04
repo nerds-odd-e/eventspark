@@ -36,30 +36,11 @@ public class ImportCsvSteps {
         String actual = driver.findElement(By.id("contact-list-title")).getText();
         Assert.assertEquals("Contact List", actual);
     }
-//
-//    @Then("show message {string}")
-//    public void show_message(String string) {
-//        // Write code here that turns the phrase above into concrete actions
-//        throw new cucumber.api.PendingException();
-//    }
-//
-//    @Then("list has name {string}")
-//    public void list_has_name(String string) {
-//        // Write code here that turns the phrase above into concrete actions
-//        throw new cucumber.api.PendingException();
-//    }
-//
-//    @Then("list has email {string}")
-//    public void list_has_email(String string) {
-//        // Write code here that turns the phrase above into concrete actions
-//        throw new cucumber.api.PendingException();
-//    }
 
     @Given("user visits import csv page")
     public void userVisitsContactPage() {
         driver.get("http://localhost:" + port + "/import-csv");
     }
-
 
     // erro / warn case
     @Then("show error {string} at import page")
@@ -73,7 +54,6 @@ public class ImportCsvSteps {
         String actual = driver.findElement(By.id("success-area")).getText();
         Assert.assertEquals(string, actual);
     }
-
 
     @Then("ContactList multiple values are added {string}")
     public void contactlist_multiple_values_are_added(String string) {

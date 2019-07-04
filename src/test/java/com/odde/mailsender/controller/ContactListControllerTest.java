@@ -50,9 +50,9 @@ public class ContactListControllerTest {
 
     @Test
     public void addEmailAddress() throws Exception {
-        performContactListSuccess("aaa@yahoo.co.jp", "aaa");
+        performContactListSuccess("aaa@example.com", "aaa");
 
-        verify(addressBookService).add(argThat(mail -> mail.getMailAddress().equals("aaa@yahoo.co.jp")));
+        verify(addressBookService).add(argThat(mail -> mail.getMailAddress().equals("aaa@example.com")));
         verify(addressBookService).add(argThat(mail -> mail.getName().equals("aaa")));
     }
 
@@ -76,10 +76,10 @@ public class ContactListControllerTest {
 
     @Test
     public void createMailTwo() throws Exception {
-        MvcResult mvcResult = mvc.perform(post("/create-mail").param("mailAddress", "aaa@yahoo.co.jp", "bbb@yahoo.co.jp"))
+        MvcResult mvcResult = mvc.perform(post("/create-mail").param("mailAddress", "aaa@example.com", "bbb@example.com"))
                 .andExpect(view().name("home")).andReturn();
 
-        Assert.assertEquals("aaa@yahoo.co.jp;bbb@yahoo.co.jp", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
+        Assert.assertEquals("aaa@example.com;bbb@example.com", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
     }
 
     private MvcResult performContactListSuccess(String addressValue, String nameValue) throws Exception {

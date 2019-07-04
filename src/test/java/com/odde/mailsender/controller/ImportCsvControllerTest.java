@@ -37,7 +37,7 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードが成功した場合コンタクトリストに遷移すること() throws Exception {
-        String content = "mail,name\njun.murakami@g.softbank.co.jp,Jun Murakami\nshigeru.tatsuta@g.softbank.co.jp,Shigeru Tatsuta";
+        String content = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
         doNothing().when(addressBookService).add(any());
@@ -52,7 +52,7 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードファイルの拡張子がcsvでない場合responsecode400が返ること() throws Exception {
-        String content = "mail,name\njun.murakami@g.softbank.co.jp,Jun Murakami\nshigeru.tatsuta@g.softbank.co.jp,Shigeru Tatsuta";
+        String content = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.txt", "text/plain", content.getBytes());
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
@@ -67,7 +67,7 @@ public class ImportCsvControllerTest {
     @Test
     @Ignore("仕様見直し")
     public void アップロードファイルの中身がcsvでない場合responsecode400が返ること() throws Exception {
-        String content = "mail,name\njun.murakami@g.softbank.co.jp\tJun Murakami\nshigeru.tatsuta@g.softbank.co.jp\tShigeru Tatsuta";
+        String content = "mail,name\nhnk@example.com\tHanako Suzuki\nty@example.com\tTaro Yamada";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
@@ -82,10 +82,10 @@ public class ImportCsvControllerTest {
     @Test
     public void FileCheckServiceがNGの場合responsecode202が返ること() throws Exception {
 
-        List<String> expected = Arrays.asList("already registered jun.murakami@g.softbank.co.jp");
+        List<String> expected = Arrays.asList("already registered hnk@example.com");
         when(fileCheckService.checkUploadList(any())).thenReturn(expected);
 
-        String content = "mail,name\njun.murakami@g.softbank.co.jp,Jun Murakami\njun.murakami@g.softbank.co.jp,Jun Murakami";
+        String content = "mail,name\nty@example.com,Taro Yamada\nty@example.com,Taro Yamada";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
         mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
@@ -100,7 +100,7 @@ public class ImportCsvControllerTest {
     @Test
     public void forceパラメータがtrueの場合Contactlistに遷移する() throws Exception {
 
-        String content = "mail,name\njun.murakami@g.softbank.co.jp,Jun Murakami\njun.murakami@g.softbank.co.jp,Jun Murakami";
+        String content = "mail,name\nty@example.com,Taro Yamada\nty@example.com,Taro Yamada";
         MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
 
         verify(fileCheckService, times(0)).checkUploadList(any());
