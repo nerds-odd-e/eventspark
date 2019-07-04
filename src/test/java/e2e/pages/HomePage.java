@@ -4,21 +4,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HomePage {
-
-    private WebDriver driver;
-    private Environment environment;
+public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver, Environment environment) {
-        this.driver = driver;
-        this.environment = environment;
+        super(driver, environment);
+    }
 
-        PageFactory.initElements(driver, this);
+    public boolean isCurrentPage() {
+        return driver.getCurrentUrl().contains("/home");
     }
 
     @FindBy(how = How.CSS, using = "#address")
@@ -30,6 +27,8 @@ public class HomePage {
     @FindBy(how = How.CSS, using = "#body")
     private WebElement body;
 
+    @FindBy(how = How.CSS, using = "#preview")
+    private WebElement previewButton;
 
     private String getPort() {
         return environment.getProperty("local.server.port");
@@ -49,6 +48,10 @@ public class HomePage {
 
     public String getInputBodyText() {
         return getValue(body);
+    }
+
+    public void goToPreview() {
+        previewButton.click();
     }
 
     private String getValue(WebElement webElement) {
