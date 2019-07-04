@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import java.io.File;
+
 import static org.hamcrest.core.Is.is;
 
 public class ImportCsvSteps {
@@ -20,8 +22,8 @@ public class ImportCsvSteps {
 
     @Given("select {string} CSV")
     public void select_CSV(String string) {
-        String url = System.getenv("HOME") + "/workspace/eventspark/src/test/resources/" + string;
-        driver.findElement(By.id("csvfile")).sendKeys(url);
+        File file = new File("src/test/resources/" + string);
+        driver.findElement(By.id("csvfile")).sendKeys(file.getAbsolutePath());
     }
 
     @When("click import button")

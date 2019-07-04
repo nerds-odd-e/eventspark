@@ -5,7 +5,6 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @developing
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
