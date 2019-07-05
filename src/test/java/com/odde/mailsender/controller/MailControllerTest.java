@@ -22,9 +22,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.odde.mailsender.service.MailBuilder.*;
@@ -48,15 +46,23 @@ public class MailControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
+    @MockBean
     private AddressBookService addressBookService;
 
-    AddressItem noNameAddress = new AddressItem("eventspark@gmx.com", "");
+    private static final AddressItem aki = new AddressItem("eventspark@gmx.com", "Aki");
+    private static final AddressItem stanly = new AddressItem("stanly@xxx.com", "Stanly");
+    private static final AddressItem noNameAddress = new AddressItem("noname@gmx.com", "");
 
     @Before
     public void setUp() {
-        File file = new File(AddressBook.FILE_PATH);
-        file.delete();
+        when(addressBookService.getAddressItems(new String[]{aki.getMailAddress(), stanly.getMailAddress()}))
+                .thenReturn(Arrays.asList(aki, stanly));
+
+        when(addressBookService.getAddressItems(new String[]{noNameAddress.getMailAddress()}))
+                .thenReturn(Collections.singletonList(noNameAddress));
+
+        when(addressBookService.getAddressItems(new String[]{"foobar@xxx.com"}))
+                .thenReturn(Collections.singletonList(null));
     }
 
     @Test
@@ -99,10 +105,6 @@ public class MailControllerTest {
 
     @Test
     public void sendMultipleWhenUseTemplate() throws Exception {
-
-        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
-        addressBookService.add(new AddressItem("stanly@xxx.com", "Stanly"));
-
         MailInfo mailInfo = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
 
         getPerform(mailInfo)
@@ -136,8 +138,6 @@ public class MailControllerTest {
 
     @Test
     public void notSubjectReplaceWhenNoNameAddress() throws Exception {
-        addressBookService.add(noNameAddress);
-
         MailInfo mailInfo = validMail().withSubject("Hi $name").withTo(noNameAddress.getMailAddress()).build();
 
         MvcResult mvcResult = getPerform(mailInfo)
@@ -149,9 +149,6 @@ public class MailControllerTest {
 
     @Test
     public void notBodyReplaceWhenNoNameAddress() throws Exception {
-
-        addressBookService.add(noNameAddress);
-
         MailInfo mailInfo = validMail().withBody("Hi $name").withTo(noNameAddress.getMailAddress()).build();
 
         MvcResult mvcResult = getPerform(mailInfo)
