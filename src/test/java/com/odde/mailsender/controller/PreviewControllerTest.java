@@ -67,8 +67,8 @@ public class PreviewControllerTest {
         MailInfo expectedMailInfo = new MailInfo(null, "foo@gmx.com", "subject text", "body text");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
 
-        postPreviewEndpoint(inputMailContents, "/preview/0")
-                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
+        ResultActions resultActions = postPreviewEndpoint(inputMailContents, "/preview/0");
+        expectetResultActions(resultActions, expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class PreviewControllerTest {
         MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "foo@gmx.com", "subject Aki", "body Aki");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
 
-        postPreviewEndpoint(inputMailContents, "/preview/0")
-                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
+        ResultActions resultActions = postPreviewEndpoint(inputMailContents, "/preview/0");
+        expectetResultActions(resultActions, expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
@@ -99,8 +99,8 @@ public class PreviewControllerTest {
         MailInfo expectedMailInfo = new MailInfo(null, "hoge@fuga.com", "subject text", "body text");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
 
-        postPreviewEndpoint(inputMailContents, "/preview/1")
-                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
+        ResultActions resultActions = postPreviewEndpoint(inputMailContents, "/preview/1");
+        expectetResultActions(resultActions, expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
@@ -116,17 +116,21 @@ public class PreviewControllerTest {
         MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "hoge@fuga.com", "subject Daiki", "body Daiki");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
 
-        postPreviewEndpoint(inputMailContents, "/preview/1")
-                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
-
+        ResultActions resultActions = postPreviewEndpoint(inputMailContents, "/preview/1");
+        expectetResultActions(resultActions, expectedMailInfo, expectedPreviewNavigation);
     }
 
-    private ResultActionsHelper postPreviewEndpoint(InputMailContents inputMailContents, String url) throws Exception {
-        return new ResultActionsHelper(
-                mvc.perform(post(url)
-                    .param("address", inputMailContents.to)
-                    .param("subject", inputMailContents.subject)
-                    .param("body", inputMailContents.body)));
+    private void expectetResultActions(ResultActions resultActions, MailInfo expectedMailInfo, PreviewNavigation expectedPreviewNavigation) throws Exception {
+        resultActions.andExpect(view().name("preview"))
+                .andExpect(model().attribute("mailInfo", expectedMailInfo))
+                .andExpect(model().attribute("previewNavigation", expectedPreviewNavigation));
+    }
+
+    private ResultActions postPreviewEndpoint(InputMailContents inputMailContents, String url) throws Exception {
+        return mvc.perform(post(url)
+                .param("address", inputMailContents.to)
+                .param("subject", inputMailContents.subject)
+                .param("body", inputMailContents.body));
     }
 
     @Test
