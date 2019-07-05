@@ -41,7 +41,7 @@ public class HomePage extends BasePage {
     private WebElement loadTemplateButton;
 
     public void userVisitsSendPage() {
-        driver.get("http://localhost:" + getPort());
+        this.goToPage("");
     }
 
     public String getInputAddressText() {

@@ -53,7 +53,7 @@ public class ContactListPage extends BasePage {
     }
 
     public void goToContactPage() {
-        driver.get("http://localhost:" + getPort() + "/contact-list");
+        this.goToPage("/contact-list");
     }
 
     public String getTitleText() {

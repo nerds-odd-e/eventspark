@@ -23,4 +23,8 @@ public abstract class BasePage {
     protected String getPort() {
         return environment.getProperty("local.server.port");
     }
+
+    protected void goToPage(String url) {
+        driver.get("http://localhost:" + getPort() + url);
+    }
 }

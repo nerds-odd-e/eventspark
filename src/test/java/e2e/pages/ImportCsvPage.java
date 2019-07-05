@@ -33,7 +33,7 @@ public class ImportCsvPage extends BasePage {
     }
 
     public void userVisitsContactPage() {
-        driver.get("http://localhost:" + getPort() + "/import-csv");
+        this.goToPage("/import-csv");
     }
 
     public boolean isImportCsvPage() {
