@@ -50,8 +50,7 @@ public class ImportCsvController {
             try {
                 addressBookService.update(sessionAddressItems);
             } catch (IOException e) {
-                // TODO:atode
-                e.printStackTrace();
+                return errorModel("system error is occurred. Please upload again.", "import-csv");
             }
         }
         model.setViewName("contact-list");

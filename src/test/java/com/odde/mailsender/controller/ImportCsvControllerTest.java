@@ -1,6 +1,7 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.FileCheckService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +18,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -51,6 +56,20 @@ public class ImportCsvControllerTest {
         performPost("/import-csv", validContactCsvFile())
                 .andExpectSuccess("contact-list")
                 .andReturn();
+    }
+
+    @Test
+    public void コンタクトリストの更新でエラーが発生した場合() throws Exception {
+        when(addressBookService.update(any())).thenThrow(new IOException());
+        List<AddressItem> sessionAddressItems = new ArrayList<>();
+        sessionAddressItems.add(new AddressItem("taro@example.com","Shirato Taro"));
+        mockHttpSession.setAttribute("addressItems", sessionAddressItems);
+
+        mvc.perform(post("/import-from-session")
+                .session(mockHttpSession))
+                .andExpect(model().attribute("errors", Arrays.asList("system error is occurred. Please upload again.")))
+                .andExpect(view().name("import-csv"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
