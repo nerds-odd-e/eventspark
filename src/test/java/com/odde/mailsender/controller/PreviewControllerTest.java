@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -101,7 +101,7 @@ public class PreviewControllerTest {
     }
 
     @Test
-    public void showPreviewPage1WithParam() throws Exception {
+    public void showPreviewNextPageWithParam() throws Exception {
         addressBookService.add(new AddressItem("hoge@fuga.com", "Daiki"));
 
         InputMailContents inputMailContents = new InputMailContents(
@@ -168,15 +168,13 @@ public class PreviewControllerTest {
         List<ObjectError> objectErrors = ((BindingResult) mav.getModel().get(
                 "org.springframework.validation.BindingResult.form")).getAllErrors();
 
+        Stream<FieldError> fieldErrorStream = objectErrors.stream().map(i -> ((FieldError) i));
 
-        if (objectErrors.stream().anyMatch(i -> i instanceof FieldError)) {
-            assertTrue(objectErrors.stream().map(i -> ((FieldError) i))
-                    .anyMatch(i -> i.getField().equals(errorMessage) && Objects.equals(i.getDefaultMessage(), errorTemplateMessage)));
-        } else {
-            assertTrue(objectErrors.stream()
-                    .anyMatch(i -> Objects.equals(i.getDefaultMessage(), errorTemplateMessage)));
-        }
-
+        assertTrue(
+                fieldErrorStream.anyMatch(
+                        i -> i.getField().equals(errorMessage) && errorTemplateMessage.equals(i.getDefaultMessage())
+                )
+        );
     }
 
     private ResultActions postPreviewEndpoint(InputMailContents inputMailContents, String url) throws Exception {
