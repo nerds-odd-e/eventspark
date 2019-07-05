@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -175,16 +176,17 @@ public class PreviewControllerTest {
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
         ModelAndView mav = mvcResult.getModelAndView();
+        assert mav != null;
         List<ObjectError> objectErrors = ((BindingResult) mav.getModel().get(
                 "org.springframework.validation.BindingResult.form")).getAllErrors();
 
 
-        if (objectErrors.stream().filter(i -> i instanceof FieldError).count() > 0) {
+        if (objectErrors.stream().anyMatch(i -> i instanceof FieldError)) {
             assertTrue(objectErrors.stream().map(i -> ((FieldError) i))
-                    .anyMatch(i -> i.getField().equals(errorMessage) && i.getDefaultMessage().equals(errorTemplateMessage)));
+                    .anyMatch(i -> i.getField().equals(errorMessage) && Objects.equals(i.getDefaultMessage(), errorTemplateMessage)));
         } else {
             assertTrue(objectErrors.stream()
-                    .anyMatch(i -> i.getDefaultMessage().equals(errorTemplateMessage)));
+                    .anyMatch(i -> Objects.equals(i.getDefaultMessage(), errorTemplateMessage)));
         }
 
 
