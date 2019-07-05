@@ -42,6 +42,12 @@ public class PreviewControllerTest {
     public static final String hogeName = "Daiki";
     public static final String senderEmail = "eventspark@gmx.com";
 
+    InputMailContents noAttributesMail = new InputMailContents(
+            "subject text",
+            "body text",
+            fooEmail
+    );
+
     @MockBean
     private AddressBookService addressBookService;
 
@@ -64,16 +70,10 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewPageWithoutParam() throws Exception {
-        InputMailContents inputMailContents = new InputMailContents(
-                "subject text",
-                "body text",
-                fooEmail
-        );
-
-        MailInfo expectedMailInfo = new MailInfo(null, fooEmail, "subject text", "body text");
-        PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
-
-        postAndExpect("/preview/0", inputMailContents, expectedMailInfo, expectedPreviewNavigation);
+        performPost(noAttributesMail, "/preview/0")
+                .andExpectPreviewView()
+                .andExpectMailInfo(new MailInfo(null, noAttributesMail.to, noAttributesMail.subject, noAttributesMail.body))
+                .andExpectNavigation(new PreviewNavigation(0, 0));
     }
 
     @Test
@@ -190,6 +190,14 @@ public class PreviewControllerTest {
                 .param("body", inputMailContents.body));
     }
 
+    private ResultActionsHelper performPost(InputMailContents inputMailContents, String url) throws Exception {
+        return new ResultActionsHelper(mvc.perform(post(url)
+                .param("address", inputMailContents.to)
+                .param("subject", inputMailContents.subject)
+                .param("body", inputMailContents.body)));
+    }
+
+
     private class InputMailContents {
         private final String subject;
         private final String body;
@@ -199,6 +207,29 @@ public class PreviewControllerTest {
             this.subject = subject;
             this.body = body;
             this.to = to;
+        }
+    }
+
+    private class ResultActionsHelper {
+        private ResultActions actions;
+
+        public ResultActionsHelper(ResultActions actions) {
+            this.actions = actions;
+        }
+
+        public ResultActionsHelper andExpectPreviewView() throws Exception {
+            actions.andExpect(view().name("preview"));
+            return this;
+        }
+
+        public ResultActionsHelper andExpectMailInfo(MailInfo mailInfo) throws Exception {
+            actions.andExpect(model().attribute("mailInfo", mailInfo));
+            return this;
+        }
+
+        public ResultActionsHelper andExpectNavigation(PreviewNavigation previewNavigation) throws Exception {
+            actions.andExpect(model().attribute("previewNavigation", previewNavigation));
+            return this;
         }
     }
 }
