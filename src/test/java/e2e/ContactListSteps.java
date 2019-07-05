@@ -6,6 +6,7 @@ import com.odde.mailsender.service.AddressBookService;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import e2e.pages.ContactListPage;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +21,9 @@ public class ContactListSteps {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private ContactListPage contactListPage;
 
     @Given("^ContactList address is \"([^\"]*)\"$")
     public void address_is(String address) throws Throwable {
@@ -94,7 +98,7 @@ public class ContactListSteps {
 
     @Given("user visits contact page")
     public void userVisitsContactPage() {
-        driver.get("http://localhost:" + port + "/contact-list");
+        contactListPage.goToContactPage();
     }
 
     @When("click link")

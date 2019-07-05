@@ -40,10 +40,6 @@ public class HomePage extends BasePage {
     @FindBy(how = How.CSS, using = "#load-template")
     private WebElement loadTemplateButton;
 
-    private String getPort() {
-        return environment.getProperty("local.server.port");
-    }
-
     public void userVisitsSendPage() {
         driver.get("http://localhost:" + getPort());
     }

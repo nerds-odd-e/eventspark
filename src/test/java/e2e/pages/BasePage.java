@@ -19,4 +19,8 @@ public abstract class BasePage {
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
+
+    protected String getPort() {
+        return environment.getProperty("local.server.port");
+    }
 }
