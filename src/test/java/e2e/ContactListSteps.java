@@ -54,7 +54,7 @@ public class ContactListSteps {
         addressBook.save();
     }
 
-    @When("^add$")
+    @When("^add new contact to ContactList$")
     public void add() {
         contactListPage.clickAddButton();
     }
@@ -79,7 +79,7 @@ public class ContactListSteps {
         contactListPage.clickCreateEmailButton();
     }
 
-    @Then("^MailSender address is \"([^\"]*)\"$")
+    @Then("^Email form address is \"([^\"]*)\"$")
     public void mail_sender_address_is(String address) {
         Assert.assertEquals(address, homePage.getInputAddressText());
     }
@@ -104,12 +104,12 @@ public class ContactListSteps {
         contactListPage.goToContactPage();
     }
 
-    @When("click link")
+    @When("click Import CSV link")
     public void click_link() {
         contactListPage.clickImportCsvButton();
     }
 
-    @Then("move to import page")
+    @Then("browser moves to import page")
     public void move_to_import_page() {
         Assert.assertTrue(importCsvPage.isImportCsvPage());
     }

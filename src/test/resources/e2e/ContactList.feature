@@ -7,21 +7,21 @@ Feature: Contact List
   Scenario: add an address
     Given ContactList address is "xxx@gmail.com"
     And ContactList is empty
-    When add
+    When add new contact to ContactList
     Then ContactList address is added "xxx@gmail.com"
     And ContactList name is added ""
 
 # address format error case
   Scenario: add a wrong address
     Given ContactList address is "xxx"
-    When add
+    When add new contact to ContactList
     Then ContactList error_area is "Address format is wrong"
 
 # duplicate address error case
   Scenario: add a duplicate address
     Given ContactList address is "xxx@gmail.com"
     And ContactList has "xxx@gmail.com"
-    When add
+    When add new contact to ContactList
     Then ContactList error_area is "Duplicate address"
 
 # case for adding name
@@ -30,7 +30,7 @@ Feature: Contact List
     Given ContactList address is "xxx@gmail.com"
     And ContactList name is "xxx"
     And ContactList is empty
-    When add
+    When add new contact to ContactList
     Then ContactList address is added "xxx@gmail.com"
     And ContactList name is added "xxx"
 
@@ -38,30 +38,30 @@ Feature: Contact List
   Scenario: add a name only
     Given ContactList address is ""
     And ContactList name is "xxxxxx"
-    When add
+    When add new contact to ContactList
     Then ContactList error_area is "Address may not be empty"
 
 # check no address
   Scenario: check no address
     Given No ContactList is checked
     When create email
-    Then MailSender address is ""
+    Then Email form address is ""
 
 # check only address
   Scenario: check two addresses
     Given checked ContactList is "user1@gmail.com"
     And checked ContactList is "user2@gmail.com"
     When create email
-    Then MailSender address is "user1@gmail.com;user2@gmail.com"
+    Then Email form address is "user1@gmail.com;user2@gmail.com"
 
 # check all address
   Scenario: check all addresses
     Given checked all ContactList
     When create email
-    Then MailSender address is "user1@gmail.com;user2@gmail.com;user3@gmail.com;noname@gmail.com"
+    Then Email form address is "user1@gmail.com;user2@gmail.com;user3@gmail.com;noname@gmail.com"
 
 # Move to import csv
   Scenario: move to import page
     Given No ContactList is checked
-    When click link
-    Then move to import page
+    When click Import CSV link
+    Then browser moves to import page
