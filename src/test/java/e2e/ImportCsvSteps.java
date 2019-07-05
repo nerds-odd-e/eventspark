@@ -3,6 +3,7 @@ package e2e;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import e2e.pages.ContactListPage;
 import e2e.pages.ImportCsvPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,9 @@ import static org.junit.Assert.*;
 public class ImportCsvSteps {
     @Autowired
     private WebDriver driver;
+
+    @Autowired
+    private ContactListPage contactListPage;
 
     @Autowired
     private ImportCsvPage importCsvPage;
@@ -38,9 +42,7 @@ public class ImportCsvSteps {
 
     @Then("move to contact list")
     public void move_to_contact_list() {
-        // Contact List
-        String actual = driver.findElement(By.id("contact-list-title")).getText();
-        assertEquals("Contact List", actual);
+        assertEquals("Contact List", contactListPage.getTitleText());
     }
 
 
@@ -52,17 +54,14 @@ public class ImportCsvSteps {
 
     @Then("show message {string}")
     public void show_message(String string) {
-        // Contact List
-        String actual = driver.findElement(By.id("success-area")).getText();
-        assertEquals(string, actual);
+        assertEquals(string, contactListPage.getSuccessText());
     }
 
     @Then("ContactList multiple values are added {string}")
     public void contactlist_multiple_values_are_added(String string) {
-        String[] values = string.split(";");
-        for (String v: values) {
-            String html = driver.findElement(By.id("address-list")).getText();
-            assertThat(html.contains(v), is(true));
+        for (String value: string.split(";")) {
+            String html = contactListPage.getAddressListText();
+            assertThat(html.contains(value), is(true));
         }
     }
 
