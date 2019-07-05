@@ -36,6 +36,10 @@ public class ImportCsvPage extends BasePage {
         driver.get("http://localhost:" + getPort() + "/import-csv");
     }
 
+    public boolean isImportCsvPage() {
+        return this.getCurrentUrl().contains("import-csv");
+    }
+
     public void selectFile(File uploadFile) {
         fileField.sendKeys(uploadFile.getAbsolutePath());
     }

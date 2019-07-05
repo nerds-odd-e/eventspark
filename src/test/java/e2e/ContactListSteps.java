@@ -7,6 +7,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import e2e.pages.ContactListPage;
 import e2e.pages.HomePage;
+import e2e.pages.ImportCsvPage;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ContactListSteps {
 
     @Autowired
     private HomePage homePage;
+
+    @Autowired
+    private ImportCsvPage importCsvPage;
 
     @Given("^ContactList address is \"([^\"]*)\"$")
     public void address_is(String address) {
@@ -107,7 +111,6 @@ public class ContactListSteps {
 
     @Then("move to import page")
     public void move_to_import_page() {
-        String url = driver.getCurrentUrl();
-        Assert.assertEquals("import-csv", url.substring(url.length() - 10));
+        Assert.assertTrue(importCsvPage.isImportCsvPage());
     }
 }
