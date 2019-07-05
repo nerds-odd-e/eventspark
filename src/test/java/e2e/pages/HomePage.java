@@ -19,25 +19,25 @@ public class HomePage extends BasePage {
         return driver.getCurrentUrl().contains("/home");
     }
 
-    @FindBy(how = How.CSS, using = "#address")
+    @FindBy(id = "address")
     private WebElement address;
 
-    @FindBy(how = How.CSS, using = "#subject")
+    @FindBy(id = "subject")
     private WebElement subject;
 
-    @FindBy(how = How.CSS, using = "#body")
+    @FindBy(id = "body")
     private WebElement body;
 
-    @FindBy(how = How.CSS, using = "#preview")
+    @FindBy(id = "preview")
     private WebElement previewButton;
 
-    @FindBy(how = How.CSS, using = "#send")
+    @FindBy(id = "send")
     private WebElement sendButton;
 
-    @FindBy(how = How.CSS, using = "#error-area")
+    @FindBy(id = "error-area")
     private WebElement errorArea;
 
-    @FindBy(how = How.CSS, using = "#load-template")
+    @FindBy(id = "load-template")
     private WebElement loadTemplateButton;
 
     public void userVisitsSendPage() {
