@@ -135,47 +135,39 @@ public class PreviewControllerTest {
 
     @Test
     public void manyAddressWithInvalidAddressAndNoSubject() throws Exception {
-        MvcResult resultActions = mvc.perform(post("/preview/0")
-                .param("address", "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com")
-                .param("subject", "")
-                .param("body", ""))
-                .andExpect(view().name("home"))
-                .andReturn();
+        InputMailContents emptySubjectsAndBody = new InputMailContents(
+                "",
+                "",
+                "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com"
+        );
 
-        assertErrorMessage(resultActions, "address", "Address format is wrong");
-        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
+        ResultActions resultActions = postPreviewEndpoint(emptySubjectsAndBody, "/preview/0");
+
+        MvcResult mvcResult = resultActions
+                                .andExpect(view().name("home"))
+                                .andReturn();
+
+        assertErrorMessage(mvcResult, "address", "Address format is wrong");
+        assertErrorMessage(mvcResult, "subject", "{0} may not be empty");
     }
 
     @Test
     public void showErrorIfEmptyForms() throws Exception {
-        MvcResult resultActions = mvc.perform(post("/preview/0")
-                .param("address", "")
-                .param("subject", "")
-                .param("body", ""))
-                .andExpect(view().name("home"))
-                .andReturn();
+        InputMailContents emptyContents = new InputMailContents(
+                "",
+                "",
+                ""
+        );
 
-        assertErrorMessage(resultActions, "address", "{0} may not be empty");
-        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
-        assertErrorMessage(resultActions, "body", "{0} may not be empty");
-    }
+        ResultActions resultActions = postPreviewEndpoint(emptyContents, "/preview/0");
 
-    private class ResultActionsHelper {
+        MvcResult mvcResult = resultActions
+                                .andExpect(view().name("home"))
+                                .andReturn();
 
-
-        private ResultActions resultActions;
-
-        private ResultActionsHelper(ResultActions resultActions) {
-            this.resultActions = resultActions;
-        }
-
-        private void andExpectResult(MailInfo mailInfo, PreviewNavigation previewNavigation) throws Exception {
-            resultActions.andExpect(view().name("preview"))
-                    .andExpect(model().attribute("mailInfo", mailInfo))
-                    .andExpect(model().attribute("previewNavigation", previewNavigation));
-        }
-
-
+        assertErrorMessage(mvcResult, "address", "{0} may not be empty");
+        assertErrorMessage(mvcResult, "subject", "{0} may not be empty");
+        assertErrorMessage(mvcResult, "body", "{0} may not be empty");
     }
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
@@ -192,7 +184,6 @@ public class PreviewControllerTest {
             assertTrue(objectErrors.stream()
                     .anyMatch(i -> Objects.equals(i.getDefaultMessage(), errorTemplateMessage)));
         }
-
 
     }
 
