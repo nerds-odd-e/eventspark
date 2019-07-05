@@ -23,7 +23,7 @@ public class FileCheckServiceImpl implements FileCheckService {
 
     @Override
     public List<String> checkDuplicateAddress(List<AddressItem> uploadList) {
-        return new ArrayList<>(checkDuplicateWithStoredData(uploadList));
+        return checkDuplicateWithStoredData(uploadList);
     }
 
     private List<String> checkDuplicateWithStoredData(List<AddressItem> uploadList) {

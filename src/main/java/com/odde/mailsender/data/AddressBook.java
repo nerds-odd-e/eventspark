@@ -73,9 +73,7 @@ public class AddressBook {
     }
 
     private void clearAddressBookItems() {
-        if (!addressItems.isEmpty()) {
-            addressItems.clear();
-        }
+        addressItems.clear();
     }
 
     private List<String> readAddressBookFile() {

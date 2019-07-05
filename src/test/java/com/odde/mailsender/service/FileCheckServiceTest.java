@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -43,27 +44,26 @@ public class FileCheckServiceTest {
 
     @Test
     public void checkSuccessful() {
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("ty@example.com", "Taro Yamada"));
-        uploadList.add(new AddressItem("hnk@example.com", "Hanako Suzuki"));
+        List<DataPattern> dataPatternList = Arrays.asList(
+            new DataPattern("ty@example.com", new ArrayList<>()),
+            new DataPattern("ty#example.com", Collections.singletonList("ty#example.com is invalid address."))
+        );
 
-        List<String> actual = target.checkUploadList(uploadList);
-
-        List<String> expected = new ArrayList<>();
-        assertThat(actual, is(expected));
-
+        dataPatternList.forEach(dataPattern -> {
+            List<AddressItem> uploadList = new ArrayList<>();
+            uploadList.add(new AddressItem(dataPattern.mailAddress, "Taro Yamada"));
+            assertThat(target.checkUploadList(uploadList), is(dataPattern.expected));
+        });
     }
 
-    @Test
-    public void checkFailedWithInvalidMailAddress() {
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        uploadList.add(new AddressItem("ty#example.com", "Taro Yamada"));
+    private class DataPattern {
+        private final String mailAddress;
+        private final List<String> expected;
 
-        List<String> actual = target.checkUploadList(uploadList);
-
-        List<String> expected = Collections.singletonList("ty#example.com is invalid address.");
-        assertThat(actual, is(expected));
+        public DataPattern(String mailAddress, List<String> expected) {
+            this.mailAddress = mailAddress;
+            this.expected = expected;
+        }
     }
 
     @Test
@@ -74,8 +74,8 @@ public class FileCheckServiceTest {
         uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki2"));
 
         List<String> actual = target.checkUploadList(uploadList);
-
         List<String> expected = Collections.singletonList("1 and 3 rows are duplicated with ty@example.com");
+
         assertThat(actual, is(expected));
     }
 
