@@ -3,7 +3,6 @@ package com.odde.mailsender.controller;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMappingException;
-import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.form.ContactListForm;
 import com.odde.mailsender.service.AddressBookService;
@@ -16,16 +15,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.CharConversionException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+
+import static java.util.Arrays.*;
 
 @Controller
 public class ImportCsvController {
@@ -68,51 +66,32 @@ public class ImportCsvController {
     ModelAndView postCsv(
             @RequestParam(name = "file", required = false) MultipartFile multipartFile,
             @RequestParam(name = "force", required = false) String force) {
-        ModelAndView model = new ModelAndView();
+
         String filename = multipartFile.getOriginalFilename();
         if (!filename.endsWith(".csv")) {
-            List<String> errors = Arrays.asList("Please specify csv file.");
-            model.setViewName("import-csv");
-            model.addObject("errors", errors);
-            model.setStatus(HttpStatus.BAD_REQUEST);
-            return model;
+            return errorModel("Please specify csv file.", "import-csv");
         }
         List<AddressItem> addressItems = null;
         try {
             MappingIterator<AddressItem> personIter = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).readValues(multipartFile.getInputStream());
             addressItems = personIter.readAll();
 
-            if (!addressItems.get(0).getMailAddress().equals("mail") ||
-                    !addressItems.get(0).getName().equals("name")) {
-                List<String> errors = Arrays.asList("CSV file header requires mail,name.");
-                model.setViewName("import-csv");
-                model.addObject("errors", errors);
-                model.setStatus(HttpStatus.BAD_REQUEST);
+            if (!addressItems.get(0).getMailAddress().equals("mail") || !addressItems.get(0).getName().equals("name")) {
+                ModelAndView model = errorModel("CSV file header requires mail,name.", "import-csv");
                 return model;
             } else {
                 addressItems.remove(0);
             }
         } catch (CsvMappingException e) {
-            List<String> errors = Arrays.asList("CSV must have 2 fields(mail,name).");
-            model.setViewName("import-csv");
-            model.addObject("errors", errors);
-            model.setStatus(HttpStatus.BAD_REQUEST);
-            return model;
+            return errorModel("CSV must have 2 fields(mail,name).", "import-csv");
         } catch (CharConversionException e) {
-            List<String> errors = Arrays.asList("Uploaded file is binary data.");
-            model.setViewName("import-csv");
-            model.addObject("errors", errors);
-            model.setStatus(HttpStatus.BAD_REQUEST);
-            return model;
+            return errorModel("Uploaded file is binary data.", "import-csv");
         } catch (IOException e) {
-            List<String> errors = Arrays.asList("Unexpected error, please retry.");
-            model.setViewName("import-csv");
-            model.addObject("errors", errors);
-            model.setStatus(HttpStatus.BAD_REQUEST);
-            return model;
+            return errorModel("Unexpected error, please retry.", "import-csv");
         }
         List<String> errors = fileCheckService.checkUploadList(addressItems);
         if (!errors.isEmpty()) {
+            ModelAndView model = new ModelAndView();
             model.setViewName("import-csv");
             model.addObject("errors", errors);
             return model;
@@ -120,6 +99,7 @@ public class ImportCsvController {
 
         List<String> duplicates = fileCheckService.checkDuplicateAddress(addressItems);
         if (!duplicates.isEmpty()) {
+            ModelAndView model = new ModelAndView();
             model.setViewName("import-csv");
             model.addObject("duplicates", duplicates);
             session.setAttribute("addressItems", addressItems);
@@ -135,10 +115,20 @@ public class ImportCsvController {
             }
         });
 
+        ModelAndView model = new ModelAndView();
         model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());
         model.addObject("contactList", addressBookService.get());
         model.addObject("successCount", addressItems.size());
         return model;
     }
+
+    private ModelAndView errorModel(String errorMessage, String viewName) {
+        ModelAndView model = new ModelAndView();
+        model.setViewName(viewName);
+        model.addObject("errors", asList(errorMessage));
+        model.setStatus(HttpStatus.BAD_REQUEST);
+        return model;
+    }
+
 }
