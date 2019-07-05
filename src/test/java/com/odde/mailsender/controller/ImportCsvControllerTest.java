@@ -59,6 +59,16 @@ public class ImportCsvControllerTest {
     }
 
     @Test
+    public void アップロードで異常系が起きた場合() throws Exception {
+        doThrow(new Exception()).when(addressBookService).add(any());
+
+
+        performPost("/import-csv", validContactCsvFile())
+                .andExpectError("system error is occurred. Please upload again.", "import-csv")
+                .andReturn();
+    }
+
+    @Test
     public void コンタクトリストの更新でエラーが発生した場合() throws Exception {
         when(addressBookService.update(any())).thenThrow(new IOException());
         List<AddressItem> sessionAddressItems = new ArrayList<>();

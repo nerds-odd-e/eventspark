@@ -84,14 +84,26 @@ public class ImportCsvController {
             return model;
         }
 
-        addressItems.stream().forEach(addressItem -> {
+
+        for (AddressItem addressItem : addressItems) {
             try {
                 addressBookService.add(addressItem);
             } catch (Exception e) {
                 // TODO:atode
-                e.printStackTrace();
+                //e.printStackTrace();
+                return errorModel("system error is occurred. Please upload again.", "import-csv");
             }
-        });
+        }
+
+//        addressItems.stream().forEach(addressItem -> {
+//            try {
+//                addressBookService.add(addressItem);
+//            } catch (Exception e) {
+//                // TODO:atode
+//                //e.printStackTrace();
+//                return errorModel("system error is occurred. Please upload again.", "import-csv");
+//            }
+//        });
 
         ModelAndView model = new ModelAndView();
         model.setViewName("contact-list");
