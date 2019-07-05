@@ -10,20 +10,15 @@ import com.odde.mailsender.service.FileCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.CharConversionException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpSession;
-
-import static java.util.Arrays.*;
 
 @Controller
 public class ImportCsvController {
@@ -64,25 +59,14 @@ public class ImportCsvController {
     @PostMapping("/import-csv")
     ModelAndView postCsv(
             @RequestParam(name = "file", required = false) MultipartFile multipartFile,
-            @RequestParam(name = "force", required = false) String force) {
+            @RequestParam(name = "force", required = false) String force) throws IOException {
 
         ContactCsvFile contactCsvFile = new ContactCsvFile(multipartFile);
 
         if (!contactCsvFile.nameIsCsv()) {
             return errorModel("Please specify csv file.", "import-csv");
         }
-        List<AddressItem> addressItems;
-        try {
-            addressItems = contactCsvFile.parseCsv();
-        } catch (CsvMappingException e) {
-            return errorModel("CSV must have 2 fields(mail,name).", "import-csv");
-        } catch (CharConversionException e) {
-            return errorModel("Uploaded file is binary data.", "import-csv");
-        } catch (IOException e) {
-            return errorModel("Unexpected error, please retry.", "import-csv");
-        } catch (InvalidContactCsvHeaderException e) {
-            return errorModel("CSV file header requires mail,name.", "import-csv");
-        }
+        List<AddressItem> addressItems = contactCsvFile.parseCsv();
 
         List<String> errors = fileCheckService.checkUploadList(addressItems);
         if (!errors.isEmpty()) {
@@ -121,9 +105,32 @@ public class ImportCsvController {
     private ModelAndView errorModel(String errorMessage, String viewName) {
         ModelAndView model = new ModelAndView();
         model.setViewName(viewName);
-        model.addObject("errors", asList(errorMessage));
+        model.addObject("errors", Collections.singletonList(errorMessage));
         model.setStatus(HttpStatus.BAD_REQUEST);
         return model;
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView headerInvalid(InvalidContactCsvHeaderException e) {
+        return errorModel("CSV file header requires mail,name.", "import-csv");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView binaryError(CharConversionException e) {
+        return errorModel("Uploaded file is binary data.", "import-csv");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView unexpectedError(IOException e) {
+        return errorModel("Unexpected error, please retry.", "import-csv");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView unmatchedField(CsvMappingException e) {
+        return errorModel("CSV must have 2 fields(mail,name).", "import-csv");
+    }
 }

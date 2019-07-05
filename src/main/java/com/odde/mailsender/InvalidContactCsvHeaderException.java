@@ -1,4 +1,4 @@
 package com.odde.mailsender;
 
-public class InvalidContactCsvHeaderException extends Throwable {
+public class InvalidContactCsvHeaderException extends RuntimeException {
 }
