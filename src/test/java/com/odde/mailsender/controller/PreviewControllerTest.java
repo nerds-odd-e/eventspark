@@ -141,9 +141,7 @@ public class PreviewControllerTest {
                 "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com"
         );
 
-        ResultActions resultActions = postPreviewEndpoint(emptySubjectsAndBody, "/preview/0");
-
-        MvcResult mvcResult = resultActions
+        MvcResult mvcResult = postPreviewEndpoint(emptySubjectsAndBody, "/preview/0")
                                 .andExpect(view().name("home"))
                                 .andReturn();
 
@@ -159,9 +157,7 @@ public class PreviewControllerTest {
                 ""
         );
 
-        ResultActions resultActions = postPreviewEndpoint(emptyContents, "/preview/0");
-
-        MvcResult mvcResult = resultActions
+        MvcResult mvcResult = postPreviewEndpoint(emptyContents, "/preview/0")
                                 .andExpect(view().name("home"))
                                 .andReturn();
 
