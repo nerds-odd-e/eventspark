@@ -21,13 +21,9 @@ public class ImportCsvSteps {
     @Autowired
     private ImportCsvPage importCsvPage;
 
-    @LocalServerPort
-    private int port;
-
     @Given("user visits import csv page")
     public void userVisitsContactPage() {
         importCsvPage.userVisitsContactPage();
-//        driver.get("http://localhost:" + port + "/import-csv");
     }
 
     @Given("select {string} CSV")
