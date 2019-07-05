@@ -1,6 +1,5 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.FileCheckService;
 import org.junit.Test;
@@ -16,9 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -48,81 +46,60 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードが成功した場合コンタクトリストに遷移すること() throws Exception {
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
-        uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
-
         doNothing().when(addressBookService).add(any());
 
         performPost("/import-csv", validContactCsvFile())
-                .andExpect(view().name("contact-list"))
-                .andExpect(status().isOk())
+                .andExpectSuccess("contact-list")
                 .andReturn();
     }
 
     @Test
     public void FileCheckServiceがNGの場合HTTP_OKが返ること() throws Exception {
-        List<String> expected = Arrays.asList("already registered hnk@example.com");
-        when(fileCheckService.checkUploadList(any())).thenReturn(expected);
+        when(fileCheckService.checkUploadList(any()))
+                .thenReturn(Collections.singletonList("already registered hnk@example.com"));
 
         performPost("/import-csv", validContactCsvFile())
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isOk())
+                .andExpectSuccess("import-csv")
                 .andReturn();
     }
 
     @Test
     public void アップロードファイルの拡張子がcsvでない場合responsecode400が返ること() throws Exception {
-        performPostX("/import-csv", contactCsvFileWithFilename("filename.txt"))
+        performPost("/import-csv", aTxtFile())
                 .andExpectError("Please specify csv file.", "import-csv")
                 .andReturn();
     }
 
     @Test
     public void アップロードファイルの中身が想定したcsvでない場合responsecode400が返ること() throws Exception {
-        String errorMessage = "CSV must have 2 fields(mail,name).";
-        performPost("/import-csv", contactsCsvFileWithContent(invalid3Columns))
-                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isBadRequest())
+        performPost("/import-csv", csvFileWithContent(invalid3Columns))
+                .andExpectError("CSV must have 2 fields(mail,name).", "import-csv")
                 .andReturn();
     }
 
     @Test
     public void アップロードファイルのヘッダがmailとnameでない場合responsecode400が返ること() throws Exception {
-        String errorMessage = "CSV file header requires mail,name.";
-
-        performPost("/import-csv", contactsCsvFileWithContent(invalidHeaderNamesContent))
-                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isBadRequest())
+        performPost("/import-csv", csvFileWithContent(invalidHeaderNamesContent))
+                .andExpectError("CSV file header requires mail,name.", "import-csv")
                 .andReturn();
     }
 
     @Test
     public void アップロードファイルがバイナリファイルの場合responsecode400が返ること() throws Exception {
-        String errorMessage = "Uploaded file is binary data.";
-
-        performPost("/import-csv", invalidCsvBinaryFile())
-                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isBadRequest())
+        performPost("/import-csv", aBinaryFile())
+                .andExpectError("Uploaded file is binary data.", "import-csv")
                 .andReturn();
     }
 
-    private ResultActions performPost(String url, MockMultipartFile csvFile) throws Exception {
-        return mvc.perform(MockMvcRequestBuilders.multipart(url)
-                .file(csvFile)
-                .characterEncoding("UTF-8"));
-    }
-    private ResultActionsHelper performPostX(String url, MockMultipartFile csvFile) throws Exception {
+
+    private ResultActionsHelper performPost(String url, MockMultipartFile csvFile) throws Exception {
         return new ResultActionsHelper(mvc.perform(MockMvcRequestBuilders.multipart(url)
                 .file(csvFile)
                 .characterEncoding("UTF-8")));
     }
 
 
-    private MockMultipartFile contactsCsvFileWithContent(String content) {
+    private MockMultipartFile csvFileWithContent(String content) {
         return new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
     }
 
@@ -130,12 +107,12 @@ public class ImportCsvControllerTest {
         return new MockMultipartFile("file", "filename.csv", "text/plain", validContent.getBytes());
     }
 
-    private MockMultipartFile contactCsvFileWithFilename(String filename) {
-        return new MockMultipartFile("file", filename, "text/plain", validContent.getBytes());
+    private MockMultipartFile aTxtFile() {
+        return new MockMultipartFile("file", "filename.txt", "text/plain", validContent.getBytes());
     }
 
-    private MockMultipartFile invalidCsvBinaryFile() {
-        byte[] content = new byte[]{0,0,0,0,0};
+    private MockMultipartFile aBinaryFile() {
+        byte[] content = new byte[]{0, 0, 0, 0, 0};
         return new MockMultipartFile("file", "filename.csv", "text/plain", content);
     }
 
@@ -150,6 +127,12 @@ public class ImportCsvControllerTest {
             return actions.andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
                     .andExpect(view().name(expectedViewName))
                     .andExpect(status().isBadRequest());
+        }
+
+
+        public ResultActions andExpectSuccess(String pageName) throws Exception {
+            return actions.andExpect(view().name(pageName))
+                    .andExpect(status().isOk());
         }
     }
 }
