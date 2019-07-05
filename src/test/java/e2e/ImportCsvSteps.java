@@ -3,6 +3,7 @@ package e2e;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import e2e.pages.ImportCsvPage;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,18 +18,20 @@ public class ImportCsvSteps {
     @Autowired
     private WebDriver driver;
 
+    @Autowired
+    private ImportCsvPage importCsvPage;
+
     @LocalServerPort
     private int port;
 
     @Given("select {string} CSV")
     public void select_CSV(String string) {
-        File file = new File("src/test/resources/" + string);
-        driver.findElement(By.id("csvfile")).sendKeys(file.getAbsolutePath());
+        importCsvPage.selectFile(new File("src/test/resources/" + string));
     }
 
     @When("click import button")
     public void click_import_button() {
-        driver.findElement(By.id("import")).click();
+        importCsvPage.clickImport();
     }
 
     @Then("move to contact list")
@@ -45,8 +48,7 @@ public class ImportCsvSteps {
     // erro / warn case
     @Then("show error {string} at import page")
     public void show_error_at_import_page(String string) {
-        String actual = driver.findElement(By.id("error-area")).getText();
-        Assert.assertEquals(string, actual);
+        Assert.assertEquals(string, importCsvPage.getErrorText());
     }
 
     @Then("show message {string}")
