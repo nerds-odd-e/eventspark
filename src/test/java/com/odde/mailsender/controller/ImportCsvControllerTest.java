@@ -73,11 +73,8 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードファイルの拡張子がcsvでない場合responsecode400が返ること() throws Exception {
-        String errorMessage = "Please specify csv file.";
-        performPost("/import-csv", contactCsvFileWithFilename("filename.txt"))
-                .andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
-                .andExpect(view().name("import-csv"))
-                .andExpect(status().isBadRequest())
+        performPostX("/import-csv", contactCsvFileWithFilename("filename.txt"))
+                .andExpectError("Please specify csv file.", "import-csv")
                 .andReturn();
     }
 
@@ -118,6 +115,11 @@ public class ImportCsvControllerTest {
                 .file(csvFile)
                 .characterEncoding("UTF-8"));
     }
+    private ResultActionsHelper performPostX(String url, MockMultipartFile csvFile) throws Exception {
+        return new ResultActionsHelper(mvc.perform(MockMvcRequestBuilders.multipart(url)
+                .file(csvFile)
+                .characterEncoding("UTF-8")));
+    }
 
 
     private MockMultipartFile contactsCsvFileWithContent(String content) {
@@ -137,4 +139,17 @@ public class ImportCsvControllerTest {
         return new MockMultipartFile("file", "filename.csv", "text/plain", content);
     }
 
+    private class ResultActionsHelper {
+        private ResultActions actions;
+
+        public ResultActionsHelper(ResultActions actions) {
+            this.actions = actions;
+        }
+
+        public ResultActions andExpectError(String errorMessage, String expectedViewName) throws Exception {
+            return actions.andExpect(model().attribute("errors", Arrays.asList(errorMessage)))
+                    .andExpect(view().name(expectedViewName))
+                    .andExpect(status().isBadRequest());
+        }
+    }
 }
