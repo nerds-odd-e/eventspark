@@ -52,6 +52,7 @@ public class MailControllerTest {
     private static final AddressItem aki = new AddressItem("eventspark@gmx.com", "Aki");
     private static final AddressItem stanly = new AddressItem("stanly@xxx.com", "Stanly");
     private static final AddressItem noNameAddress = new AddressItem("noname@gmx.com", "");
+    private static final String emailNotExistsInAddressBook = "foobar@xxx.com";
 
     @Before
     public void setUp() {
@@ -105,20 +106,23 @@ public class MailControllerTest {
 
     @Test
     public void sendMultipleWhenUseTemplate() throws Exception {
-        MailInfo mailInfo = validMail().withSubject("Hello $name").withBody("Hi $name").withTo("eventspark@gmx.com;stanly@xxx.com").build();
+        MailInfo mailInfo = validMail()
+                .withSubject("Hello $name")
+                .withBody("Hi $name")
+                .withTo(aki.getMailAddress() + ";" + stanly.getMailAddress()).build();
 
         getPerform(mailInfo)
                 .andExpect(view().name("redirect:/home"));
 
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getSubject().equals("Hello Aki")));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getSubject().equals("Hello Stanly")));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getBody().equals("Hi Aki")));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getBody().equals("Hi Stanly")));
+        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getSubject().equals("Hello " + aki.getName())));
+        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getSubject().equals("Hello " + stanly.getName())));
+        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getBody().equals("Hi " + aki.getName())));
+        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getBody().equals("Hi " + stanly.getName())));
     }
 
     @Test
     public void notSubjectReplaceWhenNotRegisteredAddress() throws Exception {
-        MvcResult mvcResult = getPerform(validMail().withSubject("Hello $name").withTo("foobar@xxx.com").build())
+        MvcResult mvcResult = getPerform(validMail().withSubject("Hello $name").withTo(emailNotExistsInAddressBook).build())
                 .andExpect(view().name("home"))
                 .andReturn();
 
@@ -128,7 +132,7 @@ public class MailControllerTest {
 
     @Test
     public void notBodyReplaceWhenNotRegisteredAddress() throws Exception {
-        MvcResult mvcResult = getPerform(validMail().withBody("Hi $name").withTo("foobar@xxx.com").build())
+        MvcResult mvcResult = getPerform(validMail().withBody("Hi $name").withTo(emailNotExistsInAddressBook).build())
                 .andExpect(view().name("home"))
                 .andReturn();
 
