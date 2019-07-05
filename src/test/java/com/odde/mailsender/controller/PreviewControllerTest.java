@@ -36,6 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PreviewControllerTest {
 
+    public static final String fooEmail = "foo@gmx.com";
+    public static final String fooName = "Foo";
+    public static final String hogeEmail = "hoge@fuga.com";
+    public static final String hogeName = "Daiki";
+    public static final String senderEmail = "eventspark@gmx.com";
+
     @MockBean
     private AddressBookService addressBookService;
 
@@ -47,12 +53,12 @@ public class PreviewControllerTest {
         File file = new File(AddressBook.FILE_PATH);
         file.delete();
 
-        when(addressBookService.findByAddress("foo@gmx.com")).thenReturn(
-                new AddressItem("foo@gmx.com", "Aki")
+        when(addressBookService.findByAddress(fooEmail)).thenReturn(
+                new AddressItem(fooEmail, fooName)
         );
 
-        when(addressBookService.findByAddress("hoge@fuga.com")).thenReturn(
-                new AddressItem("hoge@fuga.com", "Daiki")
+        when(addressBookService.findByAddress(hogeEmail)).thenReturn(
+                new AddressItem(hogeEmail, hogeName)
         );
     }
 
@@ -61,10 +67,10 @@ public class PreviewControllerTest {
         InputMailContents inputMailContents = new InputMailContents(
                 "subject text",
                 "body text",
-                "foo@gmx.com"
+                fooEmail
         );
 
-        MailInfo expectedMailInfo = new MailInfo(null, "foo@gmx.com", "subject text", "body text");
+        MailInfo expectedMailInfo = new MailInfo(null, fooEmail, "subject text", "body text");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
 
         postAndExpect("/preview/0", inputMailContents, expectedMailInfo, expectedPreviewNavigation);
@@ -72,15 +78,15 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewPageWithParam() throws Exception {
-        addressBookService.add(new AddressItem("foo@gmx.com", "Aki"));
+        addressBookService.add(new AddressItem(fooEmail, fooName));
 
         InputMailContents inputMailContents = new InputMailContents(
                 "subject $name",
                 "body $name",
-                "foo@gmx.com"
+                fooEmail
         );
 
-        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "foo@gmx.com", "subject Aki", "body Aki");
+        MailInfo expectedMailInfo = new MailInfo(senderEmail, fooEmail, "subject " + fooName, "body " + fooName);
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
 
         postAndExpect("/preview/0", inputMailContents, expectedMailInfo, expectedPreviewNavigation);
@@ -91,10 +97,10 @@ public class PreviewControllerTest {
         InputMailContents inputMailContents = new InputMailContents(
                 "subject text",
                 "body text",
-                "foo@gmx.com;hoge@fuga.com"
+                fooEmail + ";" + hogeEmail
         );
 
-        MailInfo expectedMailInfo = new MailInfo(null, "hoge@fuga.com", "subject text", "body text");
+        MailInfo expectedMailInfo = new MailInfo(null, hogeEmail, "subject text", "body text");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
 
         postAndExpect("/preview/1", inputMailContents, expectedMailInfo, expectedPreviewNavigation);
@@ -102,15 +108,15 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewNextPageWithParam() throws Exception {
-        addressBookService.add(new AddressItem("hoge@fuga.com", "Daiki"));
+        addressBookService.add(new AddressItem(hogeEmail, hogeName));
 
         InputMailContents inputMailContents = new InputMailContents(
                 "subject $name",
                 "body $name",
-                "foo@gmx.com;hoge@fuga.com"
+                fooEmail + ";" + hogeEmail
         );
 
-        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "hoge@fuga.com", "subject Daiki", "body Daiki");
+        MailInfo expectedMailInfo = new MailInfo(senderEmail, hogeEmail, "subject " + hogeName, "body " + hogeName);
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
 
         postAndExpect("/preview/1", inputMailContents, expectedMailInfo, expectedPreviewNavigation);
