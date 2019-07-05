@@ -1,6 +1,5 @@
 package com.odde.mailsender.controller;
 
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMappingException;
 import com.odde.mailsender.data.AddressItem;
@@ -67,25 +66,22 @@ public class ImportCsvController {
             @RequestParam(name = "file", required = false) MultipartFile multipartFile,
             @RequestParam(name = "force", required = false) String force) {
 
-        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+        ContactCsvFile contactCsvFile = new ContactCsvFile(multipartFile);
+
+        if (!contactCsvFile.nameIsCsv()) {
             return errorModel("Please specify csv file.", "import-csv");
         }
         List<AddressItem> addressItems = null;
         try {
-            MappingIterator<AddressItem> personIter = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).readValues(multipartFile.getInputStream());
-            addressItems = personIter.readAll();
-
-            if (!addressItems.get(0).getMailAddress().equals("mail") || !addressItems.get(0).getName().equals("name")) {
-                return errorModel("CSV file header requires mail,name.", "import-csv");
-            } else {
-                addressItems.remove(0);
-            }
+            addressItems = contactCsvFile.parseCsv();
         } catch (CsvMappingException e) {
             return errorModel("CSV must have 2 fields(mail,name).", "import-csv");
         } catch (CharConversionException e) {
             return errorModel("Uploaded file is binary data.", "import-csv");
         } catch (IOException e) {
             return errorModel("Unexpected error, please retry.", "import-csv");
+        } catch (InvalidContactCsvHeaderException e) {
+            return errorModel("CSV file header requires mail,name.", "import-csv");
         }
         List<String> errors = fileCheckService.checkUploadList(addressItems);
         if (!errors.isEmpty()) {
@@ -129,4 +125,32 @@ public class ImportCsvController {
         return model;
     }
 
+    public class ContactCsvFile {
+        private MultipartFile multipartFile;
+
+        public ContactCsvFile(MultipartFile multipartFile) {
+            this.multipartFile = multipartFile;
+        }
+
+        private boolean isValidHeader(List<AddressItem> addressItems) {
+            return addressItems.get(0).getMailAddress().equals("mail") && addressItems.get(0).getName().equals("name");
+        }
+
+        private List<AddressItem> parseCsv() throws IOException, InvalidContactCsvHeaderException {
+            List<AddressItem> addressItems = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).<AddressItem>readValues(multipartFile.getInputStream()).readAll();
+            if(isValidHeader(addressItems))
+                addressItems.remove(0);
+            else
+                throw new InvalidContactCsvHeaderException();
+
+            return addressItems;
+        }
+
+        private boolean nameIsCsv() {
+            return multipartFile.getOriginalFilename().endsWith(".csv");
+        }
+
+    }
+    private class InvalidContactCsvHeaderException extends Throwable {
+    }
 }
