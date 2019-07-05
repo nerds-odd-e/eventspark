@@ -5,7 +5,6 @@ Feature: Import Csv
 
   # success case
   # upload csv
-  @focus
   Scenario Outline: upload csv
     Given select "<filename>" CSV
     When click import button
@@ -20,7 +19,6 @@ Feature: Import Csv
       | record_2.csv | 2      | test2;test3       | test2@example.com;test3@example.com                   |
 
   # error case
-  @focus
   Scenario Outline: upload uncorrect-format csv
     Given select "<filename>" CSV
     When click import button
@@ -35,7 +33,6 @@ Feature: Import Csv
       | test_invalid_email.csv             | invalidemail.com is invalid address. |
       | test_duplicate_email.csv           | 1 and 2 and 3 rows are duplicated with duplicate@example.com |
 
-  @focus
   Scenario Outline: upload overwrite csv
     Given select "<filename>" CSV
     When click import button

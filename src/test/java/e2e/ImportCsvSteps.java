@@ -5,10 +5,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import e2e.pages.ContactListPage;
 import e2e.pages.ImportCsvPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
 
 import java.io.File;
 
@@ -16,9 +13,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class ImportCsvSteps {
-    @Autowired
-    private WebDriver driver;
-
     @Autowired
     private ContactListPage contactListPage;
 
@@ -44,7 +38,6 @@ public class ImportCsvSteps {
     public void move_to_contact_list() {
         assertEquals("Contact List", contactListPage.getTitleText());
     }
-
 
     // erro / warn case
     @Then("show error {string} at import page")
