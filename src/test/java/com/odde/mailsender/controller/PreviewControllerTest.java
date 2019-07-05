@@ -36,8 +36,8 @@ public class PreviewControllerTest {
 
     private static final String FOO_EMAIL = "foo@gmx.com";
     private static final String FOO_NAME = "Foo";
-    private static final String HOGE_EMAIL = "hoge@fuga.com";
-    private static final String HOGE_NAME = "Daiki";
+    private static final String HOGE_EMAIL = "hoge@gmx.com";
+    private static final String HOGE_NAME = "Hoge";
     private static final String SENDER_EMAIL = "eventspark@gmx.com";
 
     private InputMailContents noAttributesMail;
