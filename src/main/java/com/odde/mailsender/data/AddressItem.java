@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class AddressItem implements Serializable {
@@ -14,6 +15,10 @@ public class AddressItem implements Serializable {
     private String mailAddress;
 
     private String name;
+
+    private static final String MAIL_ADDRESS_PATTERN = "^([_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + "(?:;" + "[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + ")*)?$";
 
     public AddressItem(String mailAddress) {
         this.mailAddress = mailAddress;
@@ -80,6 +85,10 @@ public class AddressItem implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException("JSON parse error.", e);
         }
+    }
+
+    public boolean checkValidMailAddress() {
+        return this.mailAddress.matches(MAIL_ADDRESS_PATTERN);
     }
 
 

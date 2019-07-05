@@ -6,26 +6,18 @@ import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FileCheckServiceImpl implements FileCheckService {
 
 
-    private static final String MAIL_ADDRESS_PATTERN = "^([_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + "(?:;" + "[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + ")*)?$";
-
     @Override
     public List<String> checkUploadList(List<AddressItem> uploadList) {
         List<String> errors = new ArrayList<>();
 
-        List<String> checkMailAddressResult = checkMailAddress(uploadList);
-        errors.addAll(checkMailAddressResult);
+        List<String> checkMailAddressPatternResult = checkMailAddressPattern(uploadList);
+        errors.addAll(checkMailAddressPatternResult);
 
         List<String> checkDuplicateInUploadListResult = checkDuplicateInUploadList(uploadList);
         errors.addAll(checkDuplicateInUploadListResult);
@@ -61,10 +53,10 @@ public class FileCheckServiceImpl implements FileCheckService {
         return errors;
     }
 
-    private List<String> checkDuplicateInUploadList(List<AddressItem> uploadList) {
-        List<String> result = new ArrayList<>();
 
+    private List<String> checkDuplicateInUploadList(List<AddressItem> uploadList) {
         Map<String, List<Integer>> duplicatedMap = new HashMap<>();
+
         for(int i = 0; i < uploadList.size(); i++) {
             AddressItem item = uploadList.get(i);
             if (!duplicatedMap.containsKey(item.getMailAddress())) {
@@ -75,6 +67,11 @@ public class FileCheckServiceImpl implements FileCheckService {
             }
             duplicatedMap.get(item.getMailAddress()).add(i + 1);
         }
+        return createDuplicateErrorMessage(duplicatedMap);
+    }
+
+    private List<String> createDuplicateErrorMessage(Map<String, List<Integer>> duplicatedMap) {
+        List<String> result = new ArrayList<>();
         StringJoiner joiner = new StringJoiner(" and ");
         for (String key :duplicatedMap.keySet()) {
             if (duplicatedMap.get(key).size() > 1) {
@@ -85,15 +82,14 @@ public class FileCheckServiceImpl implements FileCheckService {
         return result;
     }
 
-    private List<String> checkMailAddress(List<AddressItem> uploadList) {
+    private List<String> checkMailAddressPattern(List<AddressItem> uploadList) {
         List<String> result = new ArrayList<>();
 
         for(AddressItem item : uploadList) {
-            if (!item.getMailAddress().matches(MAIL_ADDRESS_PATTERN)) {
+            if (!item.checkValidMailAddress()) {
                 result.add(String.format("%s is invalid address.", item.getMailAddress()));
             }
         }
-
         return result;
     }
 }
