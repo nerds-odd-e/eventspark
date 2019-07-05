@@ -16,9 +16,7 @@ public class MailSendForm {
 
 
     @NotEmpty(message = "{0} may not be empty")
-    @Pattern(regexp = "^([_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + "(?:;" + "[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})" + ")*)?$", message = "{error.invalid.email}")
+    @Pattern(regexp = AddressItem.MAIL_ADDRESS_PATTERN, message = "{error.invalid.email}")
     private String address;
     @NotEmpty(message = "{0} may not be empty")
     private String subject;
