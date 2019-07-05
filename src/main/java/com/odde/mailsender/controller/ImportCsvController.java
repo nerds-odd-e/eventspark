@@ -67,8 +67,7 @@ public class ImportCsvController {
             @RequestParam(name = "file", required = false) MultipartFile multipartFile,
             @RequestParam(name = "force", required = false) String force) {
 
-        String filename = multipartFile.getOriginalFilename();
-        if (!filename.endsWith(".csv")) {
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
             return errorModel("Please specify csv file.", "import-csv");
         }
         List<AddressItem> addressItems = null;
@@ -77,8 +76,7 @@ public class ImportCsvController {
             addressItems = personIter.readAll();
 
             if (!addressItems.get(0).getMailAddress().equals("mail") || !addressItems.get(0).getName().equals("name")) {
-                ModelAndView model = errorModel("CSV file header requires mail,name.", "import-csv");
-                return model;
+                return errorModel("CSV file header requires mail,name.", "import-csv");
             } else {
                 addressItems.remove(0);
             }
