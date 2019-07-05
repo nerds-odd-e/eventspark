@@ -1,5 +1,6 @@
 package com.odde.mailsender.controller;
 
+import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.form.MailSendForm;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
@@ -45,7 +46,8 @@ public class MailController {
         }
 
         try {
-            List<MailInfo> mailInfoList = form.getMailInfoList(addressBookService);
+            List<AddressItem> addressItems = addressBookService.getAddressItems(form.getAddresses());
+            List<MailInfo> mailInfoList = form.getMailInfoList(addressItems);
 
             mailService.sendMultiple(mailInfoList);
             return "redirect:/home";

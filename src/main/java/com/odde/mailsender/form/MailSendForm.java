@@ -1,7 +1,6 @@
 package com.odde.mailsender.form;
 
 import com.odde.mailsender.data.AddressItem;
-import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -82,24 +81,33 @@ public class MailSendForm {
         return new MailInfo("eventspark@gmx.com", address, getSubject(), getBody());
     }
 
-    public List<MailInfo> getMailInfoList(AddressBookService addressBookService) throws Exception {
+    public List<MailInfo> getMailInfoList(List<AddressItem> addressItems) throws Exception {
         List<MailInfo> mailInfoList;
         if (isTemplate()) {
-            mailInfoList = getTemplateMailInfoList(addressBookService);
+            mailInfoList = getTemplateMailInfoList(addressItems);
         } else {
             mailInfoList = getNormalMailInfoList();
         }
         return mailInfoList;
     }
 
-    private List<MailInfo> getTemplateMailInfoList(AddressBookService addressBookService) throws Exception {
-        List<MailInfo> mailInfoList = new ArrayList<>();
-        for (String address : getAddresses()) {
-            AddressItem addressItem = addressBookService.findByAddress(address);
+    private List<MailInfo> getTemplateMailInfoList(List<AddressItem> items) throws Exception {
+        verifyEmpty(items);
+
+        return renderMail(items);
+    }
+
+    private void verifyEmpty(List<AddressItem> items) throws Exception {
+        for (AddressItem addressItem  : items) {
             if (addressItem == null || StringUtils.isEmpty(addressItem.getName()))
                 throw new Exception("When you use template, choose email from contract list that has a name");
+        }
+    }
 
-            mailInfoList.add(createRenderedMail(addressBookService.findByAddress(address)));
+    private List<MailInfo> renderMail(List<AddressItem> items) {
+        List<MailInfo> mailInfoList = new ArrayList<>();
+        for (AddressItem addressItem  : items) {
+            mailInfoList.add(createRenderedMail(addressItem));
         }
         return mailInfoList;
     }

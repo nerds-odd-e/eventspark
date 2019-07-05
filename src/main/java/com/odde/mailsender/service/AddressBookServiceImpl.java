@@ -5,6 +5,7 @@ import com.odde.mailsender.data.AddressItem;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,5 +33,16 @@ public class AddressBookServiceImpl implements AddressBookService {
     @Override
     public int update(List<AddressItem> addressItems) throws IOException {
         return addressBook.update(addressItems);
+    }
+
+    @Override
+    public List<AddressItem> getAddressItems(String[] addresses) {
+        List<AddressItem> items = new ArrayList<>();
+
+        for (String address : addresses) {
+            AddressItem addressItem = findByAddress(address);
+            items.add(addressItem);
+        }
+        return items;
     }
 }

@@ -56,7 +56,7 @@ public class MailControllerTest {
     @Before
     public void setUp() {
         File file = new File(AddressBook.FILE_PATH);
-        boolean isDelete = file.delete();
+        file.delete();
     }
 
     @Test
@@ -227,11 +227,9 @@ public class MailControllerTest {
                 "org.springframework.validation.BindingResult.form")).getAllErrors();
 
 
-        if (objectErrors.stream().filter(i -> i instanceof FieldError).count() > 0) {
+        if (objectErrors.stream().anyMatch(i -> i instanceof FieldError)) {
             assertTrue(objectErrors.stream().map(i -> ((FieldError) i))
-                    .anyMatch(i -> i.getField() == null ?
-                            i.getDefaultMessage().equals(errorTemplateMessage) :
-                            i.getField().equals(errorMessage) && i.getDefaultMessage().equals(errorTemplateMessage)));
+                    .anyMatch(i -> i.getField().equals(errorMessage) && i.getDefaultMessage().equals(errorTemplateMessage)));
         } else {
             assertTrue(objectErrors.stream()
                     .anyMatch(i -> i.getDefaultMessage().equals(errorTemplateMessage)));
