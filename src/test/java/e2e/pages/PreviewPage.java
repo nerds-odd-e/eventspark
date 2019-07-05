@@ -10,22 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class PreviewPage extends BasePage {
 
-    @FindBy(how = How.CSS, using = "#back-to-home")
+    @FindBy(id = "back-to-home")
     private WebElement backToHomeButton;
 
     @FindBy(how = How.CSS, using = "#prev")
     private WebElement prevButton;
 
-    @FindBy(how = How.CSS, using = "#next")
+    @FindBy(id = "next")
     private WebElement nextButton;
 
-    @FindBy(how = How.CSS, using = "#address-preview")
+    @FindBy(id = "address-preview")
     private WebElement addressPreview;
 
-    @FindBy(how = How.CSS, using = "#body-preview")
+    @FindBy(id = "body-preview")
     private WebElement bodyPreview;
 
-    @FindBy(how = How.CSS, using = "#subject-preview")
+    @FindBy(id = "subject-preview")
     private WebElement subjectPreview;
 
     public PreviewPage(WebDriver driver, Environment environment) {
