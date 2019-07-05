@@ -7,34 +7,24 @@ import com.odde.mailsender.data.AddressItem;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FileCheckServiceImpl implements FileCheckService {
 
-
     @Override
     public List<String> checkUploadList(List<AddressItem> uploadList) {
-        List<String> errors = new ArrayList<>();
-
-        List<String> checkMailAddressPatternResult = checkMailAddressPattern(uploadList);
-        errors.addAll(checkMailAddressPatternResult);
-
-        List<String> checkDuplicateInUploadListResult = checkDuplicateInUploadList(uploadList);
-        errors.addAll(checkDuplicateInUploadListResult);
-
-        return errors;
+        return Stream.concat(
+            checkMailAddressPattern(uploadList).stream(),
+            checkDuplicateInUploadList(uploadList).stream()
+        ).collect(Collectors.toList());
     }
 
     @Override
     public List<String> checkDuplicateAddress(List<AddressItem> uploadList) {
-        List<String> errors = new ArrayList<>();
-
-        List<String> checkDupliateWithStoredDataResult = checkDuplicateWithStoredData(uploadList);
-        errors.addAll(checkDupliateWithStoredDataResult);
-
-        return errors;
+        return new ArrayList<>(checkDuplicateWithStoredData(uploadList));
     }
-
 
     private List<String> checkDuplicateWithStoredData(List<AddressItem> uploadList) {
         List<String> errors = new ArrayList<>();
