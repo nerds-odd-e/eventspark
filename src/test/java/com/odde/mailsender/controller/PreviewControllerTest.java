@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -49,69 +50,93 @@ public class PreviewControllerTest {
     @Before
     public void setUp() {
         File file = new File(AddressBook.FILE_PATH);
-        boolean isDelete = file.delete();
+        file.delete();
     }
 
     @Test
     public void showPreviewPageWithoutParam() throws Exception {
-        PreviewParameter param = new PreviewParameter(
-                "Hello name",
-                "Hi name",
-                "foo@gmx.com",
-                "/preview/0",
-                new MailInfo(null, "foo@gmx.com", "Hello name", "Hi name"),
-                new PreviewNavigation(0, 0)
+        InputMailContents inputMailContents = new InputMailContents(
+                "subject text",
+                "body text",
+                "foo@gmx.com"
         );
 
-        assertPreviewPage(param);
+        MailInfo expectedMailInfo = new MailInfo(null, "foo@gmx.com", "subject text", "body text");
+        PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
+
+        postPreviewEndpoint(inputMailContents, "/preview/0")
+                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
     public void showPreviewPageWithParam() throws Exception {
+        addressBookService.add(new AddressItem("foo@gmx.com", "Aki"));
 
-        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
-
-        PreviewParameter param = new PreviewParameter(
-                "Hello $name",
-                "Hi $name",
-                "eventspark@gmx.com",
-                "/preview/0",
-                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
-                new PreviewNavigation(0, 0)
+        InputMailContents inputMailContents = new InputMailContents(
+                "subject $name",
+                "body $name",
+                "foo@gmx.com"
         );
 
-        assertPreviewPage(param);
+        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "foo@gmx.com", "subject Aki", "body Aki");
+        PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(0, 0);
+
+        postPreviewEndpoint(inputMailContents, "/preview/0")
+                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
-    public void showPreviewPage1WithoutParam() throws Exception {
-
-        PreviewParameter param = new PreviewParameter(
-                "Hello name",
-                "Hi name",
-                "foo@gmx.com;hoge@fuga.com",
-                "/preview/1",
-                new MailInfo(null, "hoge@fuga.com", "Hello name", "Hi name"),
-                new PreviewNavigation(1, 1)
+    public void showPreviewNextPageWithoutParam() throws Exception {
+        InputMailContents inputMailContents = new InputMailContents(
+                "subject text",
+                "body text",
+                "foo@gmx.com;hoge@fuga.com"
         );
 
-        assertPreviewPage(param);
+        MailInfo expectedMailInfo = new MailInfo(null, "hoge@fuga.com", "subject text", "body text");
+        PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
+
+        postPreviewEndpoint(inputMailContents, "/preview/1")
+                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
     }
 
     @Test
     public void showPreviewPage1WithParam() throws Exception {
-        addressBookService.add(new AddressItem("eventspark@gmx.com", "Aki"));
+        addressBookService.add(new AddressItem("hoge@fuga.com", "Aki"));
 
-        PreviewParameter param = new PreviewParameter(
-                "Hello $name",
-                "Hi $name",
-                "hoge@fuga.com;eventspark@gmx.com",
-                "/preview/1",
-                new MailInfo("eventspark@gmx.com", "eventspark@gmx.com", "Hello Aki", "Hi Aki"),
-                new PreviewNavigation(1, 1)
+        InputMailContents inputMailContents = new InputMailContents(
+                "subject $name",
+                "body $name",
+                "foo@gmx.com;hoge@fuga.com"
         );
 
-        assertPreviewPage(param);
+        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "hoge@fuga.com", "subject Aki", "body Aki");
+        PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
+
+        postPreviewEndpoint(inputMailContents, "/preview/1")
+                .andExpectResult(expectedMailInfo, expectedPreviewNavigation);
+
+    }
+
+    private ResultActionsHelper postPreviewEndpoint(InputMailContents inputMailContents, String url) throws Exception {
+        return new ResultActionsHelper(
+                mvc.perform(post(url)
+                    .param("address", inputMailContents.to)
+                    .param("subject", inputMailContents.subject)
+                    .param("body", inputMailContents.body)));
+    }
+
+    @Test
+    public void manyAddressWithInvalidAddressAndNoSubject() throws Exception {
+        MvcResult resultActions = mvc.perform(post("/preview/0")
+                .param("address", "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com")
+                .param("subject", "")
+                .param("body", ""))
+                .andExpect(view().name("home"))
+                .andReturn();
+
+        assertErrorMessage(resultActions, "address", "Address format is wrong");
+        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
     }
 
     @Test
@@ -128,31 +153,22 @@ public class PreviewControllerTest {
         assertErrorMessage(resultActions, "body", "{0} may not be empty");
     }
 
-    @Test
-    public void manyAddressWithInvalidAddressAndNoSubject() throws Exception {
-        MvcResult resultActions = mvc.perform(post("/preview/0")
-                .param("address", "abcdefghi123@xxx.com ; xxx.com; stanly@xxx.com")
-                .param("subject", "")
-                .param("body", ""))
-                .andExpect(view().name("home"))
-                .andReturn();
+    private class ResultActionsHelper {
 
-        assertErrorMessage(resultActions, "address", "Address format is wrong");
-        assertErrorMessage(resultActions, "subject", "{0} may not be empty");
-    }
 
-    private void assertPreviewPage(PreviewParameter previewParameter) throws Exception{
-        MailInfo previewRequest = validMail().withSubject(previewParameter.subject).withBody(previewParameter.body).withTo(previewParameter.to).build();
+        private ResultActions resultActions;
 
-        mvc.perform(post(previewParameter.url)
-                .param("address", previewRequest.getTo())
-                .param("subject", previewRequest.getSubject())
-                .param("body", previewRequest.getBody()))
+        private ResultActionsHelper(ResultActions resultActions) {
+            this.resultActions = resultActions;
+        }
 
-                .andExpect(view().name("preview"))
-                .andExpect(model().attribute("mailInfo", previewParameter.expectedMailInfo))
-                .andExpect(model().attribute("previewNavigation", previewParameter.expectedPreviewNavigation))
-                .andReturn();
+        private void andExpectResult(MailInfo mailInfo, PreviewNavigation previewNavigation) throws Exception {
+            resultActions.andExpect(view().name("preview"))
+                    .andExpect(model().attribute("mailInfo", mailInfo))
+                    .andExpect(model().attribute("previewNavigation", previewNavigation));
+        }
+
+
     }
 
     private void assertErrorMessage(MvcResult mvcResult, String errorMessage, String errorTemplateMessage) {
@@ -172,23 +188,15 @@ public class PreviewControllerTest {
 
     }
 
-    private class PreviewParameter {
-        String subject;
-        String body;
-        String to;
+    private class InputMailContents {
+        private final String subject;
+        private final String body;
+        private final String to;
 
-        String url;
-
-        MailInfo expectedMailInfo;
-        PreviewNavigation expectedPreviewNavigation;
-
-        private PreviewParameter(String subject, String body, String to, String url, MailInfo expectedMailInfo, PreviewNavigation expectedPreviewNavigation) {
+        private InputMailContents(String subject, String body, String to) {
             this.subject = subject;
             this.body = body;
             this.to = to;
-            this.url = url;
-            this.expectedMailInfo = expectedMailInfo;
-            this.expectedPreviewNavigation = expectedPreviewNavigation;
         }
     }
 }
