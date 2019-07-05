@@ -4,7 +4,6 @@ import com.odde.mailsender.data.AddressBook;
 import com.odde.mailsender.data.AddressItem;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.MailInfo;
-import com.odde.mailsender.service.MailService;
 import com.odde.mailsender.service.PreviewNavigation;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.util.List;
 
-import static com.odde.mailsender.service.MailBuilder.validMail;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -39,9 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PreviewControllerTest {
 
     @MockBean
-    private MailService mailService;
-
-    @Autowired
     private AddressBookService addressBookService;
 
     @Autowired
@@ -51,6 +45,14 @@ public class PreviewControllerTest {
     public void setUp() {
         File file = new File(AddressBook.FILE_PATH);
         file.delete();
+
+        when(addressBookService.findByAddress("foo@gmx.com")).thenReturn(
+                new AddressItem("foo@gmx.com", "Aki")
+        );
+
+        when(addressBookService.findByAddress("hoge@fuga.com")).thenReturn(
+                new AddressItem("hoge@fuga.com", "Daiki")
+        );
     }
 
     @Test
@@ -102,7 +104,7 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewPage1WithParam() throws Exception {
-        addressBookService.add(new AddressItem("hoge@fuga.com", "Aki"));
+        addressBookService.add(new AddressItem("hoge@fuga.com", "Daiki"));
 
         InputMailContents inputMailContents = new InputMailContents(
                 "subject $name",
@@ -110,7 +112,7 @@ public class PreviewControllerTest {
                 "foo@gmx.com;hoge@fuga.com"
         );
 
-        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "hoge@fuga.com", "subject Aki", "body Aki");
+        MailInfo expectedMailInfo = new MailInfo("eventspark@gmx.com", "hoge@fuga.com", "subject Daiki", "body Daiki");
         PreviewNavigation expectedPreviewNavigation = new PreviewNavigation(1, 1);
 
         postPreviewEndpoint(inputMailContents, "/preview/1")
