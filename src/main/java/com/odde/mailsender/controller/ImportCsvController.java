@@ -1,8 +1,9 @@
 package com.odde.mailsender.controller;
 
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMappingException;
+import com.odde.mailsender.InvalidContactCsvHeaderException;
 import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.form.ContactCsvFile;
 import com.odde.mailsender.form.ContactListForm;
 import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.FileCheckService;
@@ -125,32 +126,4 @@ public class ImportCsvController {
         return model;
     }
 
-    public class ContactCsvFile {
-        private MultipartFile multipartFile;
-
-        public ContactCsvFile(MultipartFile multipartFile) {
-            this.multipartFile = multipartFile;
-        }
-
-        private boolean isValidHeader(List<AddressItem> addressItems) {
-            return addressItems.get(0).getMailAddress().equals("mail") && addressItems.get(0).getName().equals("name");
-        }
-
-        private List<AddressItem> parseCsv() throws IOException, InvalidContactCsvHeaderException {
-            List<AddressItem> addressItems = new CsvMapper().readerWithTypedSchemaFor(AddressItem.class).<AddressItem>readValues(multipartFile.getInputStream()).readAll();
-            if(isValidHeader(addressItems))
-                addressItems.remove(0);
-            else
-                throw new InvalidContactCsvHeaderException();
-
-            return addressItems;
-        }
-
-        private boolean nameIsCsv() {
-            return multipartFile.getOriginalFilename().endsWith(".csv");
-        }
-
-    }
-    private class InvalidContactCsvHeaderException extends Throwable {
-    }
 }
