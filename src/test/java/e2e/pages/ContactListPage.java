@@ -15,37 +15,37 @@ import java.util.List;
 public class ContactListPage extends BasePage {
 
 
-    @FindBy(how = How.CSS, using = "#error-area")
+    @FindBy(id = "error-area")
     private WebElement errorArea;
 
     @FindBy(id = "address-list")
     private WebElement addressList;
 
-    @FindBy(how = How.CSS, using = "#create-email")
+    @FindBy(id = "create-email")
     private WebElement createEmailButton;
 
-    @FindBy(how = How.CSS, using = "#address")
+    @FindBy(id = "address")
     private WebElement addressField;
 
     @FindBy(id = "contact-list-title")
     private WebElement title;
 
-    @FindBy(how = How.CSS, using = "#success-area")
+    @FindBy(id = "success-area")
     private WebElement successArea;
 
-    @FindBy(how = How.CSS, using = "#name")
+    @FindBy(id = "name")
     private WebElement nameField;
 
-    @FindBy(how = How.CSS, using = "#add")
+    @FindBy(id = "add")
     private WebElement addButton;
 
-    @FindBy(how = How.NAME, using = "mailAddress")
+    @FindBy(name = "mailAddress")
     private List<WebElement> mailAddressCheckboxes;
 
-    @FindBy(how = How.ID, using = "all")
+    @FindBy(id = "all")
     private WebElement selectAllContactsCheckbox;
 
-    @FindBy(how = How.ID, using = "import-csv")
+    @FindBy(id = "import-csv")
     private WebElement clickImportCsvButton;
 
     ContactListPage(WebDriver driver, Environment environment) {
