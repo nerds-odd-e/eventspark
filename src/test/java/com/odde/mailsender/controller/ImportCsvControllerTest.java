@@ -1,7 +1,7 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.service.AddressBookService;
 import com.odde.mailsender.service.FileCheckService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,18 +16,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.ArrayList;
-import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -120,6 +119,15 @@ public class ImportCsvControllerTest {
                 .andReturn();
     }
 
+    @Test
+    public void duplicateExisting() throws Exception {
+        List<String> duplicates = Collections.singletonList("already registered ty@example.com");
+        when(fileCheckService.checkDuplicateAddress(any())).thenReturn(duplicates);
+
+        performPost("/import-csv", validContactCsvFile())
+                .andExpectSuccess("import-csv")
+                .andReturn();
+    }
 
     private ResultActionsHelper performPost(String url, MockMultipartFile csvFile) throws Exception {
         return new ResultActionsHelper(mvc.perform(MockMvcRequestBuilders.multipart(url)
