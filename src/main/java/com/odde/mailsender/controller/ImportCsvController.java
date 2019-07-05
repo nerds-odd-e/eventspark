@@ -33,7 +33,7 @@ public class ImportCsvController {
     private HttpSession session;
 
     @GetMapping("/import-csv")
-    String getImportCsv(@RequestParam(name = "force", required = false) String force) {
+    String getImportCsv() {
         return "import-csv";
     }
 
@@ -58,8 +58,7 @@ public class ImportCsvController {
 
     @PostMapping("/import-csv")
     ModelAndView postCsv(
-            @RequestParam(name = "file", required = false) MultipartFile multipartFile,
-            @RequestParam(name = "force", required = false) String force) throws IOException {
+            @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws IOException {
 
         ContactCsvFile contactCsvFile = new ContactCsvFile(multipartFile);
 
