@@ -1,5 +1,7 @@
 package e2e.pages;
 
+import e2e.ContactListSteps;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +41,12 @@ public class ContactListPage extends BasePage {
 
     @FindBy(how = How.NAME, using = "mailAddress")
     private List<WebElement> mailAddressCheckboxes;
+
+    @FindBy(how = How.ID, using = "all")
+    private WebElement selectAllContactsCheckbox;
+
+    @FindBy(how = How.ID, using = "import-csv")
+    private WebElement clickImportCsvButton;
 
     ContactListPage(WebDriver driver, Environment environment) {
         super(driver, environment);
@@ -92,5 +100,17 @@ public class ContactListPage extends BasePage {
         mailAddressCheckboxes.forEach((checkbox) -> {
             if (checkbox.isSelected()) checkbox.click();
         });
+    }
+
+    public void clickSelectAllCheckbox() {
+        selectAllContactsCheckbox.click();
+    }
+
+    public void clickImportCsvButton() {
+        clickImportCsvButton.click();
+    }
+
+    public void selectContactWithAddress(String address) {
+        driver.findElement(By.cssSelector("input[value='" + address + "']")).click();
     }
 }

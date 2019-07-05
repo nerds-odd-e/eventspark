@@ -8,7 +8,6 @@ import cucumber.api.java.en.When;
 import e2e.pages.ContactListPage;
 import e2e.pages.HomePage;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -88,12 +87,12 @@ public class ContactListSteps {
 
     @Given("^checked ContactList is \"([^\"]*)\"$")
     public void checked_contact_list_is(String address) {
-        driver.findElement(By.cssSelector("input[value='" + address + "']")).click();
+        contactListPage.selectContactWithAddress(address);
     }
 
     @Given("^checked all ContactList$")
     public void checked_all_contact_list() {
-        driver.findElement(By.id("all")).click();
+        contactListPage.clickSelectAllCheckbox();
     }
 
     @Given("user visits contact page")
@@ -103,7 +102,7 @@ public class ContactListSteps {
 
     @When("click link")
     public void click_link() {
-        driver.findElement(By.id("import-csv")).click();
+        contactListPage.clickImportCsvButton();
     }
 
     @Then("move to import page")
