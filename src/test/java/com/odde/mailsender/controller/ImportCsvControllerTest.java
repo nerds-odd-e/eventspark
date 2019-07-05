@@ -137,28 +137,4 @@ public class ImportCsvControllerTest {
         return new MockMultipartFile("file", "filename.csv", "text/plain", content);
     }
 
-//    @Test
-//    public void forceパラメータがtrueの場合Contactlistに遷移する() throws Exception {
-//
-//        String content = "mail,name\nty@example.com,Taro Yamada\nty@example.com,Taro Yamada";
-//        MockMultipartFile csvFile = new MockMultipartFile("file", "filename.csv", "text/plain", content.getBytes());
-//
-//        List<AddressItem> uploadList = new ArrayList<>();
-//        uploadList.add(new AddressItem("jun.murakami@g.softbank.co.jp", "Jun Murakami"));
-//        uploadList.add(new AddressItem("shigeru.tatsuta@g.softbank.co.jp", "Shigeru Tatsuta"));
-//        when(mockHttpSession.getAttribute("addressItems")).thenReturn(uploadList);
-//
-//        verify(fileCheckService, times(0)).checkUploadList(any());
-//
-//        mvc.perform(MockMvcRequestBuilders.multipart("/import-csv")
-//                .file(csvFile)
-//                .param("force", "true")
-//                .characterEncoding("UTF-8"))
-//                .andExpect(view().name("contact-list"))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//    }
-
-
-
 }
