@@ -72,7 +72,7 @@ public class ImportCsvController {
         if (!contactCsvFile.nameIsCsv()) {
             return errorModel("Please specify csv file.", "import-csv");
         }
-        List<AddressItem> addressItems = null;
+        List<AddressItem> addressItems;
         try {
             addressItems = contactCsvFile.parseCsv();
         } catch (CsvMappingException e) {
@@ -84,6 +84,7 @@ public class ImportCsvController {
         } catch (InvalidContactCsvHeaderException e) {
             return errorModel("CSV file header requires mail,name.", "import-csv");
         }
+
         List<String> errors = fileCheckService.checkUploadList(addressItems);
         if (!errors.isEmpty()) {
             ModelAndView model = new ModelAndView();
