@@ -40,7 +40,6 @@ public class FileCheckServiceImpl implements FileCheckService {
         List<String> errors = new ArrayList<>();
 
         AddressBook addressBook = new AddressBook();
-        List<AddressItem> storedAddressItemList = addressBook.getAddressItems();
 
         for (AddressItem addressItem : uploadList) {
             AddressItem finds = addressBook.findByAddress(addressItem.getMailAddress());
