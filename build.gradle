@@ -61,38 +61,35 @@ task cucumber_focus() {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.apache.commons:commons-email:1.5')
-    compile('commons-io:commons-io:2.6')
-    compile('org.apache.commons:commons-lang3:3.9')
-    compile('com.fasterxml.jackson.core:jackson-core:2.10.0')
-    compile('com.fasterxml.jackson.core:jackson-databind:2.10.0')
-    compile('com.fasterxml.jackson.core:jackson-annotations:2.10.0')
-    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.10.0')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    def cucumberVer = "4.7.4"
+    def jacksonVer = "2.10.0"
+
+    compile(
+            "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-thymeleaf",
+            "org.apache.commons:commons-email:1.5",
+            "commons-io:commons-io:2.6",
+            "org.apache.commons:commons-lang3:3.9",
+            "com.fasterxml.jackson.core:jackson-core:2.10.0",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVer",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVer",
+            "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVer"
+    )
     testCompile(
+            'org.springframework.boot:spring-boot-starter-test',
             'com.icegreen:greenmail:1.5.11',
             'junit:junit:4.12',
             'org.mockito:mockito-core:3.2.0',
             'io.github.bonigarcia:webdrivermanager:3.7.1',
-            'org.seleniumhq.selenium:selenium-java:3.141.59'
+            'org.seleniumhq.selenium:selenium-java:3.141.59',
+            "io.cucumber:cucumber-java:$cucumberVer",
+            "io.cucumber:cucumber-junit:$cucumberVer",
+            "io.cucumber:cucumber-spring:$cucumberVer"
     )
-    testCompile 'io.cucumber:cucumber-java:4.7.4'
-    testCompile 'io.cucumber:cucumber-junit:4.7.4'
-    testCompile 'io.cucumber:cucumber-spring:4.7.4'
 }
 
 configurations {
     cucumberRuntime {
         extendsFrom testRuntime
     }
-}
-
-repositories {
-    mavenCentral()
-}
-
-bootRun {
-
 }
