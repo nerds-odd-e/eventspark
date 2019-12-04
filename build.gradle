@@ -70,7 +70,7 @@ dependencies {
             "org.apache.commons:commons-email:1.5",
             "commons-io:commons-io:2.6",
             "org.apache.commons:commons-lang3:3.9",
-            "com.fasterxml.jackson.core:jackson-core:2.10.0",
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVer",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVer",
             "com.fasterxml.jackson.core:jackson-annotations:$jacksonVer",
             "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVer"
