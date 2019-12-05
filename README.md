@@ -1,5 +1,8 @@
 # eventspark
 
+## Dependencies
+Requires mongodb
+
 ## Running locally
 `./gradlew bootRun` Defaults to `local` profile
 
