@@ -1,7 +1,7 @@
 package e2e;
 
-import com.odde.mailsender.data.AddressBook;
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
+import com.odde.mailsender.service.AddressRepository;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,11 +13,12 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import static org.hamcrest.core.Is.is;
-
 public class ContactListSteps {
     @Autowired
     private WebDriver driver;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @LocalServerPort
     private int port;
@@ -43,15 +44,12 @@ public class ContactListSteps {
 
     @Given("^ContactList is empty")
     public void clear_contact_list() throws Exception {
-        AddressBook addressBook = new AddressBook();
-        addressBook.save();
+        addressRepository.deleteAll();
     }
 
     @Given("^ContactList has \"([^\"]*)\"$")
-    public void add_contact(String address) throws Exception {
-        AddressBook addressBook = new AddressBook();
-        addressBook.add(new AddressItem(address));
-        addressBook.save();
+    public void add_contact(String address) {
+        addressRepository.save(new Address("", address));
     }
 
     @When("^add new contact to ContactList$")

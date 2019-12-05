@@ -15,7 +15,6 @@ import javax.annotation.PreDestroy;
 
 import static com.icegreen.greenmail.util.ServerSetup.PROTOCOL_SMTP;
 
-@PropertySource("application-cucumber.properties")
 @ComponentScan(basePackages = {"e2e"})
 public class Config {
     private WebDriver driver;

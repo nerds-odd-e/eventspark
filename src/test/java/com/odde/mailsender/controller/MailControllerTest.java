@@ -1,17 +1,19 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.data.AddressBook;
-import com.odde.mailsender.service.*;
-import com.odde.mailsender.data.AddressItem;
-import org.apache.commons.mail.EmailException;
+import com.odde.mailsender.data.Address;
+import com.odde.mailsender.service.AddressRepository;
+import com.odde.mailsender.service.MailInfo;
+import com.odde.mailsender.service.MailService;
+import com.odde.mailsender.service.MailTemplate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,22 +23,21 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.List;
 
-import static com.odde.mailsender.service.MailBuilder.*;
-import static org.junit.Assert.*;
+import static com.odde.mailsender.service.MailBuilder.validMail;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles(profiles = "test")
 @AutoConfigureMockMvc
 public class MailControllerTest {
 
@@ -46,24 +47,18 @@ public class MailControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private AddressBookService addressBookService;
+    @Autowired
+    private AddressRepository addressRepository;
 
-    private static final AddressItem aki = new AddressItem("eventspark@gmx.com", "Aki");
-    private static final AddressItem stanly = new AddressItem("stanly@xxx.com", "Stanly");
-    private static final AddressItem noNameAddress = new AddressItem("noname@gmx.com", "");
+    private static final Address aki = new Address("Aki", "eventspark@gmx.com");
+    private static final Address stanly = new Address("Stanly", "stanly@xxx.com");
+    private static final Address noNameAddress = new Address("", "noname@gmx.com");
     private static final String emailNotExistsInAddressBook = "foobar@xxx.com";
 
     @Before
     public void setUp() {
-        when(addressBookService.getAddressItems(new String[]{aki.getMailAddress(), stanly.getMailAddress()}))
-                .thenReturn(Arrays.asList(aki, stanly));
-
-        when(addressBookService.getAddressItems(new String[]{noNameAddress.getMailAddress()}))
-                .thenReturn(Collections.singletonList(noNameAddress));
-
-        when(addressBookService.getAddressItems(new String[]{"foobar@xxx.com"}))
-                .thenReturn(Collections.singletonList(null));
+        addressRepository.deleteAll();
+        addressRepository.saveAll(asList(stanly, aki, noNameAddress));
     }
 
     @Test
@@ -114,10 +109,14 @@ public class MailControllerTest {
         getPerform(mailInfo)
                 .andExpect(view().name("redirect:/home"));
 
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getSubject().equals("Hello " + aki.getName())));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getSubject().equals("Hello " + stanly.getName())));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(0).getBody().equals("Hi " + aki.getName())));
-        verify(mailService).sendMultiple(argThat(mailInfoList -> mailInfoList.get(1).getBody().equals("Hi " + stanly.getName())));
+        ArgumentCaptor<List<MailInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mailService).sendMultiple(captor.capture());
+
+        List<MailInfo> mails = captor.getValue();
+        assertEquals("Hello " + stanly.getName(), mails.get(1).getSubject());
+        assertEquals("Hi " + stanly.getName(), mails.get(1).getBody());
+        assertEquals("Hello " + aki.getName(), mails.get(0).getSubject());
+        assertEquals("Hi " + aki.getName(), mails.get(0).getBody());
     }
 
     @Test

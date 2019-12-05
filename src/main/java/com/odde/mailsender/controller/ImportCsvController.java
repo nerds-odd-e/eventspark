@@ -2,10 +2,10 @@ package com.odde.mailsender.controller;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMappingException;
 import com.odde.mailsender.InvalidContactCsvHeaderException;
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
 import com.odde.mailsender.form.ContactCsvFile;
 import com.odde.mailsender.form.ContactListForm;
-import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.service.AddressRepository;
 import com.odde.mailsender.service.FileCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +22,11 @@ import java.util.List;
 
 @Controller
 public class ImportCsvController {
-
     @Autowired
     private FileCheckService fileCheckService;
 
     @Autowired
-    private AddressBookService addressBookService;
+    private AddressRepository addressRepository;
 
     @Autowired
     private HttpSession session;
@@ -39,21 +38,22 @@ public class ImportCsvController {
 
     @PostMapping("/import-from-session")
     ModelAndView postSession() {
-        List <AddressItem> sessionAddressItems = (List<AddressItem>) session.getAttribute("addressItems");
+        List <Address> sessionAddressItems = (List<Address>) session.getAttribute("addressItems");
         ModelAndView model = new ModelAndView();
         if (!sessionAddressItems.isEmpty()) {
             try {
-                addressBookService.update(sessionAddressItems);
-            } catch (IOException e) {
+                for(Address item : sessionAddressItems)
+                    addressRepository.save(item);
+
+            } catch (RuntimeException e) {
                 return errorModel("system error is occurred. Please upload again.", "import-csv");
             }
         }
         model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());
-        model.addObject("contactList", addressBookService.get());
+        model.addObject("contactList", addressRepository.findAll());
         model.addObject("successCount", sessionAddressItems.size());
         return model;
-
     }
 
     @PostMapping("/import-csv")
@@ -65,7 +65,7 @@ public class ImportCsvController {
         if (!contactCsvFile.nameIsCsv()) {
             return errorModel("Please specify csv file.", "import-csv");
         }
-        List<AddressItem> addressItems = contactCsvFile.parseCsv();
+        List<Address> addressItems = contactCsvFile.parseCsv();
 
         List<String> errors = fileCheckService.checkUploadList(addressItems);
         if (!errors.isEmpty()) {
@@ -85,10 +85,10 @@ public class ImportCsvController {
         }
 
 
-        for (AddressItem addressItem : addressItems) {
+        for (Address item : addressItems) {
             try {
-                addressBookService.add(addressItem);
-            } catch (Exception e) {
+                addressRepository.save(item);
+            } catch (RuntimeException e) {
                 return errorModel("system error is occurred. Please upload again.", "import-csv");
             }
         }
@@ -106,7 +106,7 @@ public class ImportCsvController {
         ModelAndView model = new ModelAndView();
         model.setViewName("contact-list");
         model.addObject("form", new ContactListForm());
-        model.addObject("contactList", addressBookService.get());
+        model.addObject("contactList", addressRepository.findAll());
         model.addObject("successCount", addressItems.size());
         return model;
     }

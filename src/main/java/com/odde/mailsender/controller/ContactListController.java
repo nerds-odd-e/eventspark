@@ -1,9 +1,9 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
 import com.odde.mailsender.form.ContactListForm;
 import com.odde.mailsender.form.MailSendForm;
-import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.service.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +19,11 @@ import javax.validation.Valid;
 public class ContactListController {
 
     @Autowired
-    private AddressBookService addressBookService;
+    private AddressRepository addressRepository;
 
     @GetMapping("/contact-list")
     public String getContactList(@ModelAttribute("form") ContactListForm form, Model model) {
-        model.addAttribute("contactList", addressBookService.get());
+        model.addAttribute("contactList", addressRepository.findAll());
         return "contact-list";
     }
 
@@ -35,7 +35,10 @@ public class ContactListController {
         }
 
         try {
-            addressBookService.add(new AddressItem(form.getAddress(), form.getName()));
+            if(addressRepository.findByNameAndMailAddress(form.getName(), form.getAddress()) == null)
+                addressRepository.save(new Address(form.getName(), form.getAddress()));
+            else
+                throw new Exception("Duplicate address");
         } catch (Exception e) {
             result.rejectValue("","", e.getMessage());
             return "contact-list";
@@ -45,7 +48,7 @@ public class ContactListController {
     }
 
     private void addContactListToModel(Model model) {
-        model.addAttribute("contactList", addressBookService.get());
+        model.addAttribute("contactList", addressRepository.findAll());
     }
 
     @PostMapping("/create-mail")

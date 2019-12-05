@@ -1,7 +1,8 @@
 package com.odde.mailsender.controller;
 
+import com.odde.mailsender.data.Address;
 import com.odde.mailsender.form.MailSendForm;
-import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.service.AddressRepository;
 import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.PreviewNavigation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 public class PreviewController {
     @Autowired
-    private AddressBookService addressBookService;
+    private AddressRepository addressRepository;
 
     @PostMapping("/preview/{index}")
     public String preview(@Valid @ModelAttribute("form") MailSendForm form, BindingResult result, Model model, @PathVariable int index) {
@@ -33,7 +34,8 @@ public class PreviewController {
 
         MailInfo info;
         if(form.isTemplate()) {
-            info = form.createRenderedMail(addressBookService.findByAddress(address));
+            Address a = addressRepository.findByMailAddress(address);
+            info = form.createRenderedMail(new Address(a.getName(), a.getMailAddress()));
         } else {
             info = new MailInfo(null, address, form.getSubject(), form.getBody());
         }

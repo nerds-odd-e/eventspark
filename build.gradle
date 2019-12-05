@@ -1,6 +1,7 @@
 plugins {
     id 'com.craigburke.karma' version '1.4.4'
     id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id "io.freefair.lombok" version "4.1.5"
 }
 
 apply plugin: 'java'
@@ -67,6 +68,7 @@ dependencies {
     compile(
             "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-thymeleaf",
+            "org.springframework.boot:spring-boot-starter-data-mongodb",
             "org.apache.commons:commons-email:1.5",
             "commons-io:commons-io:2.6",
             "org.apache.commons:commons-lang3:3.9",

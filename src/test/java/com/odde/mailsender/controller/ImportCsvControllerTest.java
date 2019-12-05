@@ -1,7 +1,7 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.data.AddressItem;
-import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.data.Address;
+import com.odde.mailsender.service.AddressRepository;
 import com.odde.mailsender.service.FileCheckService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles(profiles = "test")
 @AutoConfigureMockMvc
 public class ImportCsvControllerTest {
+    @MockBean
+    private AddressRepository addressRepository;
 
     @Autowired
     private MockMvc mvc;
@@ -40,8 +43,6 @@ public class ImportCsvControllerTest {
 
     @MockBean
     private FileCheckService fileCheckService;
-    @MockBean
-    private AddressBookService addressBookService;
 
     String validContent = "mail,name\nty@example.com,Taro Yamada\nhnk@example.com,Hanako Suzuki";
     String invalid3Columns = "mail,name\nhnk@example.com,Hanako Suzuki,test\nty@example.com\tTaro Yamada";
@@ -49,17 +50,16 @@ public class ImportCsvControllerTest {
 
     @Test
     public void アップロードが成功した場合コンタクトリストに遷移すること() throws Exception {
-        doNothing().when(addressBookService).add(any());
-
         performPost("/import-csv", validContactCsvFile())
                 .andExpectSuccess("contact-list")
                 .andReturn();
+
+        verify(addressRepository, times(2)).save(any());
     }
 
     @Test
     public void アップロードで異常系が起きた場合() throws Exception {
-        doThrow(new Exception()).when(addressBookService).add(any());
-
+        doThrow(new RuntimeException()).when(addressRepository).save(any());
 
         performPost("/import-csv", validContactCsvFile())
                 .andExpectError("system error is occurred. Please upload again.", "import-csv")
@@ -68,9 +68,10 @@ public class ImportCsvControllerTest {
 
     @Test
     public void コンタクトリストの更新でエラーが発生した場合() throws Exception {
-        when(addressBookService.update(any())).thenThrow(new IOException());
-        List<AddressItem> sessionAddressItems = new ArrayList<>();
-        sessionAddressItems.add(new AddressItem("taro@example.com","Shirato Taro"));
+        doThrow(new RuntimeException()).when(addressRepository).save(any());
+
+        List<Address> sessionAddressItems = new ArrayList<>();
+        sessionAddressItems.add(new Address("Shirato Taro", "taro@example.com"));
         mockHttpSession.setAttribute("addressItems", sessionAddressItems);
 
         mvc.perform(post("/import-from-session")

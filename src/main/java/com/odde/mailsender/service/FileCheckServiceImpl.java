@@ -1,20 +1,22 @@
 package com.odde.mailsender.service;
 
-import static java.util.Objects.nonNull;
-
-import com.odde.mailsender.data.AddressBook;
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class FileCheckServiceImpl implements FileCheckService {
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Override
-    public List<String> checkUploadList(List<AddressItem> uploadList) {
+    public List<String> checkUploadList(List<Address> uploadList) {
         return Stream.concat(
             checkMailAddressPattern(uploadList).stream(),
             checkDuplicateInUploadList(uploadList).stream()
@@ -22,17 +24,15 @@ public class FileCheckServiceImpl implements FileCheckService {
     }
 
     @Override
-    public List<String> checkDuplicateAddress(List<AddressItem> uploadList) {
+    public List<String> checkDuplicateAddress(List<Address> uploadList) {
         return checkDuplicateWithStoredData(uploadList);
     }
 
-    private List<String> checkDuplicateWithStoredData(List<AddressItem> uploadList) {
+    private List<String> checkDuplicateWithStoredData(List<Address> uploadList) {
         List<String> errors = new ArrayList<>();
 
-        AddressBook addressBook = new AddressBook();
-
-        for (AddressItem addressItem : uploadList) {
-            AddressItem finds = addressBook.findByAddress(addressItem.getMailAddress());
+        for (Address addressItem : uploadList) {
+            Address finds = addressRepository.findByMailAddress(addressItem.getMailAddress());
 
             if (nonNull(finds)) {
                 errors.add("already registered " + finds.getMailAddress());
@@ -42,12 +42,11 @@ public class FileCheckServiceImpl implements FileCheckService {
         return errors;
     }
 
-
-    private List<String> checkDuplicateInUploadList(List<AddressItem> uploadList) {
+    private List<String> checkDuplicateInUploadList(List<Address> uploadList) {
         Map<String, List<Integer>> duplicatedMap = new HashMap<>();
 
         for(int i = 0; i < uploadList.size(); i++) {
-            AddressItem item = uploadList.get(i);
+            Address item = uploadList.get(i);
             if (!duplicatedMap.containsKey(item.getMailAddress())) {
                 List<Integer> duplicatedRecords = new ArrayList<>();
                 duplicatedRecords.add(i + 1);
@@ -71,10 +70,10 @@ public class FileCheckServiceImpl implements FileCheckService {
         return result;
     }
 
-    private List<String> checkMailAddressPattern(List<AddressItem> uploadList) {
+    private List<String> checkMailAddressPattern(List<Address> uploadList) {
         List<String> result = new ArrayList<>();
 
-        for(AddressItem item : uploadList) {
+        for(Address item : uploadList) {
             if (!item.checkValidMailAddress()) {
                 result.add(String.format("%s is invalid address.", item.getMailAddress()));
             }

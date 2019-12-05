@@ -1,49 +1,49 @@
 package com.odde.mailsender.controller;
 
+import com.odde.mailsender.data.Address;
 import com.odde.mailsender.form.MailSendForm;
-import com.odde.mailsender.service.AddressBookService;
-import com.odde.mailsender.data.AddressItem;
-import org.junit.Assert;
+import com.odde.mailsender.service.AddressRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles(profiles = "test")
 public class ContactListControllerTest {
-
-    @MockBean
-    private AddressBookService addressBookService;
-
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Before
+    public void setup() {
+        addressRepository.deleteAll();
+    }
+
     @Test
     public void getSize1ContactList() throws Exception {
-        List<AddressItem> result = new ArrayList<>();
-        result.add(new AddressItem("aaa@example.com"));
+        addressRepository.save(new Address("aaa","aaa@example.com"));
 
-        when(addressBookService.get()).thenReturn(result);
         mvc.perform(get("/contact-list"))
                 .andExpect(model().attribute("contactList", hasSize(1)));
     }
@@ -52,8 +52,10 @@ public class ContactListControllerTest {
     public void addEmailAddress() throws Exception {
         performContactListSuccess("aaa@example.com", "aaa");
 
-        verify(addressBookService).add(argThat(mail -> mail.getMailAddress().equals("aaa@example.com")));
-        verify(addressBookService).add(argThat(mail -> mail.getName().equals("aaa")));
+        List<Address> all = addressRepository.findAll();
+        assertEquals(1, all.size());
+        assertEquals("aaa", all.get(0).getName());
+        assertEquals("aaa@example.com", all.get(0).getMailAddress());
     }
 
     @Test
@@ -71,7 +73,7 @@ public class ContactListControllerTest {
         MvcResult mvcResult = mvc.perform(post("/create-mail"))
                 .andExpect(view().name("home")).andReturn();
 
-        Assert.assertEquals("", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
+        assertEquals("", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
     }
 
     @Test
@@ -79,7 +81,7 @@ public class ContactListControllerTest {
         MvcResult mvcResult = mvc.perform(post("/create-mail").param("mailAddress", "aaa@example.com", "bbb@example.com"))
                 .andExpect(view().name("home")).andReturn();
 
-        Assert.assertEquals("aaa@example.com;bbb@example.com", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
+        assertEquals("aaa@example.com;bbb@example.com", ((MailSendForm)mvcResult.getModelAndView().getModel().get("form")).getAddress());
     }
 
     private MvcResult performContactListSuccess(String addressValue, String nameValue) throws Exception {
@@ -99,6 +101,6 @@ public class ContactListControllerTest {
 
     private void assertAddressErrorMessage(MvcResult mvcResult, String expectMessage) {
         BeanPropertyBindingResult result = (BeanPropertyBindingResult)mvcResult.getModelAndView().getModelMap().get("org.springframework.validation.BindingResult.form");
-        Assert.assertEquals(expectMessage, result.getFieldError("address").getDefaultMessage());
+        assertEquals(expectMessage, result.getFieldError("address").getDefaultMessage());
     }
 }

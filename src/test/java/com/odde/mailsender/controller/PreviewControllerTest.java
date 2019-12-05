@@ -1,7 +1,7 @@
 package com.odde.mailsender.controller;
 
-import com.odde.mailsender.data.AddressItem;
-import com.odde.mailsender.service.AddressBookService;
+import com.odde.mailsender.data.Address;
+import com.odde.mailsender.service.AddressRepository;
 import com.odde.mailsender.service.MailInfo;
 import com.odde.mailsender.service.PreviewNavigation;
 import org.junit.Before;
@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles(profiles = "test")
 @AutoConfigureMockMvc
 public class PreviewControllerTest {
 
@@ -43,22 +43,18 @@ public class PreviewControllerTest {
     private InputMailContents noAttributesMail;
     private InputMailContents aMail;
 
-    @MockBean
-    private AddressBookService addressBookService;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private MockMvc mvc;
 
-
     @Before
     public void setUp() {
-        when(addressBookService.findByAddress(FOO_EMAIL)).thenReturn(
-                new AddressItem(FOO_EMAIL, FOO_NAME)
-        );
+        addressRepository.deleteAll();
 
-        when(addressBookService.findByAddress(HOGE_EMAIL)).thenReturn(
-                new AddressItem(HOGE_EMAIL, HOGE_NAME)
-        );
+        addressRepository.save(new Address(FOO_NAME, FOO_EMAIL));
+        addressRepository.save(new Address(HOGE_NAME, HOGE_EMAIL));
 
         noAttributesMail = new InputMailContents(
                 "subject text",
@@ -100,8 +96,6 @@ public class PreviewControllerTest {
 
     @Test
     public void showPreviewNextPageWithParam() throws Exception {
-        addressBookService.add(new AddressItem(HOGE_EMAIL, HOGE_NAME));
-
         aMail.subject = "subject $name";
         aMail.body = "body $name";
         aMail.to = FOO_EMAIL + ";" + HOGE_EMAIL;

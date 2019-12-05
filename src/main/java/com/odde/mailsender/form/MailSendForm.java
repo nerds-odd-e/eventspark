@@ -1,6 +1,6 @@
 package com.odde.mailsender.form;
 
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
 import com.odde.mailsender.service.MailInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,7 +15,7 @@ public class MailSendForm {
 
 
     @NotEmpty(message = "{0} may not be empty")
-    @Pattern(regexp = AddressItem.MAIL_ADDRESS_PATTERN, message = "{error.invalid.email}")
+    @Pattern(regexp = Address.MAIL_ADDRESS_PATTERN, message = "{error.invalid.email}")
     private String address;
     @NotEmpty(message = "{0} may not be empty")
     private String subject;
@@ -50,11 +50,11 @@ public class MailSendForm {
         return getAddress().split("\\s*;\\s*");
     }
 
-    private String renderSubjectTemplate(AddressItem addressItem) {
+    private String renderSubjectTemplate(Address addressItem) {
         return StringUtils.replace(getSubject(), "$name", addressItem.getName());
     }
 
-    private String renderBodyTemplate(AddressItem addressItem) {
+    private String renderBodyTemplate(Address addressItem) {
         return StringUtils.replace(getBody(), "$name", addressItem.getName());
     }
 
@@ -73,7 +73,7 @@ public class MailSendForm {
         return StringUtils.contains(getSubject(), "$name") || StringUtils.contains(getBody(), "$name");
     }
 
-    public MailInfo createRenderedMail(AddressItem addressItem) {
+    public MailInfo createRenderedMail(Address addressItem) {
         return new MailInfo("eventspark@gmx.com", addressItem.getMailAddress(), renderSubjectTemplate(addressItem), renderBodyTemplate(addressItem));
     }
 
@@ -81,7 +81,7 @@ public class MailSendForm {
         return new MailInfo("eventspark@gmx.com", address, getSubject(), getBody());
     }
 
-    public List<MailInfo> getMailInfoList(List<AddressItem> addressItems) throws Exception {
+    public List<MailInfo> getMailInfoList(List<Address> addressItems) throws Exception {
         List<MailInfo> mailInfoList;
         if (isTemplate()) {
             mailInfoList = getTemplateMailInfoList(addressItems);
@@ -91,22 +91,22 @@ public class MailSendForm {
         return mailInfoList;
     }
 
-    private List<MailInfo> getTemplateMailInfoList(List<AddressItem> items) throws Exception {
+    private List<MailInfo> getTemplateMailInfoList(List<Address> items) throws Exception {
         verifyEmpty(items);
 
         return renderMail(items);
     }
 
-    private void verifyEmpty(List<AddressItem> items) throws Exception {
-        for (AddressItem addressItem  : items) {
+    private void verifyEmpty(List<Address> items) throws Exception {
+        for (Address addressItem  : items) {
             if (addressItem == null || StringUtils.isEmpty(addressItem.getName()))
                 throw new Exception("When you use template, choose email from contract list that has a name");
         }
     }
 
-    private List<MailInfo> renderMail(List<AddressItem> items) {
+    private List<MailInfo> renderMail(List<Address> items) {
         List<MailInfo> mailInfoList = new ArrayList<>();
-        for (AddressItem addressItem  : items) {
+        for (Address addressItem  : items) {
             mailInfoList.add(createRenderedMail(addressItem));
         }
         return mailInfoList;

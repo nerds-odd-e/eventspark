@@ -1,35 +1,30 @@
 package com.odde.mailsender.service;
 
-import com.odde.mailsender.data.AddressBook;
-import com.odde.mailsender.data.AddressItem;
+import com.odde.mailsender.data.Address;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles(profiles = "test")
 public class FileCheckServiceTest {
-
-    private AddressBook addressBook;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -39,7 +34,7 @@ public class FileCheckServiceTest {
 
     @Before
     public void setUp() {
-        addressBook = new AddressBook();
+        addressRepository.deleteAll();
     }
 
     @Test
@@ -50,8 +45,8 @@ public class FileCheckServiceTest {
         );
 
         dataPatternList.forEach(dataPattern -> {
-            List<AddressItem> uploadList = new ArrayList<>();
-            uploadList.add(new AddressItem(dataPattern.mailAddress, "Taro Yamada"));
+            List<Address> uploadList = new ArrayList<>();
+            uploadList.add(new Address("Taro Yamada", dataPattern.mailAddress));
             assertThat(target.checkUploadList(uploadList), is(dataPattern.expected));
         });
     }
@@ -68,10 +63,10 @@ public class FileCheckServiceTest {
 
     @Test
     public void checkDuplicateMailAddressInUploadList() {
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        uploadList.add(new AddressItem("hnk@example.com", "Taro Yamada"));
-        uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki2"));
+        List<Address> uploadList = new ArrayList<>();
+        uploadList.add(new Address("Hanako Suzuki", "ty@example.com"));
+        uploadList.add(new Address("Taro Yamada", "hnk@example.com"));
+        uploadList.add(new Address("Hanako Suzuki2", "ty@example.com"));
 
         List<String> actual = target.checkUploadList(uploadList);
         List<String> expected = Collections.singletonList("1 and 3 rows are duplicated with ty@example.com");
@@ -81,40 +76,31 @@ public class FileCheckServiceTest {
 
     @Test
     public void checkDuplicatedOneMailAddressStoredData() throws Exception {
-        addressBook.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        addressBook.add(new AddressItem("hnk@example.com,Hanako Suzuki", "Taro Yamada"));
-        addressBook.save();
+        addressRepository.save(new Address("Hanako Suzuki", "ty@example.com"));
+        addressRepository.save(new Address("Taro Yamada", "hnk@example.com"));
 
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
+        List<Address> uploadList = new ArrayList<>();
+        uploadList.add(new Address("Hanako Suzuki", "ty@example.com"));
 
         List<String> actual = target.checkDuplicateAddress(uploadList);
 
         List<String> expected = Collections.singletonList("already registered ty@example.com");
         assertThat(actual, is(expected));
-
-        addressBook = new AddressBook();
-        addressBook.save();
     }
 
     @Test
     public void checkDuplicatedMultiMailAddressStoredData() throws Exception {
-        addressBook.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        addressBook.add(new AddressItem("st@example.com", "Sato"));
-        addressBook.add(new AddressItem("hnk@example.com,Hanako Suzuki", "Taro Yamada"));
-        addressBook.save();
+        addressRepository.save(new Address("Hanako Suzuki", "ty@example.com"));
+        addressRepository.save(new Address("Sato", "st@example.com"));
+        addressRepository.save(new Address("Taro Yamada", "hnk@example.com,Hanako Suzuki"));
 
-        List<AddressItem> uploadList = new ArrayList<>();
-        uploadList.add(new AddressItem("ty@example.com", "Hanako Suzuki"));
-        uploadList.add(new AddressItem("hnk@example.com,Hanako Suzuki", "Taro Yamada"));
+        List<Address> uploadList = new ArrayList<>();
+        uploadList.add(new Address( "Hanako Suzuki", "ty@example.com"));
+        uploadList.add(new Address("Taro Yamada", "hnk@example.com,Hanako Suzuki" ));
 
         List<String> actual = target.checkDuplicateAddress(uploadList);
 
         List<String> expected = Arrays.asList("already registered ty@example.com", "already registered hnk@example.com,Hanako Suzuki");
         assertThat(actual, is(expected));
-
-        addressBook = new AddressBook();
-        addressBook.save();
     }
-
 }
