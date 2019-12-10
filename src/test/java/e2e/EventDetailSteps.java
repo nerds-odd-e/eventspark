@@ -19,6 +19,7 @@ public class EventDetailSteps {
 
     @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
     public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
+        eventRespository.deleteAll();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
                 .id("1")
