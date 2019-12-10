@@ -35,9 +35,6 @@ public class EventDetailSteps {
                 .detailText("ゴスペルワークショップ")
                 .build();
         eventRespository.insert(event);
-        Optional<Event> result = eventRespository.findById("1");
-        assertEquals("ゴスペルワークショップ", result.get().getEventName());
-
     }
 
     @When("イベント詳細ページを表示する")
