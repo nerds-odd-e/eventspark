@@ -5,8 +5,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class EventDetailSteps {
-    @Given("ゴスペルワークショップのイベント名のデータが１件DBにあること")
-    public void ゴスペルワークショップのイベント名のデータが１件dbにあること() {
+    @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
+    public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
