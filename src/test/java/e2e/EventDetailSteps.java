@@ -15,11 +15,11 @@ public class EventDetailSteps {
     private EventDetailPage eventDetailPage;
 
     @Autowired
-    private EventRepository eventRespository;
+    private EventRepository eventRepository;
 
     @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
     public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
-        eventRespository.deleteAll();
+        eventRepository.deleteAll();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
                 .id("1")
@@ -34,7 +34,7 @@ public class EventDetailSteps {
                 .publishedDateTime(currentDateTime)
                 .detailText("ゴスペルワークショップ")
                 .build();
-        eventRespository.insert(event);
+        eventRepository.insert(event);
     }
 
     @When("{string}のイベント詳細ページを表示する")
@@ -44,7 +44,11 @@ public class EventDetailSteps {
 
     @Then("{string}のイベントの内容とチケットの内容を表示する。")
     public void _のイベントの内容とチケットの内容を表示する(String title) {
-        Assert.assertEquals(title, eventDetailPage.getTitleText());
+        Event event = eventRepository.findByEventName(title);
+
+        Assert.assertEquals(event.getEventName(), eventDetailPage.getTitleText());
+        Assert.assertEquals(event.getLocation(), eventDetailPage.getLocationText());
+
     }
 
     @When("イベントプレビューページを表示する")

@@ -19,6 +19,14 @@ public class EventDetailPage extends BasePage {
         return title.getText();
     }
 
+    @FindBy(id = "location")
+    private WebElement location;
+
+    public String getLocationText() {
+        return location.getText();
+    }
+
+
     public void setTitle(WebElement title) {
         this.title = title;
     }
