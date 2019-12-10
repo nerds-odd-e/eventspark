@@ -13,6 +13,10 @@
         <div id="title" th:text="${event.getEventName()}"></div>
         <div id="location" th:text="${event.getLocation()}"></div>
         <div id="create_username" th:text="${event.getCreateUserName()}"></div>
+        <div id="summary" th:text="${event.getSummary()}"></div>
+        <div id="start_date" th:text="${event.getEventStartDateTime()}"></div>
+        <div id="end_date" th:text="${event.getEventEndDateTime()}"></div>
+        <div id="detail" th:text="${event.getDetailText()}"></div>
     </div>
 </div>
 </body>

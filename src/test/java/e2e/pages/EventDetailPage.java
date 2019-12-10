@@ -21,6 +21,18 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "create_username")
     private WebElement createUserName;
 
+    @FindBy(id = "summary")
+    private WebElement summary;
+
+    @FindBy(id = "start_date")
+    private WebElement startDate;
+
+    @FindBy(id = "end_date")
+    private WebElement endDate;
+
+    @FindBy(id = "detail")
+    private WebElement detail;
+
     public String getTitleText() {
         return title.getText();
     }
@@ -31,6 +43,19 @@ public class EventDetailPage extends BasePage {
 
     public String getCreateUserNameText() {
         return createUserName.getText();
+    }
+
+    public String getSummaryText() {
+        return summary.getText();
+    }
+    public String getStartDateText() {
+        return startDate.getText();
+    }
+    public String getEndDateText() {
+        return endDate.getText();
+    }
+    public String getDetailText() {
+        return detail.getText();
     }
 
     public void userVisitsEventDetailPage(String eventName) {

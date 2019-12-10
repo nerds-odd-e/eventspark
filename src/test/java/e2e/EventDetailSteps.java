@@ -50,6 +50,11 @@ public class EventDetailSteps {
         Assert.assertEquals(event.getLocation(), eventDetailPage.getLocationText());
         Assert.assertEquals(event.getCreateUserName(), eventDetailPage.getCreateUserNameText());
 
+        Assert.assertEquals(event.getSummary(), eventDetailPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(event.getEventStartDateTime()), eventDetailPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(event.getEventEndDateTime()), eventDetailPage.getEndDateText());
+        Assert.assertEquals(event.getDetailText(), eventDetailPage.getDetailText());
+
     }
 
     @When("イベントプレビューページを表示する")
