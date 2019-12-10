@@ -23,4 +23,15 @@ public class EventDetailSteps {
         throw new cucumber.api.PendingException();
     }
 
+    @When("イベントプレビューページを表示する")
+    public void イベントプレビューページを表示する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Then("ゴスペルワークショプのイベントのプレビュー内容とチケットの内容を表示する。")
+    public void ゴスペルワークショプのイベントのプレビュー内容とチケットの内容を表示する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
 }
