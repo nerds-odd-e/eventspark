@@ -1,9 +1,11 @@
 package e2e.pages;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.springframework.core.env.Environment;
 
-public class EventRegisterPage {
+public class EventRegisterPage extends BasePage {
 
     @FindBy(id = "user-name")
     private WebElement userName;
@@ -19,6 +21,10 @@ public class EventRegisterPage {
 
     @FindBy(id = "purchase")
     private WebElement purchaseButton;
+
+    EventRegisterPage(WebDriver driver, Environment environment) {
+        super(driver, environment);
+    }
 
     public String getUserName() {
         return userName.getText();
@@ -39,5 +45,10 @@ public class EventRegisterPage {
     public void purchase() {
         purchaseButton.click();
     }
+
+    public void goToPurchasedPage() {
+        this.goToPage("/purchased");
+    }
+
 
 }
