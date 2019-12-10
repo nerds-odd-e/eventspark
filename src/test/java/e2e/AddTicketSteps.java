@@ -1,21 +1,24 @@
 package e2e;
 
+import e2e.pages.AddTicketPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class AddTicketSteps {
+
+    @Autowired
+    private AddTicketPage addTicketPage;
+
     @Given("チケット追加画面を表示している")
     public void チケット追加画面を表示している() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        addTicketPage.goToAddTicketPage("a");
     }
 
-
-    @When("チケット名に「」を入力する")
-    public void チケット名に_を入力する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @When("チケット名{string}を入力する")
+    public void チケット名を入力する(String ticketName) {
+        addTicketPage.fillTicketName(ticketName);
     }
 
     @When("金額に「」を入力する")
@@ -71,6 +74,5 @@ public class AddTicketSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
-
 
 }

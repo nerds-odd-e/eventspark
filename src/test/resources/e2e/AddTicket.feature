@@ -3,18 +3,18 @@ Feature: Add Ticket
     Given チケット追加画面を表示している
 
 @developing
-# case for success case
 # success case
   Scenario: add a ticket
-    When チケット名「ゴスペル」を入力する
-    And 金額「1000円」を入力する
+    When チケット名"ゴスペル"を入力する
+    And 金額"1000円"を入力する
     And 枚数「100枚」入力する
     And 一人当たりの上限数を「５枚」と入力する
     And 「登録」ボタンをクリックする
     Then イベント詳細ページに戻る
     And 入力したチケット情報が表示されている
 
-# Failer case
+@developing
+# Failure case
   Scenario: 全ての項目を空で登録ボタンを押下
     When チケット名に「」を入力する
     And 金額に「」を入力する
