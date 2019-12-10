@@ -26,6 +26,12 @@ public class EventDetailPage extends BasePage {
         return location.getText();
     }
 
+    @FindBy(id = "create_username")
+    private WebElement createUserName;
+
+    public String getCreateUserNameText() {
+        return createUserName.getText();
+    }
 
     public void setTitle(WebElement title) {
         this.title = title;

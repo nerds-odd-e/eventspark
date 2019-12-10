@@ -48,6 +48,7 @@ public class EventDetailSteps {
 
         Assert.assertEquals(event.getEventName(), eventDetailPage.getTitleText());
         Assert.assertEquals(event.getLocation(), eventDetailPage.getLocationText());
+        Assert.assertEquals(event.getCreateUserName(), eventDetailPage.getCreateUserNameText());
 
     }
 
