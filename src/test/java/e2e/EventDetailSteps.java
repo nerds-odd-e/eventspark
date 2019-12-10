@@ -44,17 +44,15 @@ public class EventDetailSteps {
 
     @Then("{string}のイベントの内容とチケットの内容を表示する。")
     public void _のイベントの内容とチケットの内容を表示する(String title) {
-        Event event = eventRepository.findByEventName(title);
+        Event expectedEvent = eventRepository.findByEventName(title);
 
-        Assert.assertEquals(event.getEventName(), eventDetailPage.getTitleText());
-        Assert.assertEquals(event.getLocation(), eventDetailPage.getLocationText());
-        Assert.assertEquals(event.getCreateUserName(), eventDetailPage.getCreateUserNameText());
-
-        Assert.assertEquals(event.getSummary(), eventDetailPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(event.getEventStartDateTime()), eventDetailPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(event.getEventEndDateTime()), eventDetailPage.getEndDateText());
-        Assert.assertEquals(event.getDetailText(), eventDetailPage.getDetailText());
-
+        Assert.assertEquals(expectedEvent.getEventName(), eventDetailPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventDetailPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventDetailPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
     }
 
     @When("イベントプレビューページを表示する")

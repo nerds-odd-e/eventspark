@@ -48,12 +48,15 @@ public class EventDetailPage extends BasePage {
     public String getSummaryText() {
         return summary.getText();
     }
+
     public String getStartDateText() {
         return startDate.getText();
     }
+
     public String getEndDateText() {
         return endDate.getText();
     }
+
     public String getDetailText() {
         return detail.getText();
     }
