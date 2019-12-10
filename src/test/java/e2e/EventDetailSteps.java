@@ -22,16 +22,16 @@ public class EventDetailSteps {
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
                 .id("1")
-                .eventName("ゴスペルワークショプ")
+                .eventName("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
                 .createUserName("ゆうこ")
                 .createDateTime(currentDateTime)
                 .updateDateTime(currentDateTime)
-                .summary("ゴスペルワークショプのイベントです。")
+                .summary("ゴスペルワークショップのイベントです。")
                 .eventStartDateTime(currentDateTime)
                 .eventEndDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
-                .detailText("ゴスペルワークショプ")
+                .detailText("ゴスペルワークショップ")
                 .build();
         eventRespository.insert(event);
         Optional<Event> result = eventRespository.findById("1");
@@ -45,8 +45,8 @@ public class EventDetailSteps {
         throw new cucumber.api.PendingException();
     }
 
-    @Then("ゴスペルワークショプのイベントの内容とチケットの内容を表示する。")
-    public void ゴスペルワークショプのイベントの内容とチケットの内容を表示する() {
+    @Then("ゴスペルワークショップのイベントの内容とチケットの内容を表示する。")
+    public void ゴスペルワークショップのイベントの内容とチケットの内容を表示する() {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
@@ -57,8 +57,8 @@ public class EventDetailSteps {
         throw new cucumber.api.PendingException();
     }
 
-    @Then("ゴスペルワークショプのイベントのプレビュー内容とチケットの内容を表示する。")
-    public void ゴスペルワークショプのイベントのプレビュー内容とチケットの内容を表示する() {
+    @Then("ゴスペルワークショップのイベントのプレビュー内容とチケットの内容を表示する。")
+    public void ゴスペルワークショップのイベントのプレビュー内容とチケットの内容を表示する() {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
