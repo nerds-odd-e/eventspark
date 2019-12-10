@@ -30,4 +30,9 @@ public class AddEventSteps {
         throw new cucumber.api.PendingException();
     }
 
+    @When("イベント追加ページを表示する")
+    public void イベント追加ページを表示する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
 }
