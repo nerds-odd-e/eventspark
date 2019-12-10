@@ -4,6 +4,7 @@ Feature: Contact List
 
 # case for name is empty
 # success case
+
   Scenario: add an address
     Given ContactList address is "xxx@gmail.com"
     And ContactList is empty
