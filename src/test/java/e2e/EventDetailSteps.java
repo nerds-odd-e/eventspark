@@ -15,9 +15,9 @@ public class EventDetailSteps {
     public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
     }
 
-    @When("イベント詳細ページを表示する")
-    public void イベント詳細ページを表示する() {
-        eventDetailPage.userVisitsEventDetailPage("aa");
+    @When("{string}のイベント詳細ページを表示する")
+    public void _のイベント詳細ページを表示する(String title) {
+        eventDetailPage.userVisitsEventDetailPage(title);
     }
 
     @Then("{string}のイベントの内容とチケットの内容を表示する。")
