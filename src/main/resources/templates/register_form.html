@@ -16,24 +16,23 @@
             <h1>Eventspark</h1>
             <form id="registrationForm" method="post" th:object="${form}">
                 <div class="form-group">
-                    <label for="user-name">名前</label>
-                    <input type="text" class="form-control" name="name" id="user-name" placeholder="名前" th:value="${form.name}" />
+                    <label for="user-name">First name</label>
+                    <input type="text" class="form-control" name="name" id="user-name" placeholder="First name" th:value="${form.name}" />
                 </div>
                 <div class="form-group">
-                    <label for="mail-address">メールアドレス</label>
-                    <input type="text" class="form-control" name="address" id="mail-address" placeholder="メールアドレス" th:value="${form.address}" />
+                    <label for="mail-address">Mail address</label>
+                    <input type="text" class="form-control" name="address" id="mail-address" placeholder="Mail address" th:value="${form.address}" />
                 </div>
                 <!--チケット種別をリスト表示-->
-                <select name="ticketType" id="ticket-type" th:value="${form.ticketType}">
+                <div class="form-inline">
+                <select class="form-control" name="ticketType" id="ticket-type" th:value="${form.ticketType}">
                     <option value="1day">1day</option>
                     <option value="2days">2days</option>
                 </select>
-                <div class="form-group">
-                    <label for="ticket-number">枚数</label>
-                    <input type="text" class="form-control" name="ticketCount" id="ticket-number" placeholder="枚数" th:value="${form.ticketCount}" />
+                    <input type="text" class="form-control" name="ticketCount" id="ticket-number"  th:value="${form.ticketCount}" /> Ticket
                 </div>
                 <input type="hidden" class="form-control" name="eventId" id="event-id"  th:value="${form.eventId}" />
-                <button type="button" id="purchase" class="btn btn-default">購入</button>
+                <button type="button" id="purchase" class="btn btn-default">BUY</button>
             </form>
         </div>
     </div>
