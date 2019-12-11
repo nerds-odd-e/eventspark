@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class TicketController {
 
-    @GetMapping("/admin/event/{eventName}/ticket")
-    public String add(@PathVariable("eventName") String eventName) {
+    @GetMapping("/admin/event/{name}/ticket")
+    public String add(@PathVariable("name") String eventName) {
         return "add-ticket";
     }
 }

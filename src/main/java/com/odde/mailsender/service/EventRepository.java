@@ -4,5 +4,5 @@ import com.odde.mailsender.data.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface EventRepository extends MongoRepository<Event, String> {
-    Event findByEventName(String title);
+    Event findByName(String title);
 }

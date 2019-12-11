@@ -19,7 +19,7 @@ public class Event {
     /**
      * イベント名
      */
-    private String eventName;
+    private String name;
 
     /**
      * 開催場所

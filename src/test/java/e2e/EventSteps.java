@@ -28,7 +28,7 @@ public class EventSteps {
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
                 .id("1")
-                .eventName("ゴスペルワークショップ")
+                .name("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
                 .createUserName("ゆうこ")
                 .createDateTime(currentDateTime)
@@ -49,9 +49,9 @@ public class EventSteps {
 
     @Then("{string}のイベントの内容とチケットの内容のイベント詳細を表示する。")
     public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String title) {
-        Event expectedEvent = eventRepository.findByEventName(title);
+        Event expectedEvent = eventRepository.findByName(title);
 
-        Assert.assertEquals(expectedEvent.getEventName(), eventDetailPage.getEventNameText());
+        Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
         Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailPage.getCreateUserNameText());
         Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
@@ -67,9 +67,9 @@ public class EventSteps {
 
     @Then("{string}のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する。")
     public void _のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する(String eventName) {
-        Event expectedEvent = eventRepository.findByEventName(eventName);
+        Event expectedEvent = eventRepository.findByName(eventName);
 
-        Assert.assertEquals(expectedEvent.getEventName(), eventDetailForOwnerPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
         Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailForOwnerPage.getCreateUserNameText());
         Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());

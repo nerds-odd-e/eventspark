@@ -16,14 +16,14 @@ public class EventController {
     @GetMapping("/event/{eventName}")
     public String showDetail(@PathVariable("eventName") String eventName, Model model) {
 
-        Event event = eventRepository.findByEventName(eventName);
+        Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
         return "event-detail";
     }
 
     @GetMapping("/owner/event/{eventName}")
     public String showDetailForOwner(@PathVariable("eventName") String eventName, Model model) {
-        Event event = eventRepository.findByEventName(eventName);
+        Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
         return "event-detail-owner";
     }

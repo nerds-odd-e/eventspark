@@ -35,7 +35,7 @@ public class EventControllerTest {
     public void displayEventDetail() throws Exception {
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
-                .eventName("ゴスペルワークショップ")
+                .name("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
                 .createUserName("ゆうこ")
                 .createDateTime(currentDateTime)
@@ -48,7 +48,7 @@ public class EventControllerTest {
                 .build();
         eventRepository.insert(event);
 
-        mvc.perform(get("/event/" + event.getEventName()))
+        mvc.perform(get("/event/" + event.getName()))
                 .andExpect(model().attribute("event", event));
     }
 }
