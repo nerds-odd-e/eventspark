@@ -1,9 +1,8 @@
 Feature: Event
 
   @developing
-  Scenario: ゆうこさんがゴスペルワークショップイベントをEventSparkに追加する
-    Given ゆうこさんが存在する
-    And イベント追加ページを表示する
+  Scenario: ゴスペルワークショップイベントをEventSparkに追加する
+    Given イベント追加ページを表示する
     When イベント追加ページにゴスペルワークショップの情報を入力する
     Then  新しいイベントが追加される
     And 入力したゴスペルワークショップの情報が詳細ページに表示される

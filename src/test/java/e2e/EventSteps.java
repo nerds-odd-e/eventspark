@@ -2,6 +2,7 @@ package e2e;
 
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.service.EventRepository;
+import e2e.pages.AddEventPage;
 import e2e.pages.EventDetailPage;
 import e2e.pages.EventDetailForOwnerPage;
 import io.cucumber.java.en.Given;
@@ -21,6 +22,9 @@ public class EventSteps {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private AddEventPage addEventPage;
 
     @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
     public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
@@ -78,16 +82,9 @@ public class EventSteps {
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
     }
 
-    @Given("ゆうこさんが存在する")
-    public void ゆうこさんが存在する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
     @Given("イベント追加ページを表示する")
     public void イベント追加ページを表示する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        addEventPage.userVisitsAddEventPage();
     }
 
     @When("イベント追加ページにゴスペルワークショップの情報を入力する")
