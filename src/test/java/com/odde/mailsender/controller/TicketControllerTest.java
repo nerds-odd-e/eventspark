@@ -62,12 +62,12 @@ public class TicketControllerTest {
                 .name("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
                 .owner("ゆうこ")
-                .createDateTime(currentDateTime)
-                .updateDateTime(currentDateTime)
+                .createDateTime(null)
+                .updateDateTime(null)
                 .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(currentDateTime)
-                .endDateTime(currentDateTime)
-                .publishedDateTime(currentDateTime)
+                .startDateTime(null)
+                .endDateTime(null)
+                .publishedDateTime(null)
                 .detailText("ゴスペルワークショップ")
                 .build();
         //when
@@ -77,8 +77,8 @@ public class TicketControllerTest {
             .param("ticketTotal", String.valueOf(ticketForm.getTicketTotal()))
             .param("ticketLimit", String.valueOf(ticketForm.getTicketLimit()))
              .param("eventId", ticketForm.getEventId()))
-                 .andExpect(model().attribute("ticket", ticket));
-                 //.andExpect(model().attribute("event", event));
+                 .andExpect(model().attribute("ticket", ticket))
+                 .andExpect(model().attribute("event", event));
                  //.andExpect(redirectedUrl("/owner/event/ゴスペルワークショップ"));
         //test
 

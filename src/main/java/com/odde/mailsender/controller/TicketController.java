@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.time.LocalDateTime;
+
 @Controller
 public class TicketController {
     @Autowired
@@ -39,13 +42,26 @@ public class TicketController {
 
     @PostMapping("/admin/event/{eventName}/ticket")
     public String addTicket(Model model){
-        Event event = Event.builder().build();
         Ticket ticket = Ticket.builder()
                 .ticketName("ticketName")
                 .ticketPrice(1)
                 .ticketTotal(1)
                 .ticketLimit(1)
                 .eventId("1").build();
+
+
+        Event event = Event.builder()
+                .name("ゴスペルワークショップ")
+                .location("東京国際フォーラム")
+                .owner("ゆうこ")
+                .createDateTime(null)
+                .updateDateTime(null)
+                .summary("ゴスペルワークショップのイベントです。")
+                .startDateTime(null)
+                .endDateTime(null)
+                .publishedDateTime(null)
+                .detailText("ゴスペルワークショップ")
+                .build();
         model.addAttribute("event", event);
         model.addAttribute("ticket", ticket);
         return "event-detail-owner";
