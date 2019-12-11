@@ -78,8 +78,8 @@ public class TicketControllerTest {
             .param("ticketLimit", String.valueOf(ticketForm.getTicketLimit()))
              .param("eventId", ticketForm.getEventId()))
                  .andExpect(model().attribute("ticket", ticket))
-                 .andExpect(model().attribute("event", event));
-                 //.andExpect(redirectedUrl("/owner/event/ゴスペルワークショップ"));
+                 .andExpect(model().attribute("event", event))
+                    .andExpect(view().name("event-detail-owner"));
         //test
 
     }
