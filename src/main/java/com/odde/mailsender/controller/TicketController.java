@@ -33,13 +33,6 @@ public class TicketController {
         return "add-ticket";
     }
 
-//    @PostMapping("/admin/event/{eventName}/ticket")
-//    public String addTicket(@PathVariable("eventName") String eventName,
-//                            @ModelAttribute("form") TicketForm form, BindingResult result, Model model){
-//        addTicketService.addTicket(form);
-//        return "event-detail-owner";
-//    }
-
     @PostMapping("/admin/event/{name}/ticket")
     public String addTicket(Model model, @PathVariable("name") String eventName){
         Ticket ticket = Ticket.builder()
