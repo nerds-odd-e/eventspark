@@ -2,6 +2,7 @@ package com.odde.mailsender.data;
 
 import lombok.Builder;
 import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 
 @Data

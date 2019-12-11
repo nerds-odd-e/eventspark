@@ -1,6 +1,8 @@
 package com.odde.mailsender.service;
 
 import com.odde.mailsender.data.Ticket;
+import com.odde.mailsender.form.TicketForm;
+import io.cucumber.java.bs.A;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ public class AddTicketServiceTest {
     @Autowired
     private AddTicketService addTicketService;
 
+
     @Before
     public void setUp() {
         ticketRepository.deleteAll();
@@ -32,18 +35,23 @@ public class AddTicketServiceTest {
     @Test
     public void aTicketCanBeAddedToTheTicketRespository() {
         // given
-        Ticket ticket = Ticket.builder()
-                .ticketName("ticketName")
-                .ticketPrice(1L)
-                .ticketTotal(1L)
-                .ticketLimit(1)
-                .eventId("1")
-                .build();
+        TicketForm ticketForm = new TicketForm("ticketName", 1L, 1L, 1, "1");
         // when
-        addTicketService.addTicket(ticket);
+        addTicketService.addTicket(ticketForm);
         // then
         int ticketCount = ticketRepository.findAll().size();
         assertEquals(ticketCount, 1);
     }
+
+//    @Test
+//    public void TicketCanBeAddedFromFormToTheTicketRespository(){
+//        // given
+//        TicketForm ticketForm = new TicketForm("ticketName", 1L, 1L, 1, "1");
+//        // when
+//        Ticket ticket = addTicketService.convertToTicket(ticketForm);
+//        // then
+//        Ticket expected = new Ticket("ticketName", 1L, 1L, 1, "1");
+//        assertThat(ticket.getId(), is(expected.getId()));
+//    }
 
 }
