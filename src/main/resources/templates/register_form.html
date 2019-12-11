@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Eventspark</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <script th:src="@{/lib/jquery-3.2.1.js}"></script>
+    <script th:src="@{/js/registration.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h1>Eventspark</h1>
+            <form id="registrationForm" method="post" th:object="${form}">
+                <div class="form-group">
+                    <label for="user-name">名前</label>
+                    <input type="text" class="form-control" name="name" id="user-name" placeholder="名前" th:value="${form.name}" />
+                </div>
+                <div class="form-group">
+                    <label for="mail-address">メールアドレス</label>
+                    <input type="text" class="form-control" name="address" id="mail-address" placeholder="メールアドレス" th:value="${form.address}" />
+                </div>
+                <!--チケット種別をリスト表示-->
+                <select name="ticketType" id="ticket-type" th:value="${form.ticketType}">
+                    <option value="1day">1day</option>
+                    <option value="2days">2days</option>
+                </select>
+                <div class="form-group">
+                    <label for="ticket-number">枚数</label>
+                    <input type="text" class="form-control" name="ticketCount" id="ticket-number" placeholder="枚数" th:value="${form.ticketCount}" />
+                </div>
+                <input type="hidden" class="form-control" name="eventId" id="event-id"  th:value="${form.eventId}" />
+                <button type="button" id="purchase" class="btn btn-default">購入</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
