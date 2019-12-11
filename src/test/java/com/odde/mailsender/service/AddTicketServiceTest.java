@@ -32,7 +32,13 @@ public class AddTicketServiceTest {
     @Test
     public void aTicketCanBeAddedToTheTicketRespository() {
         // given
-        Ticket ticket = new Ticket("ticketName", 1L, 1L, 1, "1");
+        Ticket ticket = Ticket.builder()
+                .ticketName("ticketName")
+                .ticketPrice(1L)
+                .ticketTotal(1L)
+                .ticketLimit(1)
+                .eventId("1")
+                .build();
         // when
         addTicketService.addTicket(ticket);
         // then
