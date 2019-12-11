@@ -32,6 +32,9 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "detail")
     private WebElement detail;
 
+    @FindBy(id = "go_to_add_ticket_page")
+    private WebElement goToAddTicketPageButton;
+
     public String getTitleText() {
         return eventName.getText();
     }
@@ -63,4 +66,6 @@ public class EventDetailForOwnerPage extends BasePage {
     public void userVisitsEventPreviewPage(String eventName) {
         this.goToPage("/owner/event/" + eventName);
     }
+
+    public void submit() { goToAddTicketPageButton.submit(); }
 }

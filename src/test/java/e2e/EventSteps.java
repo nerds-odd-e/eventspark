@@ -137,4 +137,16 @@ public class EventSteps {
         throw new cucumber.api.PendingException();
     }
 
+
+
+    @When("オーナー用イベント詳細ページのチケット追加ボタンを押す")
+    public void オーナー用イベント詳細ページのチケット追加ボタンを押す() {
+        eventDetailForOwnerPage.submit();
+    }
+
+    @Then("チケット追加ページが表示されていること")
+    public void チケット追加ページが表示されていること() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
 }
