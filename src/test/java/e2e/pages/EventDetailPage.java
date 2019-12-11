@@ -18,8 +18,8 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "location")
     private WebElement location;
 
-    @FindBy(id = "create_username")
-    private WebElement createUserName;
+    @FindBy(id = "owner")
+    private WebElement ownner;
 
     @FindBy(id = "summary")
     private WebElement summary;
@@ -42,7 +42,7 @@ public class EventDetailPage extends BasePage {
     }
 
     public String getCreateUserNameText() {
-        return createUserName.getText();
+        return ownner.getText();
     }
 
     public String getSummaryText() {
