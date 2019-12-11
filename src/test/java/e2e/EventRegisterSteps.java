@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.Message;
@@ -32,16 +33,30 @@ public class EventRegisterSteps {
     @Given("以下が入力されている")
     public void 以下が入力されている(io.cucumber.datatable.DataTable dataTable) {
         名前が入力されている(dataTable.cell(0, 1));
-        メールアドレスが入力されている(dataTable.cell(1, 1));
-        チケット種別が選択されている(dataTable.cell(2, 1));
-        枚数が入力されている(dataTable.cell(3, 1));
+        苗字が入力されている(dataTable.cell(1, 1));
+        会社名が入力されている(dataTable.cell(2, 1));
+        メールアドレスが入力されている(dataTable.cell(3, 1));
+        チケット種別が選択されている(dataTable.cell(4, 1));
+        枚数が入力されている(dataTable.cell(5, 1));
     }
-//    public void 以下が入力されている(List<RegisterForm> registerForm) {
+
+    //    public void 以下が入力されている(List<RegisterForm> registerForm) {
 //        名前が入力されている(registerForm.get(0).getName());
 //        メールアドレスが入力されている(registerForm.get(0).getAddress());
 //        チケット種別が選択されている(registerForm.get(0).getTicketType());
 //        枚数が入力されている(registerForm.get(0).getTicketCount().toString());
 //    }
+
+    @Given("会社名{string}が入力されている")
+    private void 会社名が入力されている(String input) {
+        eventRegisterPage.fillCompanyName(input);
+    }
+
+    @Given("苗字{string}が入力されている")
+    private void 苗字が入力されている(String input) {
+        eventRegisterPage.fillLastName(input);
+    }
+
 
     @When("購入ボタンを押す")
     public void 購入ボタンを押す() {
@@ -66,8 +81,7 @@ public class EventRegisterSteps {
 
     @Given("名前{string}が入力されている")
     public void 名前が入力されている(String input) {
-        eventRegisterPage.fillUserName(input);
-
+        eventRegisterPage.fillFirstName(input);
     }
 
     @And("メールアドレス{string}が入力されている")
@@ -79,11 +93,15 @@ public class EventRegisterSteps {
     @And("枚数{int}が入力されている")
     public void 枚数が入力されている(String input) {
         eventRegisterPage.fillTicketCount(input);
-
     }
 
     @And("チケット種別{int}が選択されている")
     public void チケット種別が選択されている(String input) {
         eventRegisterPage.fillTicketType(input);
+    }
+
+    @Then("参加者登録画面エラーエリアに{string}と表示される")
+    public void 参加者登録画面エラーエリアに_と表示される(String string) {
+        Assert.assertEquals(string, eventRegisterPage.getErrorText());
     }
 }

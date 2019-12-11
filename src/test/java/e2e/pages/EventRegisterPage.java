@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventRegisterPage extends BasePage {
 
-    @FindBy(id = "user-name")
-    private WebElement userName;
+    @FindBy(id = "first-name")
+    private WebElement firstName;
+
+    @FindBy(id = "last-name")
+    private WebElement lastName;
+
+    @FindBy(id = "company-name")
+    private WebElement companyName;
 
     @FindBy(id = "mail-address")
     private WebElement mailAddress;
@@ -24,12 +30,15 @@ public class EventRegisterPage extends BasePage {
     @FindBy(id = "purchase")
     private WebElement purchaseButton;
 
+    @FindBy(id = "error-area")
+    private WebElement errorArea;
+
     EventRegisterPage(WebDriver driver, Environment environment) {
         super(driver, environment);
     }
 
-    public String getUserName() {
-        return userName.getText();
+    public String getFirstName() {
+        return firstName.getText();
     }
 
     public String getMailAddress() {
@@ -53,10 +62,17 @@ public class EventRegisterPage extends BasePage {
     }
 
 
-    public void fillUserName(String input) {
-        userName.sendKeys(input);
+    public void fillFirstName(String input) {
+        firstName.sendKeys(input);
     }
 
+    public void fillLastName(String input) {
+        lastName.sendKeys(input);
+    }
+
+    public void fillCompanyName(String input) {
+        companyName.sendKeys(input);
+    }
     public void fillMailAddress(String input) {
         mailAddress.sendKeys(input);
     }
@@ -67,5 +83,10 @@ public class EventRegisterPage extends BasePage {
 
     public void fillTicketType(String input) {
         ticketType.sendKeys(input);
+    }
+
+
+    public String getErrorText() {
+        return errorArea.getText();
     }
 }
