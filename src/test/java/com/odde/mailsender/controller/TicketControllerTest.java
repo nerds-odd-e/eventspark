@@ -57,6 +57,21 @@ public class TicketControllerTest {
                 .eventId(ticketForm.getEventId())
                 .build();
 
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Event eventEntity = Event.builder()
+                .name("ゴスペルワークショップ")
+                .location("東京国際フォーラム")
+                .owner("ゆうこ")
+                .createDateTime(currentDateTime)
+                .updateDateTime(currentDateTime)
+                .summary("ゴスペルワークショップのイベントです。")
+                .startDateTime(currentDateTime)
+                .endDateTime(currentDateTime)
+                .publishedDateTime(currentDateTime)
+                .detailText("ゴスペルワークショップ")
+                .build();
+        eventRepository.insert(eventEntity);
+
         Event event = eventRepository.findByName("ゴスペルワークショップ");
         //when
          mockMvc.perform(post("/admin/event/ゴスペルワークショップ/ticket")
@@ -67,9 +82,7 @@ public class TicketControllerTest {
              .param("eventId", ticketForm.getEventId()))
                  .andExpect(model().attribute("ticket", ticket))
                  .andExpect(model().attribute("event", event))
-                    .andExpect(view().name("event-detail-owner"));
-        //test
-
+                     .andExpect(view().name("event-detail-owner"));
     }
 
 }
