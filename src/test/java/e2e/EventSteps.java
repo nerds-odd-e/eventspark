@@ -3,14 +3,13 @@ package e2e;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.service.EventRepository;
 import e2e.pages.EventDetailPage;
-import e2e.pages.EventPreviewPage;
+import e2e.pages.EventDetailForAdminPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Struct;
 import java.time.LocalDateTime;
 
 public class EventSteps {
@@ -19,7 +18,7 @@ public class EventSteps {
     private EventDetailPage eventDetailPage;
 
     @Autowired
-    private EventPreviewPage eventPreviewPage;
+    private EventDetailForAdminPage eventDetailForAdminPage;
 
     @Autowired
     private EventRepository eventRepository;
@@ -49,8 +48,8 @@ public class EventSteps {
         eventDetailPage.userVisitsEventDetailPage(title);
     }
 
-    @Then("{string}のイベントの内容とチケットの内容を表示する。")
-    public void _のイベントの内容とチケットの内容を表示する(String title) {
+    @Then("{string}のイベントの内容とチケットの内容のイベント詳細を表示する。")
+    public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String title) {
         Event expectedEvent = eventRepository.findByEventName(title);
 
         Assert.assertEquals(expectedEvent.getEventName(), eventDetailPage.getTitleText());
@@ -62,22 +61,22 @@ public class EventSteps {
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
     }
 
-    @When("{string}のイベントプレビューページを表示する")
-    public void _のイベントプレビューページを表示する(String eventName) {
-        eventPreviewPage.userVisitsEventPreviewPage(eventName);
+    @When("{string}の管理者用イベント詳細ページを表示する")
+    public void _の管理者用イベント詳細ページを表示する(String eventName) {
+        eventDetailForAdminPage.userVisitsEventPreviewPage(eventName);
     }
 
-    @Then("{string}のイベントの内容とチケットの内容のイベントプレビューページを表示する。")
-    public void _のイベントの内容とチケットの内容のイベントプレビューページを表示する(String eventName) {
+    @Then("{string}のイベントの内容とチケットの内容の管理者用イベント詳細ページを表示する。")
+    public void _のイベントの内容とチケットの内容の管理者用イベント詳細ページを表示する(String eventName) {
         Event expectedEvent = eventRepository.findByEventName(eventName);
 
-        Assert.assertEquals(expectedEvent.getEventName(), eventPreviewPage.getTitleText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventPreviewPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getCreateUserName(), eventPreviewPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventPreviewPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventPreviewPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventPreviewPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetailText(), eventPreviewPage.getDetailText());
+        Assert.assertEquals(expectedEvent.getEventName(), eventDetailForAdminPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForAdminPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailForAdminPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForAdminPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventDetailForAdminPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventDetailForAdminPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForAdminPage.getDetailText());
     }
 
     @Given("ゆうこさんが存在する")

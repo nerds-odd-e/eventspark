@@ -7,8 +7,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventPreviewPage extends BasePage {
-    public EventPreviewPage(WebDriver driver, Environment environment) {
+public class EventDetailForAdminPage extends BasePage {
+    public EventDetailForAdminPage(WebDriver driver, Environment environment) {
         super(driver, environment);
     }
     @FindBy(id = "event_name")

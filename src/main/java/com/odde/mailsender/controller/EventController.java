@@ -16,10 +16,8 @@ public class EventController {
 
     @GetMapping("/event/{title}")
     public String showDetail(@PathVariable("title") String title, Model model) {
-
         Event event = eventRepository.findByEventName(title);
         model.addAttribute("event", event);
-
         return "event-detail";
     }
 
