@@ -40,8 +40,12 @@ public class TicketControllerTest {
     private EventRepository eventRepository;
 
     @Before
-    public void createEvent() {
+    public void setup() {
         eventRepository.deleteAll();
+    }
+
+    @Before
+    public void createEvent() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event eventEntity = Event.builder()
                 .name("ゴスペルワークショップ")
