@@ -13,10 +13,10 @@ public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
+    @GetMapping("/event/{eventName}")
+    public String showDetail(@PathVariable("eventName") String eventName, Model model) {
 
-    @GetMapping("/event/{title}")
-    public String showDetail(@PathVariable("title") String title, Model model) {
-        Event event = eventRepository.findByEventName(title);
+        Event event = eventRepository.findByEventName(eventName);
         model.addAttribute("event", event);
         return "event-detail";
     }

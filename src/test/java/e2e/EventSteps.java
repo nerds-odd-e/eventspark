@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 
 public class EventSteps {
-
     @Autowired
     private EventDetailPage eventDetailPage;
 
@@ -52,7 +51,7 @@ public class EventSteps {
     public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String title) {
         Event expectedEvent = eventRepository.findByEventName(title);
 
-        Assert.assertEquals(expectedEvent.getEventName(), eventDetailPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getEventName(), eventDetailPage.getEventNameText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
         Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailPage.getCreateUserNameText());
         Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());

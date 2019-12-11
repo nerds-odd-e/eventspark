@@ -12,8 +12,8 @@ public class EventDetailPage extends BasePage {
         super(driver, environment);
     }
 
-    @FindBy(id = "title")
-    private WebElement title;
+    @FindBy(id = "event_name")
+    private WebElement eventName;
 
     @FindBy(id = "location")
     private WebElement location;
@@ -33,8 +33,8 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "detail")
     private WebElement detail;
 
-    public String getTitleText() {
-        return title.getText();
+    public String getEventNameText() {
+        return eventName.getText();
     }
 
     public String getLocationText() {
