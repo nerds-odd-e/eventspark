@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class EventSteps {
     @Autowired
@@ -87,9 +89,24 @@ public class EventSteps {
         addEventPage.userVisitsAddEventPage();
     }
 
-    @When("イベント追加ページにゴスペルワークショップの情報を入力する")
-    public void イベント追加ページにゴスペルワークショップの情報を入力する() {
+    @When("イベント追加ページに以下の情報を入力する")
+    public void イベント追加ページに以下の情報を入力する(Map<String, String> datatable) {
+        String eventName = datatable.get("イベント名");
+        addEventPage.fillEventNameField(eventName);
+        String eventDate = datatable.get("開催日時");
+        addEventPage.fillEventDateField(eventDate);
+        String location = datatable.get("場所");
+        addEventPage.fillLocationField(location);
+        String summary = datatable.get("サマリー");
+        addEventPage.fillSummaryField(summary);
+
         // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
+        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
+        // Double, Byte, Short, Long, BigInteger or BigDecimal.
+        //
+        // For other transformations you can register a DataTableType.
         throw new cucumber.api.PendingException();
     }
 
