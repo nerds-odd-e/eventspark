@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -53,9 +54,8 @@ public class EventSteps {
     }
 
     @Then("{string}のイベントの内容とチケットの内容のイベント詳細を表示する。")
-    public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String title) {
-//@Todo title -> eventName
-        Event expectedEvent = eventRepository.findByName(title);
+    public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String eventName) throws UnsupportedEncodingException {
+        Event expectedEvent = eventRepository.findByName(eventName);
 
         Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
@@ -64,6 +64,7 @@ public class EventSteps {
         Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
         Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
+        Assert.assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
     }
 
     @When("{string}のオーナー用イベント詳細ページを表示する")

@@ -21,6 +21,7 @@
             <p>終了日時 <span th:text="${event.getEndDateTime()}" id="end_date"></span></p>
             <p>イベント情報 <span th:text="${event.getDetailText()}" id="detail"></span></p>
             <p>チケット <span id="ticket"></span>1day 69/100</p>
+            <button type="button" class="btn btn-default"><a id="register_button" th:href="@{/register_form/{eventName}(eventName=${event.getName()})}">購入</a></button>
         </div>
         <div class="col-md-3"></div>
     </div>

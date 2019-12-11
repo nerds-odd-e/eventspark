@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 @Component
 public class EventDetailPage extends BasePage {
     public EventDetailPage(WebDriver driver, Environment environment) {
@@ -33,6 +36,9 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "detail")
     private WebElement detail;
 
+    @FindBy(id = "register_button")
+    private WebElement registerButton;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -59,6 +65,15 @@ public class EventDetailPage extends BasePage {
 
     public String getDetailText() {
         return detail.getText();
+    }
+
+    public String getRegisterButtonURL() throws UnsupportedEncodingException {
+        return URLDecoder.decode(registerButton.getAttribute("href"), "UTF-8");
+    }
+
+    public String getRegisterURL() {
+
+        return "http://localhost:" + getPort() + "/register_form/";
     }
 
     public void userVisitsEventDetailPage(String eventName) {
