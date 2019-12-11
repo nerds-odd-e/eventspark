@@ -3,6 +3,7 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.form.RegisterForm;
+import com.odde.mailsender.service.EventRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,19 @@ public class RegistrationFormControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Before
+    public void setUp() {
+        eventRepository.deleteAll();
+
+        eventRepository.save(Event.builder().id("1").name("TestEvent").build());
+        eventRepository.save(Event.builder().id("2").name("TestEvent2").build());
+
+
+    }
 
     @Test
     public void showRegistrationForm() throws Exception {
