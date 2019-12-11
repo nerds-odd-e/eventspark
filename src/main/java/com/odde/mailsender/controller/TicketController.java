@@ -36,13 +36,7 @@ public class TicketController {
 
     @PostMapping("/admin/event/{name}/ticket")
     public String addTicket(Model model, @PathVariable("name") String eventName, @ModelAttribute("form") TicketForm form){
-        Ticket ticket = Ticket.builder()
-                .ticketName(form.getTicketName())
-                .ticketPrice(form.getTicketPrice())
-                .ticketTotal(form.getTicketTotal())
-                .ticketLimit(form.getTicketLimit())
-                .eventId(form.getEventId()).build();
-
+        Ticket ticket = addTicketService.addTicket(form);
         Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
         model.addAttribute("ticket", ticket);
