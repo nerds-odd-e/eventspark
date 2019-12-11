@@ -3,18 +3,23 @@ package e2e;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.service.EventRepository;
 import e2e.pages.EventDetailPage;
+import e2e.pages.EventPreviewPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Struct;
 import java.time.LocalDateTime;
 
 public class EventSteps {
 
     @Autowired
     private EventDetailPage eventDetailPage;
+
+    @Autowired
+    private EventPreviewPage eventPreviewPage;
 
     @Autowired
     private EventRepository eventRepository;
@@ -57,16 +62,22 @@ public class EventSteps {
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
     }
 
-    @When("イベントプレビューページを表示する")
-    public void イベントプレビューページを表示する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @When("{string}のイベントプレビューページを表示する")
+    public void _のイベントプレビューページを表示する(String eventName) {
+        eventPreviewPage.userVisitsEventPreviewPage(eventName);
     }
 
-    @Then("ゴスペルワークショップのイベントのプレビュー内容とチケットの内容を表示する。")
-    public void ゴスペルワークショップのイベントのプレビュー内容とチケットの内容を表示する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @Then("{string}のイベントの内容とチケットの内容のイベントプレビューページを表示する。")
+    public void _のイベントの内容とチケットの内容のイベントプレビューページを表示する(String eventName) {
+        Event expectedEvent = eventRepository.findByEventName(eventName);
+
+        Assert.assertEquals(expectedEvent.getEventName(), eventPreviewPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventPreviewPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getCreateUserName(), eventPreviewPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventPreviewPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventPreviewPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventPreviewPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventPreviewPage.getDetailText());
     }
 
     @Given("ゆうこさんが存在する")
