@@ -6,6 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
+
 public class AddTicketSteps {
 
     @Autowired
@@ -13,36 +15,22 @@ public class AddTicketSteps {
 
     @Given("チケット追加画面を表示している")
     public void チケット追加画面を表示している() {
+        // FIXME イベント画面から遷移する
         addTicketPage.goToAddTicketPage("a");
     }
 
-    @When("チケット名{string}を入力する")
-    public void チケット名を入力する(String ticketName) {
-        addTicketPage.fillTicketName(ticketName);
-    }
-
-    @When("金額に「」を入力する")
-    public void 金額に_を入力する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
-    @When("枚数に「」を入力する")
-    public void 枚数に_を入力する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
-    @When("一人当たりの上限数に「」を入力する")
-    public void 一人当たりの上限数に_を入力する() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @When("以下の入力を行う")
+    public void 以下の入力を行う(io.cucumber.datatable.DataTable dataTable) {
+        Map<Object, String> table = dataTable.asMap(String.class, String.class);
+        addTicketPage.fillTicketName(table.get("チケット名"));
+        addTicketPage.fillTicketPrice(table.get("金額"));
+        addTicketPage.fillTicketTotal(table.get("枚数"));
+        addTicketPage.fillTicketLimit(table.get("上限数"));
     }
 
     @When("「登録」ボタンをクリックする")
     public void 登録_ボタンをクリックする() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        addTicketPage.submit();
     }
 
     @Then("画面遷移しない")
@@ -74,5 +62,4 @@ public class AddTicketSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
-
 }
