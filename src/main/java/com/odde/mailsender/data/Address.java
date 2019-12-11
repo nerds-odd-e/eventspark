@@ -28,4 +28,12 @@ public class Address {
   public boolean checkValidMailAddress() {
     return this.mailAddress.matches(MAIL_ADDRESS_PATTERN);
   }
+
+  public String getMailAddress() {
+    return this.mailAddress;
+  }
+
+  public String getName() {
+    return this.name;
+  }
 }
