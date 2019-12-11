@@ -2,6 +2,7 @@ package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
+import com.odde.mailsender.form.AddEventForm;
 import com.odde.mailsender.form.TicketForm;
 import com.odde.mailsender.service.AddTicketService;
 import com.odde.mailsender.service.EventRepository;
@@ -34,13 +35,13 @@ public class TicketController {
     }
 
     @PostMapping("/admin/event/{name}/ticket")
-    public String addTicket(Model model, @PathVariable("name") String eventName){
+    public String addTicket(Model model, @PathVariable("name") String eventName, @ModelAttribute("form") TicketForm form){
         Ticket ticket = Ticket.builder()
-                .ticketName("ticketName")
-                .ticketPrice(1)
-                .ticketTotal(1)
-                .ticketLimit(1)
-                .eventId("1").build();
+                .ticketName(form.getTicketName())
+                .ticketPrice(form.getTicketPrice())
+                .ticketTotal(form.getTicketTotal())
+                .ticketLimit(form.getTicketLimit())
+                .eventId(form.getEventId()).build();
 
         Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
