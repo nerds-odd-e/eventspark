@@ -64,42 +64,9 @@ public class EventSteps {
         eventRepository.insert(event);
     }
 
-    @When("{string}のイベント詳細ページを表示する")
-    public void _のイベント詳細ページを表示する(String title) {
-        eventDetailPage.userVisitsEventDetailPage(title);
-    }
-
-    @Then("{string}のイベントの内容とチケットの内容のイベント詳細を表示する。")
-    public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String eventName) throws UnsupportedEncodingException {
-        Event expectedEvent = eventRepository.findByName(eventName);
-
-        Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
-        Assert.assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
-    }
-
     @When("{string}のオーナー用イベント詳細ページを表示する")
     public void _のオーナー用イベント詳細ページを表示する(String eventName) {
         eventDetailForOwnerPage.userVisitsEventPreviewPage(eventName);
-    }
-
-    @Then("{string}のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する。")
-    public void _のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する(String eventName) {
-        Event expectedEvent = eventRepository.findByName(eventName);
-
-        Assert.assertNotNull(expectedEvent);
-        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
     }
 
     @Given("イベント追加ページを表示する")
@@ -194,6 +161,46 @@ public class EventSteps {
     public void 一覧に複数イベントが見れる() {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
+    }
+
+
+
+    @When("ownerが{string}の詳細ページを見る")
+    public void ownerが_の詳細ページを見る(String eventName) {
+        eventDetailForOwnerPage.userVisitsEventPreviewPage(eventName);
+    }
+
+    @Then("{string}のイベントの内容とチケット追加ボタンが表示される")
+    public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) {
+        Event expectedEvent = eventRepository.findByName(eventName);
+
+        Assert.assertNotNull(expectedEvent);
+        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
+    }
+
+    @When("userが{string}の詳細ページを見る")
+    public void userが_の詳細ページを見る(String eventName) {
+        eventDetailPage.userVisitsEventDetailPage(eventName);
+    }
+
+    @Then("{string}のイベントの内容とチケット購入ボタンが表示される")
+    public void _のイベントの内容とチケット購入ボタンが表示される(String eventName) throws UnsupportedEncodingException {
+        Event expectedEvent = eventRepository.findByName(eventName);
+
+        Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
+        Assert.assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
     }
 
 }
