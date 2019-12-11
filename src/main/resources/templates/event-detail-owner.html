@@ -12,10 +12,10 @@
     <div class="row">
         <div id="event_name" th:text="${event.getName()}"></div>
         <div id="location" th:text="${event.getLocation()}"></div>
-        <div id="create_username" th:text="${event.getCreateUserName()}"></div>
+        <div id="create_username" th:text="${event.getOwner()}"></div>
         <div id="summary" th:text="${event.getSummary()}"></div>
-        <div id="start_date" th:text="${event.getEventStartDateTime()}"></div>
-        <div id="end_date" th:text="${event.getEventEndDateTime()}"></div>
+        <div id="start_date" th:text="${event.getStartDateTime()}"></div>
+        <div id="end_date" th:text="${event.getEndDateTime()}"></div>
         <div id="detail" th:text="${event.getDetailText()}"></div>
     </div>
 </div>

@@ -29,7 +29,7 @@ public class Event {
     /**
      * イベント作成者
      */
-    private String createUserName;
+    private String owner;
 
     /**
      * 登録日付
@@ -49,12 +49,12 @@ public class Event {
     /**
      * イベント開始時刻
      */
-    private LocalDateTime eventStartDateTime;
+    private LocalDateTime startDateTime;
 
     /**
      * イベント終了時刻
      */
-    private LocalDateTime eventEndDateTime;
+    private LocalDateTime endDateTime;
 
     /**
      * イベント公開時刻

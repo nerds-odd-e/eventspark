@@ -30,12 +30,12 @@ public class EventSteps {
                 .id("1")
                 .name("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
-                .createUserName("ゆうこ")
+                .owner("ゆうこ")
                 .createDateTime(currentDateTime)
                 .updateDateTime(currentDateTime)
                 .summary("ゴスペルワークショップのイベントです。")
-                .eventStartDateTime(currentDateTime)
-                .eventEndDateTime(currentDateTime)
+                .startDateTime(currentDateTime)
+                .endDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
                 .detailText("ゴスペルワークショップ")
                 .build();
@@ -53,10 +53,10 @@ public class EventSteps {
 
         Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
         Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventDetailPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventDetailPage.getEndDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
     }
 
@@ -71,10 +71,10 @@ public class EventSteps {
 
         Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getCreateUserName(), eventDetailForOwnerPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
         Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventStartDateTime()), eventDetailForOwnerPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEventEndDateTime()), eventDetailForOwnerPage.getEndDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
         Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
     }
 
