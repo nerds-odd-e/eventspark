@@ -104,7 +104,7 @@ public class EventSteps {
         String eventEndDate = datatable.get("イベント終了日時");
         addEventPage.fillEventEndDateField(eventEndDate);
 
-        throw new cucumber.api.PendingException();
+        addEventPage.clickAddButton();
     }
 
     @Then("新しいイベントが追加される")

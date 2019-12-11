@@ -31,6 +31,9 @@ public class AddEventPage extends BasePage{
     @FindBy(id = "event_end_date")
     private WebElement eventEndDate;
 
+    @FindBy(id="add")
+    private WebElement addButton;
+
     public void setName(WebElement name) {
         this.name = name;
     }
@@ -63,5 +66,9 @@ public class AddEventPage extends BasePage{
 
     public void fillEventEndDateField(String eventEndDate) {
         this.eventEndDate.sendKeys(eventEndDate);
+    }
+
+    public void clickAddButton() {
+        this.addButton.click();
     }
 }
