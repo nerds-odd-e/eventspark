@@ -5,6 +5,7 @@ import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.form.TicketForm;
 import com.odde.mailsender.service.AddTicketService;
 import com.odde.mailsender.service.EventRepository;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,25 @@ public class TicketControllerTest {
     @Autowired
     private EventRepository eventRepository;
 
+    @Before
+    public void createEvent() {
+        eventRepository.deleteAll();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Event eventEntity = Event.builder()
+                .name("ゴスペルワークショップ")
+                .location("東京国際フォーラム")
+                .owner("ゆうこ")
+                .createDateTime(currentDateTime)
+                .updateDateTime(currentDateTime)
+                .summary("ゴスペルワークショップのイベントです。")
+                .startDateTime(currentDateTime)
+                .endDateTime(currentDateTime)
+                .publishedDateTime(currentDateTime)
+                .detailText("ゴスペルワークショップ")
+                .build();
+        eventRepository.insert(eventEntity);
+    }
+
     @Test
     public void getIndexHtmlPage() {
         String ret = new TicketController().add("test");
@@ -57,21 +77,6 @@ public class TicketControllerTest {
                 .eventId(ticketForm.getEventId())
                 .build();
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Event eventEntity = Event.builder()
-                .name("ゴスペルワークショップ")
-                .location("東京国際フォーラム")
-                .owner("ゆうこ")
-                .createDateTime(currentDateTime)
-                .updateDateTime(currentDateTime)
-                .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(currentDateTime)
-                .endDateTime(currentDateTime)
-                .publishedDateTime(currentDateTime)
-                .detailText("ゴスペルワークショップ")
-                .build();
-        eventRepository.insert(eventEntity);
-
         Event event = eventRepository.findByName("ゴスペルワークショップ");
         //when
          mockMvc.perform(post("/admin/event/ゴスペルワークショップ/ticket")
@@ -84,5 +89,4 @@ public class TicketControllerTest {
                  .andExpect(model().attribute("event", event))
                      .andExpect(view().name("event-detail-owner"));
     }
-
 }
