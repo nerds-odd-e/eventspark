@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 public class EventSteps {
@@ -55,6 +54,7 @@ public class EventSteps {
 
     @Then("{string}のイベントの内容とチケットの内容のイベント詳細を表示する。")
     public void _のイベントの内容とチケットの内容のイベント詳細を表示する(String title) {
+//@Todo title -> eventName
         Event expectedEvent = eventRepository.findByName(title);
 
         Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
@@ -91,22 +91,19 @@ public class EventSteps {
 
     @When("イベント追加ページに以下の情報を入力する")
     public void イベント追加ページに以下の情報を入力する(Map<String, String> datatable) {
-        String eventName = datatable.get("イベント名");
-        addEventPage.fillEventNameField(eventName);
-        String eventDate = datatable.get("開催日時");
-        addEventPage.fillEventDateField(eventDate);
+        String name = datatable.get("イベント名");
+        addEventPage.fillNameField(name);
         String location = datatable.get("場所");
         addEventPage.fillLocationField(location);
         String summary = datatable.get("サマリー");
         addEventPage.fillSummaryField(summary);
+        String eventDetail = datatable.get("イベント情報");
+        addEventPage.fillEventDetailField(eventDetail);
+        String eventStartDate = datatable.get("イベント開始日時");
+        addEventPage.fillEventStartDateField(eventStartDate);
+        String eventEndDate = datatable.get("イベント終了日時");
+        addEventPage.fillEventEndDateField(eventEndDate);
 
-        // Write code here that turns the phrase above into concrete actions
-        // For automatic transformation, change DataTable to one of
-        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-        // Double, Byte, Short, Long, BigInteger or BigDecimal.
-        //
-        // For other transformations you can register a DataTableType.
         throw new cucumber.api.PendingException();
     }
 

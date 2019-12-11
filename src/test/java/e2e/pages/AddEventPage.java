@@ -13,8 +13,8 @@ public class AddEventPage extends BasePage{
         super(driver, environment);
     }
 
-    @FindBy(id = "event_name")
-    private WebElement eventName;
+    @FindBy(id = "name")
+    private WebElement name;
 
     @FindBy(id = "location")
     private WebElement location;
@@ -22,21 +22,27 @@ public class AddEventPage extends BasePage{
     @FindBy(id = "summary")
     private WebElement summary;
 
-    @FindBy(id = "event_date")
-    private WebElement eventDate;
+    @FindBy(id ="event_detail")
+    private WebElement eventDetail;
 
-    public void setEventName(WebElement eventName) {
-        this.eventName = eventName;
+    @FindBy(id ="event_start_date")
+    private WebElement eventStartDate;
+
+    @FindBy(id = "event_end_date")
+    private WebElement eventEndDate;
+
+    public void setName(WebElement name) {
+        this.name = name;
     }
 
-    public String getEventName() { return eventName.getText(); }
+    public String getName() { return name.getText(); }
 
     public void userVisitsAddEventPage() {
         this.goToPage("/event/new");
     }
 
-    public void fillEventNameField(String eventName) {
-        this.eventName.sendKeys(eventName);
+    public void fillNameField(String name) {
+        this.name.sendKeys(name);
     }
 
     public void fillLocationField(String location) {
@@ -47,7 +53,15 @@ public class AddEventPage extends BasePage{
         this.summary.sendKeys(summary);
     }
 
-    public void fillEventDateField(String eventDate) {
-        this.eventDate.sendKeys(eventDate);
+    public void fillEventDetailField(String eventDetail) {
+        this.eventDetail.sendKeys(eventDetail);
+    }
+
+    public void fillEventStartDateField(String eventStartDate) {
+        this.eventStartDate.sendKeys(eventStartDate);
+    }
+
+    public void fillEventEndDateField(String eventEndDate) {
+        this.eventEndDate.sendKeys(eventEndDate);
     }
 }
