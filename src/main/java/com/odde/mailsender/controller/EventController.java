@@ -1,12 +1,15 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.form.AddEventForm;
 import com.odde.mailsender.service.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class EventController {
@@ -32,5 +35,21 @@ public class EventController {
     @GetMapping("/owner/event/new")
     public String AddEvent() {
         return "event-new";
+    }
+
+    @PostMapping("/owner/event")
+    public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
+        Event event = Event.builder()
+                .name(form.getName())
+                .location(form.getLocation())
+                .summary(form.getSummary())
+                .startDateTime(form.getStartDateTime())
+                .endDateTime(form.getEndDateTime())
+                .detailText(form.getDetailText())
+                .build();
+        eventRepository.insert(event);
+        model.addAttribute("event", event);
+        return "event-detail-owner";
+
     }
 }

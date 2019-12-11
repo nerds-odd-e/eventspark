@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Eventspark</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <script th:src="@{/lib/jquery-3.2.1.js}"></script>
+    <script th:src="@{/js/home.js}"></script>
+</head>
+<body>
+<!--<div id="event_name">イベント名</div>-->
+<form action="/owner/event" method="post" th:object="${form}">
+    <div class="form-group">
+        <label for="name">event name</label>
+        <input type="text" class="form-control" name="name" id="name" placeholder="イベント名">
+    </div>
+
+    <div class="form-group">
+        <label for="location">location</label>
+        <input type="text" class="form-control" name="location" id="location" placeholder="開催場所"/>
+    </div>
+
+    <div class="form-group">
+        <label for="summary">summary</label>
+        <input type="text" class="form-control" name="summary" id="summary" placeholder="サマリー"/>
+    </div>
+
+    <div class="form-group">
+        <label for="event_detail">event detail</label>
+        <input type="textarea" class="form-control" name="event_detail" id="event_detail" placeholder="イベント詳細"/>
+    </div>
+
+    <div class="form-group">
+        <label for="event_start_date">event start date</label>
+        <input type="text" class="form-control" name="event_start_date" id="event_start_date" placeholder="イベント開始日時"/>
+    </div>
+
+    <div class="form-group">
+        <label for="event_end_date">event end date</label>
+        <input type="text" class="form-control" name="event_end_date" id="event_end_date" placeholder="イベント終了日時"/>
+    </div>
+
+    <button type="submit" id="add" class="btn btn-default">Add</button>
+
+</form>
+</body>
+</html>
