@@ -10,16 +10,19 @@ import java.util.Map;
 
 public class TicketSteps {
 
+    @Autowired
+    private AddTicketPage addTicketPage;
+
+    @Given("チケット追加画面を表示している")
+    public void チケット追加画面を表示している() {
+        // FIXME イベント画面から遷移する
+        addTicketPage.goToAddTicketPage("a");
+    }
+
     public static class チケットを登録する {
 
         @Autowired
         private AddTicketPage addTicketPage;
-
-        @Given("チケット追加画面を表示している")
-        public void チケット追加画面を表示している() {
-            // FIXME イベント画面から遷移する
-            addTicketPage.goToAddTicketPage("a");
-        }
 
         @When("以下の入力を行う")
         public void 以下の入力を行う(io.cucumber.datatable.DataTable dataTable) {
@@ -55,6 +58,17 @@ public class TicketSteps {
     }
 
     public static class 全ての項目を空で登録ボタンを押下 {
+        @Autowired
+        private AddTicketPage addTicketPage;
+
+        @When("全てのフォームを空にして、「登録」ボタンをクリックする")
+        public void 全てのフォームを空にして_登録_ボタンをクリックする() {
+            addTicketPage.fillTicketName("");
+            addTicketPage.fillTicketPrice("");
+            addTicketPage.fillTicketTotal("");
+            addTicketPage.fillTicketLimit("");
+            addTicketPage.submit();
+        }
 
         @Then("画面上に「チケット名を入力してください」を表示する")
         public void 画面上に_チケット名を入力してください_を表示する() {
