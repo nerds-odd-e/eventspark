@@ -4,7 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EventRegisterPage extends BasePage {
 
     @FindBy(id = "user-name")
@@ -16,8 +18,8 @@ public class EventRegisterPage extends BasePage {
     @FindBy(id = "ticket-type")
     private WebElement ticketType;
 
-    @FindBy(id = "ticket-number")
-    private WebElement ticketNumber;
+    @FindBy(id = "ticket-count")
+    private WebElement ticketCount;
 
     @FindBy(id = "purchase")
     private WebElement purchaseButton;
@@ -38,8 +40,8 @@ public class EventRegisterPage extends BasePage {
         return Integer.parseInt(ticketType.getText());
     }
 
-    public Integer getTicketNumber() {
-        return Integer.parseInt(ticketNumber.getText());
+    public Integer getticketCount() {
+        return Integer.parseInt(ticketCount.getText());
     }
 
     public void purchase() {
@@ -51,4 +53,19 @@ public class EventRegisterPage extends BasePage {
     }
 
 
+    public void fillUserName(String input) {
+        userName.sendKeys(input);
+    }
+
+    public void fillMailAddress(String input) {
+        mailAddress.sendKeys(input);
+    }
+
+    public void fillTicketCount(String input) {
+        ticketCount.sendKeys(input);
+    }
+
+    public void fillTicketType(String input) {
+        ticketType.sendKeys(input);
+    }
 }

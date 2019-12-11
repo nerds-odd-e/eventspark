@@ -3,14 +3,10 @@ package e2e;
 import com.icegreen.greenmail.util.GreenMail;
 import com.odde.mailsender.service.MailInfo;
 import e2e.pages.EventRegisterPage;
-import e2e.pages.HomePage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.Message;
@@ -33,6 +29,20 @@ public class EventRegisterSteps {
     public void userVisitsRegisterPage() {
     }
 
+    @Given("以下が入力されている")
+    public void 以下が入力されている(io.cucumber.datatable.DataTable dataTable) {
+        名前が入力されている(dataTable.cell(0, 1));
+        メールアドレスが入力されている(dataTable.cell(1, 1));
+        チケット種別が選択されている(dataTable.cell(2, 1));
+        枚数が入力されている(dataTable.cell(3, 1));
+    }
+//    public void 以下が入力されている(List<RegisterForm> registerForm) {
+//        名前が入力されている(registerForm.get(0).getName());
+//        メールアドレスが入力されている(registerForm.get(0).getAddress());
+//        チケット種別が選択されている(registerForm.get(0).getTicketType());
+//        枚数が入力されている(registerForm.get(0).getTicketCount().toString());
+//    }
+
     @When("購入ボタンを押す")
     public void 購入ボタンを押す() {
         eventRegisterPage.purchase();
@@ -51,33 +61,29 @@ public class EventRegisterSteps {
 
     @And("参加登録完了画面を表示する")
     public void 参加登録完了画面を表示する() {
-            eventRegisterPage.goToPurchasedPage();
-        }
+        eventRegisterPage.goToPurchasedPage();
+    }
 
     @Given("名前{string}が入力されている")
-    public void 名前が入力されている(String arg0) {
-        String actual = eventRegisterPage.getUserName();
-        Assert.assertEquals(actual, is(arg0));
+    public void 名前が入力されている(String input) {
+        eventRegisterPage.fillUserName(input);
 
     }
 
     @And("メールアドレス{string}が入力されている")
-    public void メールアドレスが入力されている(String arg0) {
-        String actual = eventRegisterPage.getMailAddress();
-        Assert.assertEquals(actual, is(arg0));
+    public void メールアドレスが入力されている(String input) {
+        eventRegisterPage.fillMailAddress(input);
     }
 
 
     @And("枚数{int}が入力されている")
-    public void 枚数が入力されている(int arg0) {
-        Integer actual = eventRegisterPage.getTicketNumber();
-        Assert.assertEquals(actual, is(arg0));
+    public void 枚数が入力されている(String input) {
+        eventRegisterPage.fillTicketCount(input);
 
     }
 
     @And("チケット種別{int}が選択されている")
-    public void チケット種別が選択されている(int arg0) {
-        Integer actual = eventRegisterPage.getTicketType();
-        Assert.assertEquals(actual, is(arg0));
+    public void チケット種別が選択されている(String input) {
+        eventRegisterPage.fillTicketType(input);
     }
 }
