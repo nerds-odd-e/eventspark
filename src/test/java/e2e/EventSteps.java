@@ -75,6 +75,7 @@ public class EventSteps {
     public void _のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する(String eventName) {
         Event expectedEvent = eventRepository.findByName(eventName);
 
+        Assert.assertNotNull(expectedEvent);
         Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
         Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
         Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
