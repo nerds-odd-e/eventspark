@@ -1,10 +1,13 @@
 package e2e;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
+import com.odde.mailsender.service.TicketRepository;
 import e2e.pages.AddEventPage;
-import e2e.pages.EventDetailPage;
 import e2e.pages.EventDetailForOwnerPage;
+import e2e.pages.EventDetailPage;
+import e2e.pages.UserEventListPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class EventSteps {
     @Autowired
@@ -26,7 +30,13 @@ public class EventSteps {
     private EventRepository eventRepository;
 
     @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
     private AddEventPage addEventPage;
+
+    @Autowired
+    private UserEventListPage userEventListPage;
 
     @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
     public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
@@ -128,7 +138,6 @@ public class EventSteps {
     }
 
 
-
     @When("オーナー用イベント詳細ページのチケット追加ボタンを押す")
     public void オーナー用イベント詳細ページのチケット追加ボタンを押す() {
         eventDetailForOwnerPage.submit();
@@ -139,4 +148,47 @@ public class EventSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
+
+    @Given("イベントオーナーが複数イベントを登録すると")
+    public void イベントオーナーが複数イベントを登録すると() {
+        eventRepository.deleteAll();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Stream.of("1", "2").forEach(id -> {
+            Event event = Event.builder()
+                    .id(id)
+                    .name("ゴスペルワークショップ" + id)
+                    .location("東京国際フォーラム")
+                    .owner("ゆうこ")
+                    .createDateTime(currentDateTime)
+                    .updateDateTime(currentDateTime)
+                    .summary("ゴスペルワークショップのイベントです。")
+                    .startDateTime(currentDateTime)
+                    .endDateTime(currentDateTime)
+                    .publishedDateTime(currentDateTime)
+                    .detailText("ゴスペルワークショップ")
+                    .build();
+            eventRepository.insert(event);
+
+            Ticket ticket = Ticket.builder()
+                    .eventId(event.getId())
+                    .ticketName("ゴスペルチケット" + id)
+                    .ticketPrice(1000)
+                    .ticketTotal(100)
+                    .ticketLimit(5)
+                    .build();
+            ticketRepository.insert(ticket);
+        });
+    }
+
+    @When("公開中のイベント一覧ページをみると")
+    public void 公開中のイベント一覧ページをみると() {
+        userEventListPage.goToUserEventListPage();
+    }
+
+    @Then("一覧に複数イベントが見れる")
+    public void 一覧に複数イベントが見れる() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
 }
