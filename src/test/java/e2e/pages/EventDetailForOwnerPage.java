@@ -7,8 +7,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventDetailForAdminPage extends BasePage {
-    public EventDetailForAdminPage(WebDriver driver, Environment environment) {
+public class EventDetailForOwnerPage extends BasePage {
+    public EventDetailForOwnerPage(WebDriver driver, Environment environment) {
         super(driver, environment);
     }
     @FindBy(id = "event_name")
@@ -61,6 +61,6 @@ public class EventDetailForAdminPage extends BasePage {
     }
 
     public void userVisitsEventPreviewPage(String eventName) {
-        this.goToPage("/admin/event/" + eventName);
+        this.goToPage("/owner/event/" + eventName);
     }
 }

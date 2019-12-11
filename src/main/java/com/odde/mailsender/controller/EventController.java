@@ -21,10 +21,10 @@ public class EventController {
         return "event-detail";
     }
 
-    @GetMapping("/admin/event/{eventName}")
-    public String showPreview(@PathVariable("eventName") String eventName, Model model) {
+    @GetMapping("/owner/event/{eventName}")
+    public String showDetailForOwner(@PathVariable("eventName") String eventName, Model model) {
         Event event = eventRepository.findByEventName(eventName);
         model.addAttribute("event", event);
-        return "event-preview";
+        return "event-detail-owner";
     }
 }
