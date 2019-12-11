@@ -57,19 +57,7 @@ public class TicketControllerTest {
                 .eventId(ticketForm.getEventId())
                 .build();
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Event event = Event.builder()
-                .name("ゴスペルワークショップ")
-                .location("東京国際フォーラム")
-                .owner("ゆうこ")
-                .createDateTime(null)
-                .updateDateTime(null)
-                .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(null)
-                .endDateTime(null)
-                .publishedDateTime(null)
-                .detailText("ゴスペルワークショップ")
-                .build();
+        Event event = eventRepository.findByName("ゴスペルワークショップ");
         //when
          mockMvc.perform(post("/admin/event/ゴスペルワークショップ/ticket")
             .param("ticketName", ticketForm.getTicketName())

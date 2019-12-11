@@ -40,8 +40,8 @@ public class TicketController {
 //        return "event-detail-owner";
 //    }
 
-    @PostMapping("/admin/event/{eventName}/ticket")
-    public String addTicket(Model model){
+    @PostMapping("/admin/event/{name}/ticket")
+    public String addTicket(Model model, @PathVariable("name") String eventName){
         Ticket ticket = Ticket.builder()
                 .ticketName("ticketName")
                 .ticketPrice(1)
@@ -49,19 +49,7 @@ public class TicketController {
                 .ticketLimit(1)
                 .eventId("1").build();
 
-
-        Event event = Event.builder()
-                .name("ゴスペルワークショップ")
-                .location("東京国際フォーラム")
-                .owner("ゆうこ")
-                .createDateTime(null)
-                .updateDateTime(null)
-                .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(null)
-                .endDateTime(null)
-                .publishedDateTime(null)
-                .detailText("ゴスペルワークショップ")
-                .build();
+        Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
         model.addAttribute("ticket", ticket);
         return "event-detail-owner";
