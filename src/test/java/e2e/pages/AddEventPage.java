@@ -41,7 +41,7 @@ public class AddEventPage extends BasePage{
     public String getName() { return name.getText(); }
 
     public void userVisitsAddEventPage() {
-        this.goToPage("/event/new");
+        this.goToPage("/owner/event/new");
     }
 
     public void fillNameField(String name) {
