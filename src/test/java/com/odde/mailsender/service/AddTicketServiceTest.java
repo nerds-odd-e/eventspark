@@ -26,7 +26,6 @@ public class AddTicketServiceTest {
     @Autowired
     private AddTicketService addTicketService;
 
-
     @Before
     public void setUp() {
         ticketRepository.deleteAll();
@@ -42,16 +41,4 @@ public class AddTicketServiceTest {
         int ticketCount = ticketRepository.findAll().size();
         assertEquals(ticketCount, 1);
     }
-
-//    @Test
-//    public void TicketCanBeAddedFromFormToTheTicketRespository(){
-//        // given
-//        TicketForm ticketForm = new TicketForm("ticketName", 1L, 1L, 1, "1");
-//        // when
-//        Ticket ticket = addTicketService.convertToTicket(ticketForm);
-//        // then
-//        Ticket expected = new Ticket("ticketName", 1L, 1L, 1, "1");
-//        assertThat(ticket.getId(), is(expected.getId()));
-//    }
-
 }
