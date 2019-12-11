@@ -12,10 +12,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.thymeleaf.spring5.expression.Mvc;
 
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
@@ -60,6 +63,22 @@ public class EventControllerTest {
     public void displayAddEventPage() throws Exception {
         MvcResult result = mvc.perform(get("/owner/event/new")).andReturn();
         assertEquals(200,result.getResponse().getStatus());
+    }
+
+    @Test
+    public void newEvent() throws Exception {
+        MvcResult result = mvc.perform(post("/owner/event")
+                .param("name","ゴスペルワークショップ")
+                .param("location", "東京フォーラム")
+                .param("summary", "イベントのサマリー")
+                .param("event_detail","アーティスト：カークフランクリン ¥n 演目：未定")
+                .param("event_start_date","2019-12-20 09:00")
+                .param("event_end_date","2019-12-21 10:00")
+        ).andReturn();
+        assertEquals(200,result.getResponse().getStatus());
+        Event event=eventRepository.findByName("ゴスペルワークショップ");
+        assertNotNull(event);
+        assertEquals("ゴスペルワークショップ",event.getName());
     }
 
 }
