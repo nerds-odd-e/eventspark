@@ -5,8 +5,9 @@ import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
 import e2e.pages.AddEventPage;
-import e2e.pages.EventDetailForOwnerPage;
+import e2e.pages.AddTicketPage;
 import e2e.pages.EventDetailPage;
+import e2e.pages.EventDetailForOwnerPage;
 import e2e.pages.UserEventListPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,9 +20,14 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertTrue;
+
 public class EventSteps {
     @Autowired
     private EventDetailPage eventDetailPage;
+
+    @Autowired
+    private AddTicketPage addTicketPage;
 
     @Autowired
     private EventDetailForOwnerPage eventDetailForOwnerPage;
@@ -144,9 +150,8 @@ public class EventSteps {
     }
 
     @Then("チケット追加ページが表示されていること")
-    public void チケット追加ページが表示されていること() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    public void チケット追加ページが表示されていること() throws UnsupportedEncodingException {
+        assertTrue(addTicketPage.isCurrentPage("ゴスペルワークショップ"));
     }
 
     @Given("イベントオーナーが複数イベントを登録すると")

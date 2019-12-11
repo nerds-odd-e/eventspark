@@ -67,5 +67,5 @@ public class EventDetailForOwnerPage extends BasePage {
         this.goToPage("/owner/event/" + eventName);
     }
 
-    public void submit() { goToAddTicketPageButton.submit(); }
+    public void submit() { goToAddTicketPageButton.click(); }
 }

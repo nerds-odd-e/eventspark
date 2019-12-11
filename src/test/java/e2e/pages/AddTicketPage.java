@@ -6,6 +6,10 @@ import org.openqa.selenium.support.FindBy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 @Component
 public class AddTicketPage extends BasePage {
 
@@ -47,4 +51,11 @@ public class AddTicketPage extends BasePage {
     public void submit() {
         registerButton.submit();
     }
+
+    public boolean isCurrentPage(String eventName) throws UnsupportedEncodingException {
+        String currentUrl = URLDecoder.decode(driver.getCurrentUrl(), "UTF-8");
+        boolean contains = currentUrl.contains("/admin/event/" + eventName + "/ticket");
+        return contains;
+    }
+
 }
