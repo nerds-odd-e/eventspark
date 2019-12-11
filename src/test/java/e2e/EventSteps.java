@@ -1,16 +1,18 @@
 package e2e;
 
+import com.odde.mailsender.data.Event;
+import com.odde.mailsender.service.EventRepository;
 import e2e.pages.EventDetailPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.odde.mailsender.data.Event;
-import com.odde.mailsender.service.EventRepository;
 
 import java.time.LocalDateTime;
-public class EventDetailSteps {
+
+public class EventSteps {
+
     @Autowired
     private EventDetailPage eventDetailPage;
 
@@ -66,4 +68,53 @@ public class EventDetailSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
+
+    @Given("ゆうこさんが存在する")
+    public void ゆうこさんが存在する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @When("イベント追加ページにゴスペルワークショップの情報を入力する")
+    public void イベント追加ページにゴスペルワークショップの情報を入力する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Then("入力したゴスペルワークショップの情報がDBに登録される")
+    public void 入力したゴスペルワークショップの情報がdbに登録される() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Then("入力したゴスペルワークショップの情報が詳細ページに表示される")
+    public void 入力したゴスペルワークショップの情報が詳細ページに表示される() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @When("イベント追加ページを表示する")
+    public void イベント追加ページを表示する() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Given("イベント名がゴスペルワークショップのイベントのデータが{int}件DBにあること")
+    public void イベント名がゴスペルワークショップのイベントのデータが_件DBにあること(Integer int1) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @When("イベント更新ページに変更内容を入力して確定ボタンを押す")
+    public void イベント更新ページに変更内容を入力して確定ボタンを押す() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Then("変更した内容がイベント詳細ページに表示されていること")
+    public void 変更した内容がイベント詳細ページに表示されていること() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
 }
