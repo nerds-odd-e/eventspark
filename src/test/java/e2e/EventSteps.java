@@ -107,18 +107,6 @@ public class EventSteps {
         addEventPage.clickAddButton();
     }
 
-    @Then("新しいイベントが追加される")
-    public void 新しいイベントが追加される() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
-    @Then("入力したゴスペルワークショップの情報が詳細ページに表示される")
-    public void 入力したゴスペルワークショップの情報が詳細ページに表示される() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
-
     @Given("イベント名がゴスペルワークショップのイベントのデータが{int}件DBにあること")
     public void イベント名がゴスペルワークショップのイベントのデータが_件DBにあること(Integer int1) {
         // Write code here that turns the phrase above into concrete actions
