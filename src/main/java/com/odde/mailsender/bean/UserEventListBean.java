@@ -1,6 +1,8 @@
 package com.odde.mailsender.bean;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.RegistrationInfo;
+import com.odde.mailsender.data.Ticket;
 import lombok.Builder;
 import lombok.Singular;
 import lombok.Value;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 @Builder
 public class UserEventListBean {
 
+    public static final String TICKET_COUNT_FEW = "残りわずか";
+    public static final String TICKET_COUNT_LOT = "申し込み受付中";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
     @Value
@@ -25,13 +29,21 @@ public class UserEventListBean {
         private String summary;
         private String ticketStatus;
 
-        public static EventBean of(Event entity) {
+        public static EventBean of(Event event, List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
+            long total = ticketList.stream().mapToLong(ticket -> ticket.getTicketTotal()).sum();
+            long registerTotal = registrationInfoList.stream().mapToLong(registrationInfo -> registrationInfo.getTicketCount()).sum();
+            String ticketStatus;
+            if ((double) registerTotal / total > 0.8) {
+                ticketStatus = TICKET_COUNT_FEW;
+            } else {
+                ticketStatus = TICKET_COUNT_LOT;
+            }
             return EventBean.builder()
-                    .title(entity.getName())
-                    .location(entity.getLocation())
-                    .summary(entity.getSummary())
-                    .startDateTime(FORMATTER.format(entity.getStartDateTime()))
-                    .ticketStatus("残りわずか")
+                    .title(event.getName())
+                    .location(event.getLocation())
+                    .summary(event.getSummary())
+                    .startDateTime(FORMATTER.format(event.getStartDateTime()))
+                    .ticketStatus(ticketStatus)
                     .build();
         }
     }
@@ -39,10 +51,18 @@ public class UserEventListBean {
     @Singular("addEvent")
     private List<EventBean> eventList;
 
-    public static UserEventListBean create(List<Event> entityList) {
+    public static UserEventListBean create(List<Event> eventList, List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
         return UserEventListBean.builder()
-                .eventList(entityList.stream()
-                        .map(EventBean::of)
+                .eventList(eventList.stream()
+                        .map(event -> {
+                            List<Ticket> filteredTicketList = ticketList.stream()
+                                    .filter(ticket -> ticket.getEventId().equals(event.getId()))
+                                    .collect(Collectors.toList());
+                            List<RegistrationInfo> filteredRegistrationInfoList = registrationInfoList.stream()
+                                    .filter(registrationInfo -> registrationInfo.getEventId().equals(event.getId()))
+                                    .collect(Collectors.toList());
+                            return EventBean.of(event, filteredTicketList, filteredRegistrationInfoList);
+                        })
                         .collect(Collectors.toList()))
                 .build();
     }

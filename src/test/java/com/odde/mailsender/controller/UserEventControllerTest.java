@@ -2,10 +2,11 @@ package com.odde.mailsender.controller;
 
 import com.odde.mailsender.bean.UserEventListBean;
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.RegistrationInfo;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
+import com.odde.mailsender.service.RegistrationInfoRepository;
 import com.odde.mailsender.service.TicketRepository;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -33,6 +35,8 @@ public class UserEventControllerTest {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
+    private RegistrationInfoRepository registrationInfoRepository;
+    @Autowired
     private UserEventController userEventController;
 
     @Autowired
@@ -42,11 +46,11 @@ public class UserEventControllerTest {
     public void イベントデータがないときにイベントが空になる() {
         eventRepository.deleteAll();
         UserEventListBean bean = userEventController.getUserEventListBean();
-        Assert.assertEquals(0, bean.getEventList().size());
+        assertEquals(0, bean.getEventList().size());
     }
 
     @Test
-    public void イベントデータが２件のときにイベントが２個表示される() {
+    public void イベントデータが２件のときにイベントリストが２個になる() {
         eventRepository.deleteAll();
 
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -58,7 +62,61 @@ public class UserEventControllerTest {
             eventRepository.insert(event);
         });
         UserEventListBean bean = userEventController.getUserEventListBean();
-        Assert.assertEquals(2, bean.getEventList().size());
+        assertEquals(2, bean.getEventList().size());
+    }
+
+    @Test
+    public void チケットの残りが２割を切った時に残りわずかとなる() {
+        eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+        registrationInfoRepository.deleteAll();
+
+        LocalDateTime time = LocalDateTime.of(2019, 12, 12, 13, 30);
+        Event event = createEventBuilder(time).build();
+        eventRepository.insert(event);
+
+        Ticket ticket = getTicketBuilder(event.getId()).build();
+        ticketRepository.insert(ticket);
+
+        RegistrationInfo registration = getRegistrationBuilder()
+                .eventId(event.getId())
+                .ticketId(ticket.getId())
+                .ticketCount(81)
+                .build();
+        registrationInfoRepository.insert(registration);
+
+        UserEventListBean bean = userEventController.getUserEventListBean();
+        UserEventListBean.EventBean eventBean = bean.getEventList().get(0);
+        assertEquals(UserEventListBean.TICKET_COUNT_FEW, eventBean.getTicketStatus());
+    }
+
+    @Test
+    public void チケットの残りが２割以上の時に申し込み受付中となる() {
+        eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+        registrationInfoRepository.deleteAll();
+
+        LocalDateTime time = LocalDateTime.of(2019, 12, 12, 13, 30);
+        Event event = createEventBuilder(time).build();
+        eventRepository.insert(event);
+
+        Ticket ticket = getTicketBuilder(event.getId()).build();
+        ticketRepository.insert(ticket);
+
+        RegistrationInfo registration = getRegistrationBuilder()
+                .eventId(event.getId())
+                .ticketId(ticket.getId())
+                .ticketCount(80)
+                .build();
+        registrationInfoRepository.insert(registration);
+
+        UserEventListBean bean = userEventController.getUserEventListBean();
+        UserEventListBean.EventBean eventBean = bean.getEventList().get(0);
+        assertEquals(UserEventListBean.TICKET_COUNT_LOT, eventBean.getTicketStatus());
+    }
+
+    private RegistrationInfo.RegistrationInfoBuilder getRegistrationBuilder() {
+        return RegistrationInfo.builder();
     }
 
     @Test
@@ -69,7 +127,7 @@ public class UserEventControllerTest {
         Event event = createEventBuilder(time).build();
         eventRepository.insert(event);
 
-        Ticket ticket = getTicketBuilder(event).build();
+        Ticket ticket = getTicketBuilder(event.getId()).build();
         ticketRepository.insert(ticket);
 
         mvc.perform(get("/event"))
@@ -77,12 +135,12 @@ public class UserEventControllerTest {
                 .andExpect(content().string(containsString("東京国際フォーラム")))
                 .andExpect(content().string(containsString("2019/12/12 13:30")))
                 .andExpect(content().string(containsString("ゴスペルワークショップのイベントです")))
-                .andExpect(content().string(containsString("残りわずか")));
+                .andExpect(content().string(containsString(UserEventListBean.TICKET_COUNT_LOT)));
     }
 
-    private Ticket.TicketBuilder getTicketBuilder(Event event) {
+    private Ticket.TicketBuilder getTicketBuilder(String eventId) {
         return Ticket.builder()
-                .eventId(event.getId())
+                .eventId(eventId)
                 .ticketName("ゴスペルチケット")
                 .ticketPrice(1000)
                 .ticketTotal(100)
