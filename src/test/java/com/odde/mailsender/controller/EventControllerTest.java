@@ -90,12 +90,12 @@ public class EventControllerTest {
         ));
 
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
-        List<Integer> unsoldList = new ArrayList<>();
-        int sold = 0;
+        List<Long> unsoldList = new ArrayList<>();
+        long sold = 0;
         for (RegistrationInfo registrationInfo : registrationInfoList) {
             sold += registrationInfo.getTicketCount();
         }
-        int unsold = ticket.getTicketLimit() - sold;
+        long unsold = ticket.getTicketTotal() - sold;
         unsoldList.add(unsold);
 
         mvc.perform(get("/event/" + event.getName()))

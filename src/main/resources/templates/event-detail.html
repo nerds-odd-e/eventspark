@@ -24,7 +24,7 @@
                 <p th:each="ticket,stat : ${ticketList}">
                     <span th:text="${ticket.getTicketName()}"></span>
                     <span th:text="${unsoldList.get(stat.index)}"></span>/
-                    <span th:text="${ticket.getTicketLimit()}"></span>
+                    <span th:text="${ticket.getTicketTotal()}"></span>
                 </p>
             </div>
 
