@@ -19,7 +19,7 @@
             <p>開催場所 <span th:text="${event.getLocation()}" id="location"></span></p>
             <h2>イベント情報<br> <span th:text="${event.getDetail()}" id="detail"></span></h2>
             <p>主催者 <span th:text="${event.getOwner()}" id="owner"></span></p>
-            <p>チケット <span id="ticket"></span>1day 69/<span id="max_ticket" th:text="${maxTicket}"></span></p>
+            <p>チケット <span id="ticket"></span><span id="ticket_name" th:text="${ticketName}"></span> 69/<span id="max_ticket" th:text="${maxTicket}"></span></p>
             <button type="button" class="btn btn-default"><a id="register_button" th:href="@{/register_form/{eventName}(eventName=${event.getName()})}">購入</a></button>
         </div>
         <div class="col-md-3"></div>

@@ -33,6 +33,7 @@ public class EventController {
         if (!ticketList.isEmpty()) {
             Ticket ticket = ticketList.get(0);
             model.addAttribute("maxTicket",ticket.getTicketLimit());
+            model.addAttribute("ticketName",ticket.getTicketName());
         }
         return "event-detail";
     }

@@ -70,7 +70,8 @@ public class EventControllerTest {
 
         mvc.perform(get("/event/" + event.getName()))
                 .andExpect(model().attribute("event", event))
-        .andExpect(model().attribute("maxTicket",ticket.getTicketLimit()));
+                .andExpect(model().attribute("maxTicket",ticket.getTicketLimit()))
+                .andExpect(model().attribute("ticketName", ticket.getTicketName()));
 
     }
 
