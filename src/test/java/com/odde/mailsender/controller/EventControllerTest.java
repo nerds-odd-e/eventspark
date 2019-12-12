@@ -51,6 +51,7 @@ public class EventControllerTest {
                 .endDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
                 .detail("ゴスペルワークショップ")
+                .imagePath("url")
                 .build();
         eventRepository.insert(event);
 

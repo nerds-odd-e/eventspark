@@ -57,6 +57,7 @@ public class EventSteps {
                 .endDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
                 .detail("ゴスペルワークショップ")
+                .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
                 .build();
         eventRepository.insert(event);
     }
@@ -203,6 +204,7 @@ public class EventSteps {
     public void _のイベントの内容とチケット購入ボタンが表示される(String eventName) throws UnsupportedEncodingException {
         Event expectedEvent = eventRepository.findByName(eventName);
 
+        Assert.assertEquals(expectedEvent.getImagePath(), eventDetailForOwnerPage.getImageUrl());
         assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
         assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
         assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());

@@ -35,6 +35,9 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "go_to_add_ticket_page")
     private WebElement goToAddTicketPageButton;
 
+    @FindBy(id = "image")
+    private WebElement image;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -68,4 +71,8 @@ public class EventDetailForOwnerPage extends BasePage {
     }
 
     public void submit() { goToAddTicketPageButton.click(); }
+
+    public String getImageUrl() {
+        return image.getAttribute("src");
+    }
 }
