@@ -28,10 +28,10 @@ public class AddEventPage extends BasePage {
     @FindBy(id = "detail")
     private WebElement detail;
 
-    @FindBy(id = "event_start_date")
+    @FindBy(id = "startDateTime")
     private WebElement eventStartDate;
 
-    @FindBy(id = "event_end_date")
+    @FindBy(id = "endDateTime")
     private WebElement eventEndDate;
 
     @FindBy(id = "add")
