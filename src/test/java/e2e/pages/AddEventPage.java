@@ -7,7 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddEventPage extends BasePage{
+public class AddEventPage extends BasePage {
 
     public AddEventPage(WebDriver driver, Environment environment) {
         super(driver, environment);
@@ -16,29 +16,34 @@ public class AddEventPage extends BasePage{
     @FindBy(id = "name")
     private WebElement name;
 
+    @FindBy(id = "owner")
+    private WebElement owner;
+
     @FindBy(id = "location")
     private WebElement location;
 
     @FindBy(id = "summary")
     private WebElement summary;
 
-    @FindBy(id ="event_detail")
-    private WebElement eventDetail;
+    @FindBy(id = "detail")
+    private WebElement detail;
 
-    @FindBy(id ="event_start_date")
+    @FindBy(id = "event_start_date")
     private WebElement eventStartDate;
 
     @FindBy(id = "event_end_date")
     private WebElement eventEndDate;
 
-    @FindBy(id="add")
+    @FindBy(id = "add")
     private WebElement addButton;
 
     public void setName(WebElement name) {
         this.name = name;
     }
 
-    public String getName() { return name.getText(); }
+    public String getName() {
+        return name.getText();
+    }
 
     public void userVisitsAddEventPage() {
         this.goToPage("/owner/event/new");
@@ -56,8 +61,8 @@ public class AddEventPage extends BasePage{
         this.summary.sendKeys(summary);
     }
 
-    public void fillEventDetailField(String eventDetail) {
-        this.eventDetail.sendKeys(eventDetail);
+    public void fillDetailField(String detail) {
+        this.detail.sendKeys(detail);
     }
 
     public void fillEventStartDateField(String eventStartDate) {
@@ -70,5 +75,9 @@ public class AddEventPage extends BasePage{
 
     public void clickAddButton() {
         this.addButton.click();
+    }
+
+    public void fillOwnerField(String owner) {
+        this.owner.sendKeys(owner);
     }
 }

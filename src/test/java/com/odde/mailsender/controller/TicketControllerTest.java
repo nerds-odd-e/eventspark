@@ -57,7 +57,7 @@ public class TicketControllerTest {
                 .startDateTime(currentDateTime)
                 .endDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
-                .detailText("ゴスペルワークショップ")
+                .detail("ゴスペルワークショップ")
                 .build();
         eventRepository.insert(eventEntity);
     }

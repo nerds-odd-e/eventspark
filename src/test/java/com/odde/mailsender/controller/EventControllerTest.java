@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.thymeleaf.spring5.expression.Mvc;
 
 import java.time.LocalDateTime;
 
@@ -51,7 +50,7 @@ public class EventControllerTest {
                 .startDateTime(currentDateTime)
                 .endDateTime(currentDateTime)
                 .publishedDateTime(currentDateTime)
-                .detailText("ゴスペルワークショップ")
+                .detail("ゴスペルワークショップ")
                 .build();
         eventRepository.insert(event);
 

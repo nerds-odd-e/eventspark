@@ -16,7 +16,7 @@
         <div id="summary" th:text="${event.getSummary()}"></div>
         <div id="start_date" th:text="${event.getStartDateTime()}"></div>
         <div id="end_date" th:text="${event.getEndDateTime()}"></div>
-        <div id="detail" th:text="${event.getDetailText()}"></div>
+        <div id="detail" th:text="${event.getDetail()}"></div>
         <button type="button" class="btn btn-default"><a th:href="@{/admin/event/{eventName}/ticket(eventName=${event.getName()})}" id="go_to_add_ticket_page" >add</a> </button>
     </div>
 </div>

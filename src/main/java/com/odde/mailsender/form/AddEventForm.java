@@ -19,12 +19,15 @@ public class AddEventForm {
     private String summary;
 
     @NotEmpty(message = "must be not empty")
-    private String detailText;
+    private String owner;
 
-    @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
+    @NotEmpty(message = "must be not empty")
+    private String detail;
+
+    @DateTimeFormat(pattern = "uuuu-MM-dd hh:mm")
     private LocalDateTime startDateTime;
 
-    @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "uuuu-MM-dd hh:mm")
     private LocalDateTime endDateTime;
 
     public Event createEvent() {
@@ -34,7 +37,7 @@ public class AddEventForm {
                     .summary(getSummary())
                     .startDateTime(getStartDateTime())
                     .endDateTime(getEndDateTime())
-                    .detailText(getDetailText())
+                    .detail(getDetail())
                     .build();
     }
 }

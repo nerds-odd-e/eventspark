@@ -64,6 +64,6 @@ public class Event {
     /**
      * イベント内容の詳細テキスト
      */
-    private String detailText;
+    private String detail;
 
 }
