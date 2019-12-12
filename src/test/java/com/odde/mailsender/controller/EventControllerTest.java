@@ -84,16 +84,7 @@ public class EventControllerTest {
     @Test
     public void newEvent() throws Exception {
         //イベントをDB追加している
-        MvcResult result = mvc.perform(post("/owner/event")
-                .param("name","ゴスペルワークショップ")
-                .param("location", "東京フォーラム")
-                .param("summary", "イベントのサマリー")
-                .param("owner", "ゆうこ")
-                .param("detail","アーティスト：カークフランクリン ¥n 演目：未定")
-                .param("startDateTime","2019-12-20 09:00")
-                .param("endDateTime","2019-12-21 10:00")
-                .param("imagePath", "https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
-        ).andReturn();
+        MvcResult result = performAddEvent();
 
         //正常終了
         assertEquals(200,result.getResponse().getStatus());
@@ -111,6 +102,36 @@ public class EventControllerTest {
         assertEquals("2019-12-20T09:00",event.getStartDateTime().toString());
         assertEquals("2019-12-21T10:00",event.getEndDateTime().toString());
         assertEquals("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png",event.getImagePath());
+    }
+
+    private MvcResult performAddEvent() throws Exception {
+        return mvc.perform(post("/owner/event")
+                .param("name", "ゴスペルワークショップ")
+                .param("location", "東京フォーラム")
+                .param("summary", "イベントのサマリー")
+                .param("owner", "ゆうこ")
+                .param("detail", "アーティスト：カークフランクリン ¥n 演目：未定")
+                .param("startDateTime", "2019-12-20 09:00")
+                .param("endDateTime", "2019-12-21 10:00")
+                .param("imagePath", "https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+        ).andReturn();
+    }
+
+    @Test
+    public void duplicateEventName() throws Exception {
+        MvcResult result = performAddEvent();
+
+        assertEquals(200,result.getResponse().getStatus());
+        Event event=eventRepository.findByName("ゴスペルワークショップ");
+        assertNotNull(event);
+        assertEquals("ゴスペルワークショップ",event.getName());
+
+        //重複するイベントを追加して検証
+        result = performAddEvent();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("event-new", result.getModelAndView().getViewName());
+
     }
 
 }
