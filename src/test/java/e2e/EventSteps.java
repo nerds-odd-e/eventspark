@@ -206,7 +206,6 @@ public class EventSteps {
         assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
         assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
         assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
-        assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
         assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
         assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
         assertEquals(expectedEvent.getDetail(), eventDetailPage.getDetailText());
