@@ -18,7 +18,7 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String registerToEvent(@ModelAttribute("form") RegisterForm form, BindingResult result, Model model) {
-        registrationInfoRepository.save(new RegistrationInfo(form.getFirstName(), form.getLastName(), form.getCompany(), form.getAddress(), "dummy", form.getTicketType(),
+        registrationInfoRepository.save(new RegistrationInfo(form.getFirstName(), form.getLastName(), form.getCompany(), form.getAddress(), form.getTicketType(),
                 form.getTicketCount(), form.getEventId()));
 
         return "redirect:/register_complete";
