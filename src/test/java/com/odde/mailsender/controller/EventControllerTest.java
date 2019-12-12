@@ -23,8 +23,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
@@ -51,33 +51,18 @@ public class EventControllerTest {
         registrationInfoRepository.deleteAll();
     }
 
+    private Event aEvent = validEvent();
+
     @Test
     public void displayEventDetail() throws Exception {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Event event = Event.builder()
-                .name("ゴスペルワークショップ")
-                .location("東京国際フォーラム")
-                .owner("ゆうこ")
-                .createDateTime(currentDateTime)
-                .updateDateTime(currentDateTime)
-                .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(currentDateTime)
-                .endDateTime(currentDateTime)
-                .publishedDateTime(currentDateTime)
-                .detail("ゴスペルワークショップ")
-                .imagePath("url")
-                .build();
-        eventRepository.insert(event);
-        Ticket ticket = Ticket.builder()
-                .eventId(event.getId())
-                .ticketName("ゴスペルチケット")
-                .ticketPrice(1000L)
-                .ticketTotal(100L)
-                .ticketLimit(5)
-                .build();
+        eventRepository.insert(aEvent);
+        Ticket ticket = validTicket();
         ticketRepository.insert(ticket);
-        List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
+        List<Ticket> ticketList = ticketRepository.findByEventId(aEvent.getId());
 
+        mvc.perform(get("/event/" + aEvent.getName()))
+                .andExpect(model().attribute("event", aEvent))
+                .andExpect(model().attribute("ticketList", ticketList));
         registrationInfoRepository.save(RegistrationInfo.builder()
                 .firstName("daiki")
                 .lastName("kanai")
@@ -89,7 +74,7 @@ public class EventControllerTest {
         );
 
 
-        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
+        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(aEvent.getId());
         List<Long> unsoldList = new ArrayList<>();
         long sold = 0;
         for (RegistrationInfo registrationInfo : registrationInfoList) {
@@ -98,8 +83,8 @@ public class EventControllerTest {
         long unsold = ticket.getTicketTotal() - sold;
         unsoldList.add(unsold);
 
-        mvc.perform(get("/event/" + event.getName()))
-                .andExpect(model().attribute("event", event))
+        mvc.perform(get("/event/" + aEvent.getName()))
+                .andExpect(model().attribute("event", aEvent))
                 .andExpect(model().attribute("ticketList", ticketList))
                 .andExpect(model().attribute("unsoldList", unsoldList));
     }
@@ -119,48 +104,72 @@ public class EventControllerTest {
         assertEquals(200, result.getResponse().getStatus());
 
         //DBからデータを取得
-        Event event = eventRepository.findByName("ゴスペルワークショップ");
+        Event actualEvent = eventRepository.findByName("ゴスペルワークショップ");
 
         //postしたデータがDBに入っているかかくにん
-        assertNotNull(event);
-        assertEquals("ゴスペルワークショップ", event.getName());
-        assertEquals("東京フォーラム", event.getLocation());
-        assertEquals("イベントのサマリー", event.getSummary());
-        assertEquals("ゆうこ", event.getOwner());
-        assertEquals("アーティスト：カークフランクリン ¥n 演目：未定", event.getDetail());
-        assertEquals("2019-12-20T09:00", event.getStartDateTime().toString());
-        assertEquals("2019-12-21T10:00", event.getEndDateTime().toString());
-        assertEquals("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png", event.getImagePath());
+        assertNotNull(actualEvent);
+        assertEquals(aEvent.getName(), actualEvent.getName());
+        assertEquals(aEvent.getLocation(), actualEvent.getLocation());
+        assertEquals(aEvent.getSummary(), actualEvent.getSummary());
+        assertEquals(aEvent.getOwner(), actualEvent.getOwner());
+        assertEquals(aEvent.getDetail(), actualEvent.getDetail());
+        assertEquals(aEvent.getStartDateTime(), actualEvent.getStartDateTime());
+        assertEquals(aEvent.getEndDateTime(), actualEvent.getEndDateTime());
+        assertEquals(aEvent.getImagePath(), actualEvent.getImagePath());
+    }
+
+
+    @Test
+    public void duplicateEventName() throws Exception {
+        eventRepository.save(aEvent);
+
+        //重複するイベントを追加して検証
+        MvcResult result = performAddEvent();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("event-new", result.getModelAndView().getViewName());
+        assertEquals("同じ名前のイベントが存在します。", result.getModelAndView().getModel().get("errorMessage"));
+
+    }
+
+    private Event validEvent() {
+        LocalDateTime createdDateTime = LocalDateTime.of(2019,11,1,9,0);
+        return Event.builder()
+                .name("ゴスペルワークショップ")
+                .location("東京国際フォーラム")
+                .owner("ゆうこ")
+                .createDateTime(createdDateTime)
+                .updateDateTime(createdDateTime)
+                .summary("ゴスペルワークショップのイベントです。")
+                .startDateTime(LocalDateTime.of(2019,12,20,9,0))
+                .endDateTime(LocalDateTime.of(2019,12,21,17,0))
+                .publishedDateTime(LocalDateTime.of(2019,12,1,9,0))
+                .detail("ゴスペルワークショップ")
+                .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+                .build();
+    }
+
+    private Ticket validTicket() {
+        return Ticket.builder()
+                .eventId(aEvent.getId())
+                .ticketName("ゴスペルチケット")
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
+                .ticketLimit(5)
+                .build();
     }
 
     private MvcResult performAddEvent() throws Exception {
         return mvc.perform(post("/owner/event")
-                .param("name", "ゴスペルワークショップ")
-                .param("location", "東京フォーラム")
-                .param("summary", "イベントのサマリー")
-                .param("owner", "ゆうこ")
-                .param("detail", "アーティスト：カークフランクリン ¥n 演目：未定")
+                .param("name", aEvent.getName())
+                .param("location", aEvent.getLocation())
+                .param("summary", aEvent.getSummary())
+                .param("owner", aEvent.getOwner())
+                .param("detail", aEvent.getDetail())
                 .param("startDateTime", "2019-12-20 09:00")
-                .param("endDateTime", "2019-12-21 10:00")
-                .param("imagePath", "https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+                .param("endDateTime", "2019-12-21 17:00")
+                .param("imagePath", aEvent.getImagePath())
         ).andReturn();
-    }
-
-    @Test
-    public void duplicateEventName() throws Exception {
-        MvcResult result = performAddEvent();
-
-        assertEquals(200, result.getResponse().getStatus());
-        Event event = eventRepository.findByName("ゴスペルワークショップ");
-        assertNotNull(event);
-        assertEquals("ゴスペルワークショップ", event.getName());
-
-        //重複するイベントを追加して検証
-        result = performAddEvent();
-
-        assertEquals(200, result.getResponse().getStatus());
-        assertEquals("event-new", result.getModelAndView().getViewName());
-
     }
 
 }

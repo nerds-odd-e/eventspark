@@ -70,8 +70,9 @@ public class EventController {
     public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
         Event event = eventRepository.findByName(form.getName());
         if(event != null){
-          model.addAttribute("form", form);
-          return "event-new";
+            model.addAttribute("form", form);
+            model.addAttribute("errorMessage", "同じ名前のイベントが存在します。");
+            return "event-new";
         }
         event = form.createEvent();
 
