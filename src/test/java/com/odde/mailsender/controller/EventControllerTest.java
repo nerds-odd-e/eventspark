@@ -91,6 +91,7 @@ public class EventControllerTest {
                 .param("detail","アーティスト：カークフランクリン ¥n 演目：未定")
                 .param("startDateTime","2019-12-20 09:00")
                 .param("endDateTime","2019-12-21 10:00")
+                .param("imagePath", "https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
         ).andReturn();
 
         //正常終了
@@ -108,6 +109,7 @@ public class EventControllerTest {
         assertEquals("アーティスト：カークフランクリン ¥n 演目：未定",event.getDetail());
         assertEquals("2019-12-20T09:00",event.getStartDateTime().toString());
         assertEquals("2019-12-21T10:00",event.getEndDateTime().toString());
+        assertEquals("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png",event.getImagePath());
     }
 
 }

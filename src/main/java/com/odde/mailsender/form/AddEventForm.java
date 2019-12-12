@@ -31,6 +31,9 @@ public class AddEventForm {
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
+    @NotEmpty(message = "must be not empty")
+    private String imagePath;
+
     public Event createEvent() {
         return Event.builder()
                 .name(name)
@@ -40,6 +43,7 @@ public class AddEventForm {
                 .startDateTime(startDateTime)
                 .endDateTime(endDateTime)
                 .detail(detail)
+                .imagePath(imagePath)
                 .build();
     }
 }
