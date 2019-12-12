@@ -1,7 +1,9 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
+import com.odde.mailsender.service.TicketRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class EventControllerTest {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private TicketRepository ticketRepository;
+
     @Before
     public void setup() {
         eventRepository.deleteAll();
@@ -54,9 +59,19 @@ public class EventControllerTest {
                 .imagePath("url")
                 .build();
         eventRepository.insert(event);
+        Ticket ticket = Ticket.builder()
+                .eventId(event.getId())
+                .ticketName("ゴスペルチケット")
+                .ticketPrice(1000)
+                .ticketTotal(100)
+                .ticketLimit(5)
+                .build();
+        ticketRepository.insert(ticket);
 
         mvc.perform(get("/event/" + event.getName()))
-                .andExpect(model().attribute("event", event));
+                .andExpect(model().attribute("event", event))
+        .andExpect(model().attribute("maxTicket",ticket.getTicketLimit()));
+
     }
 
     @Test

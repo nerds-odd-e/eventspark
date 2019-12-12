@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -60,6 +61,14 @@ public class EventSteps {
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
                 .build();
         eventRepository.insert(event);
+        Ticket ticket = Ticket.builder()
+                .eventId(event.getId())
+                .ticketName("ゴスペルチケット")
+                .ticketPrice(1000)
+                .ticketTotal(100)
+                .ticketLimit(5)
+                .build();
+        ticketRepository.insert(ticket);
     }
 
     @When("{string}のオーナー用イベント詳細ページを表示する")
@@ -203,6 +212,8 @@ public class EventSteps {
     @Then("{string}のイベントの内容とチケット購入ボタンが表示される")
     public void _のイベントの内容とチケット購入ボタンが表示される(String eventName) throws UnsupportedEncodingException {
         Event expectedEvent = eventRepository.findByName(eventName);
+        List<Ticket> ticketList = ticketRepository.findByEventId(expectedEvent.getId());
+        Ticket expectedTicket = ticketList.get(0);
 
         Assert.assertEquals(expectedEvent.getImagePath(), eventDetailForOwnerPage.getImageUrl());
         assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
@@ -212,6 +223,7 @@ public class EventSteps {
         assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
         assertEquals(expectedEvent.getDetail(), eventDetailPage.getDetailText());
         assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
+        assertEquals(String.valueOf(expectedTicket.getTicketLimit()),eventDetailPage.getMaxTicketText());
     }
 
 }
