@@ -26,7 +26,7 @@ public class RegisterController {
         //１人あたりのチケット購入上限チェックしたい
 
         //OKだったら参加登録可能
-        registrationInfoRepository.save(new RegistrationInfo(form.getFirstName(), form.getLastName(), form.getCompany(), form.getAddress(), form.getTicketType(),
+        registrationInfoRepository.save(new RegistrationInfo(form.getFirstName(), form.getLastName(), form.getCompany(), form.getAddress(), form.getTicketId(), "",
                 form.getTicketCount(), form.getEventId()));
 
         return "redirect:/register_complete";

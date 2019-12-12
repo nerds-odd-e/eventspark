@@ -10,6 +10,11 @@ public class RegisterForm {
 
     private String address;
 
+    private String ticketId;
+
+    /**
+     * @deprecated only ticketId should be used.
+     */
     private String ticketType;
 
     private Integer ticketCount;
@@ -47,6 +52,14 @@ public class RegisterForm {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getTicketType() {

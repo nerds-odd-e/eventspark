@@ -47,7 +47,7 @@ public class RegisterControllerTest {
                 .param("lastName", "lastName")
                 .param("company", "companyName")
                 .param("address", "aaa@example.com")
-                .param("ticketType", "1day")
+                .param("ticketId", "1day")
                 .param("ticketCount", "1")
                 .param("eventId", "event"));
 
@@ -58,7 +58,7 @@ public class RegisterControllerTest {
         assertEquals("lastName", all.get(0).getLastName());
         assertEquals("companyName", all.get(0).getCompany());
         assertEquals("aaa@example.com", all.get(0).getAddress());
-        assertEquals("1day", all.get(0).getTicketType());
+        assertEquals("1day", all.get(0).getTicketId());
         assertEquals(Integer.valueOf(1), all.get(0).getTicketCount());
         assertEquals("event", all.get(0).getEventId());
         assertNotNull(all.get(0).getId());
