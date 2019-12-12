@@ -16,19 +16,25 @@ public class RegistrationInfo {
     @Id
     private String id;
 
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String company;
     private String address;
     private String ticketType;
     private Integer ticketCount;
     private String eventId;
 
     @JsonCreator
-    public RegistrationInfo(@JsonProperty("name") String name,
+    public RegistrationInfo(@JsonProperty("firstName") String firstName,
+                            @JsonProperty("lastName") String lastName,
+                            @JsonProperty("company") String company,
                             @JsonProperty("address") String address,
                             @JsonProperty("ticketType") String ticketType,
                             @JsonProperty("ticketCount") Integer ticketCount,
                             @JsonProperty("eventId") String eventId) {
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.company = company;
         this.address = address;
         this.ticketType = ticketType;
         this.ticketCount = ticketCount;

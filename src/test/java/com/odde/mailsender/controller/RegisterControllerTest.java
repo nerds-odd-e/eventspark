@@ -39,15 +39,21 @@ public class RegisterControllerTest {
     @Test
     public void registerToEvent() throws Exception {
         mvc.perform(post("/register")
-        .param("name", "aaa")
-        .param("address", "aaa@example.com")
-        .param("ticketType", "1day")
-        .param("ticketCount", "1")
-        .param("eventId", "event"))
+                .param("firstName", "firstName")
+                .param("lastName", "lastName")
+                .param("company", "companyName")
+                .param("address", "aaa@example.com")
+                .param("ticketType", "1day")
+                .param("ticketCount", "1")
+                .param("eventId", "event"))
                 .andExpect(redirectedUrl("/register_complete"));
+
         List<RegistrationInfo> all = registrationInfoRepository.findAll();
+
         assertEquals(1, all.size());
-        assertEquals("aaa", all.get(0).getName());
+        assertEquals("firstName", all.get(0).getFirstName());
+        assertEquals("lastName", all.get(0).getLastName());
+        assertEquals("companyName", all.get(0).getCompany());
         assertEquals("aaa@example.com", all.get(0).getAddress());
         assertEquals("1day", all.get(0).getTicketType());
         assertEquals(Integer.valueOf(1), all.get(0).getTicketCount());
