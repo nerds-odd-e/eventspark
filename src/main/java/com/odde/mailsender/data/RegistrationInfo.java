@@ -24,6 +24,9 @@ public class RegistrationInfo {
     private Integer ticketCount;
     private String eventId;
 
+    /**
+     * @deprecated ticketType will be deleted from constructor arguments.
+     */
     @JsonCreator
     public RegistrationInfo(@JsonProperty("firstName") String firstName,
                             @JsonProperty("lastName") String lastName,
@@ -38,6 +41,26 @@ public class RegistrationInfo {
         this.company = company;
         this.address = address;
         this.ticketId = ticketId;
+        this.ticketType = ticketType;
+        this.ticketCount = ticketCount;
+        this.eventId = eventId;
+    }
+
+    /**
+     * @deprecated Constructor with only ticketId (no ticketType) should be used.
+     */
+    @JsonCreator
+    public RegistrationInfo(@JsonProperty("firstName") String firstName,
+                            @JsonProperty("lastName") String lastName,
+                            @JsonProperty("company") String company,
+                            @JsonProperty("address") String address,
+                            @JsonProperty("ticketType") String ticketType,
+                            @JsonProperty("ticketCount") Integer ticketCount,
+                            @JsonProperty("eventId") String eventId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.company = company;
+        this.address = address;
         this.ticketType = ticketType;
         this.ticketCount = ticketCount;
         this.eventId = eventId;
