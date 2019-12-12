@@ -40,13 +40,6 @@ public class EventRegisterSteps {
         枚数が入力されている(dataTable.cell(5, 1));
     }
 
-    //    public void 以下が入力されている(List<RegisterForm> registerForm) {
-//        名前が入力されている(registerForm.get(0).getName());
-//        メールアドレスが入力されている(registerForm.get(0).getAddress());
-//        チケット種別が選択されている(registerForm.get(0).getTicketType());
-//        枚数が入力されている(registerForm.get(0).getTicketCount().toString());
-//    }
-
     @Given("会社名{string}が入力されている")
     private void 会社名が入力されている(String input) {
         eventRegisterPage.fillCompanyName(input);

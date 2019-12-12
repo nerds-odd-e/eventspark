@@ -12,11 +12,6 @@ public class RegisterForm {
 
     private String ticketId;
 
-    /**
-     * @deprecated only ticketId should be used.
-     */
-    private String ticketType;
-
     private Integer ticketCount;
 
     private String eventId;
@@ -60,14 +55,6 @@ public class RegisterForm {
 
     public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
-    }
-
-    public String getTicketType() {
-        return ticketType;
-    }
-
-    public void setTicketType(String ticketType) {
-        this.ticketType = ticketType;
     }
 
     public Integer getTicketCount() {

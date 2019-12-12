@@ -1,7 +1,5 @@
 package com.odde.mailsender.data;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +19,6 @@ public class RegistrationInfo {
     private String company;
     private String address;
     private String ticketId;
-    /**
-     * @deprecated only ticketId should be used.
-     */
-    private String ticketType;
     private Integer ticketCount;
     private String eventId;
 }
