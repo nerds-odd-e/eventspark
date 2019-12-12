@@ -29,7 +29,12 @@ public class AddTicketPage extends BasePage {
     }
 
     public void goToAddTicketPage(String eventName) {
-        this.goToPage("/admin/event/" + eventName + "/ticket");
+        try {
+            String encoded = URLEncoder.encode(eventName, "UTF-8");
+            this.goToPage("/owner/event/" + encoded + "/ticket");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public void fillTicketName(String ticketName) {
@@ -54,7 +59,7 @@ public class AddTicketPage extends BasePage {
 
     public boolean isCurrentPage(String eventName) throws UnsupportedEncodingException {
         String currentUrl = URLDecoder.decode(driver.getCurrentUrl(), "UTF-8");
-        boolean contains = currentUrl.contains("/admin/event/" + eventName + "/ticket");
+        boolean contains = currentUrl.contains("/owner/event/" + eventName + "/ticket");
         return contains;
     }
 

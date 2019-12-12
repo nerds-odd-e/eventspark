@@ -64,8 +64,8 @@ public class EventSteps {
         Ticket ticket = Ticket.builder()
                 .eventId(event.getId())
                 .ticketName("ゴスペルチケット")
-                .ticketPrice(1000)
-                .ticketTotal(100)
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
                 .ticketLimit(5)
                 .build();
         ticketRepository.insert(ticket);
@@ -141,6 +141,7 @@ public class EventSteps {
     @Given("イベントオーナーが複数イベントを登録すると")
     public void イベントオーナーが複数イベントを登録すると() {
         eventRepository.deleteAll();
+        ticketRepository.deleteAll();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Stream.of("1", "2").forEach(id -> {
             Event event = Event.builder()
@@ -161,8 +162,8 @@ public class EventSteps {
             Ticket ticket = Ticket.builder()
                     .eventId(event.getId())
                     .ticketName("ゴスペルチケット" + id)
-                    .ticketPrice(1000)
-                    .ticketTotal(100)
+                    .ticketPrice(1000L)
+                    .ticketTotal(100L)
                     .ticketLimit(5)
                     .build();
             ticketRepository.insert(ticket);

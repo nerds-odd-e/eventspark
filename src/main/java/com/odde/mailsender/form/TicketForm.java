@@ -9,10 +9,9 @@ public class TicketForm {
     private Integer ticketLimit;
     private String eventId;
 
-    public TicketForm() {
-    }
+    public TicketForm(){
 
-    ;
+    }
 
     public TicketForm(
             String ticketName,
@@ -43,7 +42,7 @@ public class TicketForm {
         this.ticketPrice = ticketPrice;
     }
 
-    public long getTicketTotal() {
+    public Long getTicketTotal() {
         return ticketTotal;
     }
 
@@ -69,11 +68,11 @@ public class TicketForm {
 
     public Ticket createTicket(){
         return Ticket.builder()
-                .ticketName(this.ticketName)
-                .ticketPrice(this.ticketPrice)
-                .ticketTotal(this.ticketTotal)
-                .ticketLimit(this.ticketLimit)
-                .eventId(this.eventId)
+                .ticketName(ticketName)
+                .ticketPrice(ticketPrice)
+                .ticketTotal(ticketTotal)
+                .ticketLimit(ticketLimit)
+                .eventId(eventId)
                 .build();
     }
 }

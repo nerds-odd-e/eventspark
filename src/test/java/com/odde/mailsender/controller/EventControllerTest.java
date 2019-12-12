@@ -71,8 +71,8 @@ public class EventControllerTest {
         Ticket ticket = Ticket.builder()
                 .eventId(event.getId())
                 .ticketName("ゴスペルチケット")
-                .ticketPrice(1000)
-                .ticketTotal(100)
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
                 .ticketLimit(5)
                 .build();
         ticketRepository.insert(ticket);

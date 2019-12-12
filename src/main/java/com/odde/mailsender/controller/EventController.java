@@ -56,6 +56,8 @@ public class EventController {
     public String showDetailForOwner(@PathVariable("eventName") String eventName, Model model) {
         Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
+        // TODO: [BAU team] ticketが存在する場合は、return ticket
+        model.addAttribute("ticket", null);
         return "event-detail-owner";
     }
 
@@ -75,6 +77,7 @@ public class EventController {
 
         eventRepository.insert(event);
         model.addAttribute("event", event);
+        model.addAttribute("ticket", null);
         return "event-detail-owner";
 
     }

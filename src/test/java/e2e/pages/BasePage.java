@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.core.env.Environment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 public abstract class BasePage {
 
     WebDriver driver;
@@ -27,4 +30,5 @@ public abstract class BasePage {
     protected void goToPage(String url) {
         driver.get("http://localhost:" + getPort() + url);
     }
+
 }

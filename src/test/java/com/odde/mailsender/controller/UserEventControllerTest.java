@@ -143,8 +143,8 @@ public class UserEventControllerTest {
         return Ticket.builder()
                 .eventId(eventId)
                 .ticketName("ゴスペルチケット")
-                .ticketPrice(1000)
-                .ticketTotal(100)
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
                 .ticketLimit(5);
     }
 

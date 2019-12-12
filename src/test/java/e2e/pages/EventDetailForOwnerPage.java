@@ -1,13 +1,19 @@
 package e2e.pages;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 @Component
 public class EventDetailForOwnerPage extends BasePage {
+
     public EventDetailForOwnerPage(WebDriver driver, Environment environment) {
         super(driver, environment);
     }
@@ -37,6 +43,9 @@ public class EventDetailForOwnerPage extends BasePage {
 
     @FindBy(id = "image")
     private WebElement image;
+
+    @FindBy(id = "ticket_name")
+    private WebElement ticketName;
 
     public String getEventNameText() {
         return eventName.getText();
@@ -74,5 +83,14 @@ public class EventDetailForOwnerPage extends BasePage {
 
     public String getImageUrl() {
         return image.getAttribute("src");
+    }
+
+    public String getTicketName() {
+        return ticketName.getText();
+    }
+
+    public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
+        String currentUrl = URLDecoder.decode(driver.getCurrentUrl(), "UTF-8");
+        Assert.assertThat(currentUrl, Matchers.endsWith("/owner/event/" + eventName + "/ticket"));
     }
 }

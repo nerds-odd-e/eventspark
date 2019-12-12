@@ -16,8 +16,8 @@ public class Ticket {
     private String id;
 
     private String ticketName;
-    private long ticketPrice;
-    private long ticketTotal;
+    private Long ticketPrice;
+    private Long ticketTotal;
     private Integer ticketLimit;
     private String eventId;
 

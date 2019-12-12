@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TicketRepository extends MongoRepository<Ticket, String> {
     List<Ticket> findByEventId(String eventId);
+    Ticket findOneByEventId(String eventId);
+    Ticket findOneByTicketName(String ticketname);
 }
