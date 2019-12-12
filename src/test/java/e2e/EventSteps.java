@@ -8,6 +8,7 @@ import e2e.pages.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
@@ -40,8 +41,8 @@ public class EventSteps {
     @Autowired
     private UserEventListPage userEventListPage;
 
-    @Given("ゴスペルワークショップのイベント名のデータが{int}件DBにあること")
-    public void ゴスペルワークショップのイベント名のデータが_件dbにあること(Integer int1) {
+    @Given("ゴスペルワークショップのイベント名のデータが{int}件あること")
+    public void ゴスペルワークショップのイベント名のデータが_件あること(Integer int1) {
         eventRepository.deleteAll();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
@@ -86,12 +87,6 @@ public class EventSteps {
         addEventPage.fillEventEndDateField(eventEndDate);
 
         addEventPage.clickAddButton();
-    }
-
-    @Given("イベント名がゴスペルワークショップのイベントのデータが{int}件DBにあること")
-    public void イベント名がゴスペルワークショップのイベントのデータが_件DBにあること(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
     }
 
     @When("イベント更新ページに変更内容を入力して確定ボタンを押す")
@@ -169,14 +164,14 @@ public class EventSteps {
     public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) {
         Event expectedEvent = eventRepository.findByName(eventName);
 
-        assertNotNull(expectedEvent);
-        assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
-        assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
-        assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
-        assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
-        assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
-        assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
-        assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
+        Assert.assertNotNull(expectedEvent);
+        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getEventNameText());
+        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
+        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
+        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
+        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
+        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
     }
 
     @When("userが{string}の詳細ページを見る")

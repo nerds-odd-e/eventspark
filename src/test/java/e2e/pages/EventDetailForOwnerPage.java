@@ -35,7 +35,7 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "go_to_add_ticket_page")
     private WebElement goToAddTicketPageButton;
 
-    public String getTitleText() {
+    public String getEventNameText() {
         return eventName.getText();
     }
 
