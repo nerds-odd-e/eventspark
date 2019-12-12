@@ -14,8 +14,13 @@
         <div class="col-md-6">
             <h1>Eventspark</h1>
             <h2>Events</h2>
-
         </div>
+        <ul th:each="event: ${bean.eventList}">
+            <li class="event-element">
+                <div th:text="${event.title}"></div>
+            </li>
+        </ul>
+
         <div class="col-md-3"></div>
     </div>
 </div>

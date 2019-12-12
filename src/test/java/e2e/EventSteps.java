@@ -4,15 +4,10 @@ import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
-import e2e.pages.AddEventPage;
-import e2e.pages.AddTicketPage;
-import e2e.pages.EventDetailPage;
-import e2e.pages.EventDetailForOwnerPage;
-import e2e.pages.UserEventListPage;
+import e2e.pages.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
@@ -20,7 +15,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.*;
 
 public class EventSteps {
     @Autowired
@@ -159,8 +155,7 @@ public class EventSteps {
 
     @Then("一覧に複数イベントが見れる")
     public void 一覧に複数イベントが見れる() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        assertThat(userEventListPage.countRows(), greaterThan(1));
     }
 
 
@@ -174,14 +169,14 @@ public class EventSteps {
     public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) {
         Event expectedEvent = eventRepository.findByName(eventName);
 
-        Assert.assertNotNull(expectedEvent);
-        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
+        assertNotNull(expectedEvent);
+        assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getTitleText());
+        assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
+        assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
+        assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
+        assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
+        assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
+        assertEquals(expectedEvent.getDetailText(), eventDetailForOwnerPage.getDetailText());
     }
 
     @When("userが{string}の詳細ページを見る")
@@ -193,14 +188,14 @@ public class EventSteps {
     public void _のイベントの内容とチケット購入ボタンが表示される(String eventName) throws UnsupportedEncodingException {
         Event expectedEvent = eventRepository.findByName(eventName);
 
-        Assert.assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
-        Assert.assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
+        assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
+        assertEquals(expectedEvent.getLocation(), eventDetailPage.getLocationText());
+        assertEquals(expectedEvent.getOwner(), eventDetailPage.getCreateUserNameText());
+        assertEquals(expectedEvent.getSummary(), eventDetailPage.getSummaryText());
+        assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailPage.getStartDateText());
+        assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
+        assertEquals(expectedEvent.getDetailText(), eventDetailPage.getDetailText());
+        assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
     }
 
 }
