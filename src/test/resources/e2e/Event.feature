@@ -14,7 +14,6 @@ Feature: Event
     |イベント終了日時|2020-06-11 17:00|
     Then "ゴスペルワークショップ"のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する。
 
-    @focus
     Scenario Outline: show event detail per type
       Given ゴスペルワークショップのイベント名のデータが1件あること
       When <user_type>が"ゴスペルワークショップ"の詳細ページを見る
