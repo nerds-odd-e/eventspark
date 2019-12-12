@@ -2,26 +2,19 @@ package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
-import com.odde.mailsender.form.AddEventForm;
 import com.odde.mailsender.form.TicketForm;
-import com.odde.mailsender.service.AddTicketService;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDateTime;
-
 @Controller
 public class TicketController {
-    @Autowired
-    private AddTicketService addTicketService;
 
     @Autowired
     private EventRepository eventRepository;

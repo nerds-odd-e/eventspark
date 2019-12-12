@@ -3,10 +3,8 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.form.TicketForm;
-import com.odde.mailsender.service.AddTicketService;
 import com.odde.mailsender.service.EventRepository;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
 
@@ -32,9 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TicketControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private AddTicketService addTicketService;
 
     @Autowired
     private EventRepository eventRepository;
