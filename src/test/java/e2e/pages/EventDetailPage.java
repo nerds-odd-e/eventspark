@@ -15,7 +15,7 @@ public class EventDetailPage extends BasePage {
         super(driver, environment);
     }
 
-    @FindBy(id = "event_name")
+    @FindBy(id = "name")
     private WebElement eventName;
 
     @FindBy(id = "location")
