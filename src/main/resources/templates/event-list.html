@@ -20,6 +20,7 @@
             <ul th:each="event: ${bean.eventList}">
                 <li class="event-element">
                     <div>
+                        <div><img th:src="${event.imagePath}" /></div>
                         <div>
                             <a th:href="@{'/event/'+${event.title}}" th:text="|タイトル: ${event.title}|" th:id="|event${event.eventId}|"></a>
                         </div>

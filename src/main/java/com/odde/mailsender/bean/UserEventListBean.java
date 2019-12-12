@@ -29,6 +29,7 @@ public class UserEventListBean {
         private String location;
         private String summary;
         private String ticketStatus;
+        private String imagePath;
 
         public static EventBean of(Event event, List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
             long total = ticketList.stream().mapToLong(ticket -> ticket.getTicketTotal()).sum();
@@ -46,6 +47,7 @@ public class UserEventListBean {
                     .summary(event.getSummary())
                     .startDateTime(FORMATTER.format(event.getStartDateTime()))
                     .ticketStatus(ticketStatus)
+                    .imagePath(event.getImagePath())
                     .build();
         }
     }

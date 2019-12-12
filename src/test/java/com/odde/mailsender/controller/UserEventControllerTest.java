@@ -136,7 +136,8 @@ public class UserEventControllerTest {
                 .andExpect(content().string(containsString("東京国際フォーラム")))
                 .andExpect(content().string(containsString("2019/12/12 13:30")))
                 .andExpect(content().string(containsString("ゴスペルワークショップのイベントです")))
-                .andExpect(content().string(containsString(UserEventListBean.TICKET_COUNT_LOT)));
+                .andExpect(content().string(containsString(UserEventListBean.TICKET_COUNT_LOT)))
+                .andExpect(content().string(containsString("/image.png")));
     }
 
     private Ticket.TicketBuilder getTicketBuilder(String eventId) {
@@ -159,7 +160,8 @@ public class UserEventControllerTest {
                 .summary("ゴスペルワークショップのイベントです。")
                 .startDateTime(time)
                 .endDateTime(time)
-                .publishedDateTime(time);
+                .publishedDateTime(time)
+                .imagePath("/image.png");
     }
 }
 
