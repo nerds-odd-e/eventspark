@@ -36,7 +36,7 @@ public class TicketController {
 
     @PostMapping("/admin/event/{name}/ticket")
     public String addTicket(Model model, @PathVariable("name") String eventName, @ModelAttribute("form") TicketForm form){
-        Ticket ticket = addTicketService.addTicket(form);
+        Ticket ticket = ticketRepository.save(form.createTicket());
         Event event = eventRepository.findByName(eventName);
         model.addAttribute("event", event);
         model.addAttribute("ticket", ticket);
