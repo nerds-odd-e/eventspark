@@ -11,20 +11,8 @@ public class AddTicketService {
     private TicketRepository ticketRepository;
 
     public Ticket addTicket(TicketForm ticketForm) {
-        Ticket ticket = convertToTicket(ticketForm);
+        Ticket ticket = ticketForm.createTicket();
         Ticket save = ticketRepository.save(ticket);
         return save;
-    }
-
-    private Ticket convertToTicket(TicketForm ticketForm) {
-        Ticket ticket = Ticket.builder()
-                .ticketName(ticketForm.getTicketName())
-                .ticketPrice(ticketForm.getTicketPrice())
-                .ticketTotal(ticketForm.getTicketTotal())
-                .ticketLimit(ticketForm.getTicketLimit())
-                .eventId(ticketForm.getEventId())
-                .build();
-
-        return ticket;
     }
 }

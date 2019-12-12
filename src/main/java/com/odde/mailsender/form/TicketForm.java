@@ -9,14 +9,17 @@ public class TicketForm {
     private Integer ticketLimit;
     private String eventId;
 
-    public TicketForm() {};
+    public TicketForm() {
+    }
+
+    ;
 
     public TicketForm(
-        String ticketName,
-        Long ticketPrice,
-        Long ticketTotal,
-        Integer ticketLimit,
-        String eventId){
+            String ticketName,
+            Long ticketPrice,
+            Long ticketTotal,
+            Integer ticketLimit,
+            String eventId) {
         this.ticketName = ticketName;
         this.ticketPrice = ticketPrice;
         this.ticketTotal = ticketTotal;
@@ -55,6 +58,7 @@ public class TicketForm {
     public void setTicketLimit(Integer ticketLimit) {
         this.ticketLimit = ticketLimit;
     }
+
     public String getEventId() {
         return eventId;
     }
@@ -62,4 +66,15 @@ public class TicketForm {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
+    public Ticket createTicket(){
+        return Ticket.builder()
+                .ticketName(getTicketName())
+                .ticketPrice(getTicketPrice())
+                .ticketTotal(getTicketTotal())
+                .ticketLimit(getTicketLimit())
+                .eventId(getEventId())
+                .build();
+    }
 }
+
