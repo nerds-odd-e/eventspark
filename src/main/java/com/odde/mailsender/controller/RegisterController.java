@@ -10,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.xml.transform.OutputKeys;
-
 @Controller
 public class RegisterController {
 
@@ -25,15 +23,18 @@ public class RegisterController {
 
         //１人あたりのチケット購入上限チェックしたい
 
-        //OKだったら参加登録可能
-        registrationInfoRepository.save(new RegistrationInfo(form.getFirstName(), form.getLastName(), form.getCompany(), form.getAddress(), form.getTicketId(), "",
-                form.getTicketCount(), form.getEventId()));
+        registrationInfoRepository.save(RegistrationInfo.builder().firstName(form.getFirstName())
+                .lastName(form.getLastName())
+                .company(form.getCompany())
+                .address(form.getAddress())
+                .ticketId(form.getTicketId())
+                .ticketCount(form.getTicketCount())
+                .eventId(form.getEventId()).build());
 
         return "redirect:/register_complete";
     }
 
-    public boolean isBuyableForTicketMaximum(int ticketMaximum, Integer ticketSoled, Integer ticketBought)
-    {
+    public boolean isBuyableForTicketMaximum(int ticketMaximum, Integer ticketSoled, Integer ticketBought) {
         return ticketMaximum >= (ticketSoled + ticketBought);
     }
 
