@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,11 +31,7 @@ public class EventController {
         model.addAttribute("event", event);
 
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
-        if (!ticketList.isEmpty()) {
-            Ticket ticket = ticketList.get(0);
-            model.addAttribute("maxTicket",ticket.getTicketLimit());
-            model.addAttribute("ticketName",ticket.getTicketName());
-        }
+        model.addAttribute("ticketList", ticketList);
         return "event-detail";
     }
 

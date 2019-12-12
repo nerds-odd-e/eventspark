@@ -39,6 +39,9 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "ticket_name")
     private WebElement ticketName;
 
+    @FindBy(id = "ticket_list")
+    private WebElement ticketList;
+
     @FindBy(id = "max_ticket")
     private WebElement maxTicket;
 
@@ -92,5 +95,9 @@ public class EventDetailPage extends BasePage {
 
     public String getTicketNameText() {
         return ticketName.getText();
+    }
+
+    public boolean getTicketList() {
+        return  ticketList.isDisplayed();
     }
 }

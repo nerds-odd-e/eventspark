@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -67,12 +68,11 @@ public class EventControllerTest {
                 .ticketLimit(5)
                 .build();
         ticketRepository.insert(ticket);
+        List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
 
         mvc.perform(get("/event/" + event.getName()))
                 .andExpect(model().attribute("event", event))
-                .andExpect(model().attribute("maxTicket",ticket.getTicketLimit()))
-                .andExpect(model().attribute("ticketName", ticket.getTicketName()));
-
+                .andExpect(model().attribute("ticketList", ticketList));
     }
 
     @Test

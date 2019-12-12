@@ -224,8 +224,7 @@ public class EventSteps {
         assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailPage.getEndDateText());
         assertEquals(expectedEvent.getDetail(), eventDetailPage.getDetailText());
         assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
-        assertEquals(String.valueOf(expectedTicket.getTicketLimit()),eventDetailPage.getMaxTicketText());
-        assertEquals(String.valueOf(expectedTicket.getTicketName()),eventDetailPage.getTicketNameText());
+        assertTrue(eventDetailPage.getTicketList());
     }
 
 }
