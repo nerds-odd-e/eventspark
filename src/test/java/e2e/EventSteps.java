@@ -97,7 +97,8 @@ public class EventSteps {
         addEventPage.fillEventStartDateField(eventStartDate);
         String eventEndDate = datatable.get("イベント終了日時");
         addEventPage.fillEventEndDateField(eventEndDate);
-
+        String imagePath = datatable.get("画像URL");
+        addEventPage.fillImagePathField(imagePath);
         addEventPage.clickAddButton();
     }
 

@@ -34,6 +34,9 @@ public class AddEventPage extends BasePage {
     @FindBy(id = "endDateTime")
     private WebElement eventEndDate;
 
+    @FindBy(id = "imagePath")
+    private  WebElement imagePath;
+
     @FindBy(id = "add")
     private WebElement addButton;
 
@@ -79,5 +82,8 @@ public class AddEventPage extends BasePage {
 
     public void fillOwnerField(String owner) {
         this.owner.sendKeys(owner);
+    }
+
+    public void fillImagePathField(String imagePath) {this.imagePath.sendKeys(imagePath);
     }
 }

@@ -12,6 +12,7 @@ Feature: Event
     |サマリー  |ゴスペルワークショップです           |
     |イベント開始日時|2020-06-11 09:00|
     |イベント終了日時|2020-06-11 17:00|
+    |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
     Then "ゴスペルワークショップ"のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する。
 
     Scenario Outline: show event detail per type
