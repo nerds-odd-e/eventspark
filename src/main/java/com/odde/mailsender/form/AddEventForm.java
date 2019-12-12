@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 public class AddEventForm {
@@ -24,10 +25,10 @@ public class AddEventForm {
     @NotEmpty(message = "must be not empty")
     private String detail;
 
-    @DateTimeFormat(pattern = "uuuu-MM-dd hh:mm")
+    @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime startDateTime;
 
-    @DateTimeFormat(pattern = "uuuu-MM-dd hh:mm")
+    @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
     public Event createEvent() {

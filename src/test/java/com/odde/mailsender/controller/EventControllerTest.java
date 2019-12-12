@@ -67,18 +67,30 @@ public class EventControllerTest {
 
     @Test
     public void newEvent() throws Exception {
+        //イベントをDB追加している
         MvcResult result = mvc.perform(post("/owner/event")
                 .param("name","ゴスペルワークショップ")
                 .param("location", "東京フォーラム")
                 .param("summary", "イベントのサマリー")
-                .param("event_detail","アーティスト：カークフランクリン ¥n 演目：未定")
-                .param("event_start_date","2019-12-20 09:00")
-                .param("event_end_date","2019-12-21 10:00")
+                .param("detail","アーティスト：カークフランクリン ¥n 演目：未定")
+                .param("startDateTime","2019-12-20 09:00")
+                .param("endDateTime","2019-12-21 10:00")
         ).andReturn();
+
+        //正常終了
         assertEquals(200,result.getResponse().getStatus());
+
+        //DBからデータを取得
         Event event=eventRepository.findByName("ゴスペルワークショップ");
+
+        //postしたデータがDBに入っているかかくにん
         assertNotNull(event);
         assertEquals("ゴスペルワークショップ",event.getName());
+        assertEquals("東京フォーラム",event.getLocation());
+        assertEquals("イベントのサマリー",event.getSummary());
+        assertEquals("アーティスト：カークフランクリン ¥n 演目：未定",event.getDetail());
+        assertEquals("2019-12-20T09:00",event.getStartDateTime().toString());
+        assertEquals("2019-12-21T10:00",event.getEndDateTime().toString());
     }
 
 }
