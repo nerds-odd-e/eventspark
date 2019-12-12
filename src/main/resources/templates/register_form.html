@@ -35,11 +35,10 @@
                 <div class="form-group">
                     <div class="form-inline">
                         <label for="ticket-type">Ticket</label>
-                        <!--
-                        <select class="form-control" name="ticketType" id="ticket-type" th:value="${form.ticketType} th:each="${ticket : ticketList}">
-                            <option value="${ticket.id}">${ticket.ticketName} （JPY ${ticket.ticketPrice}）</option>
+                        <select class="form-control" name="ticketType" id="ticket-type" th:value="${form.ticketType}">
+                            <!--<option th:value="${ticket.id}" th:each="ticket : ${ticketList}" th:text="${ticket.ticketName} （JPY ${ticket.ticketPrice}）"></option>-->
+                            <option th:value="${ticket.id}" th:each="ticket : ${ticketList}" th:text="${ticket.ticketName + ' (JPY' + ticket.ticketPrice + ')'}"></option>
                         </select>
-                        -->
                         <input type="text" class="form-control" name="ticketCount" id="ticket-number"  th:value="${form.ticketCount}" /> Ticket
                     </div>
                 </div>
