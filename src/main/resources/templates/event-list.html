@@ -18,6 +18,10 @@
         <ul th:each="event: ${bean.eventList}">
             <li class="event-element">
                 <div th:text="${event.title}"></div>
+                <div th:text="${event.location}"></div>
+                <div th:text="${event.summary}"></div>
+                <div th:text="${event.startDateTime}"></div>
+                <div th:text="${event.ticketStatus}"></div>
             </li>
         </ul>
 

@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Singular;
 import lombok.Value;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Value
 @Builder
 public class UserEventListBean {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
     @Value
     @Builder
@@ -25,6 +28,10 @@ public class UserEventListBean {
         public static EventBean of(Event entity) {
             return EventBean.builder()
                     .title(entity.getName())
+                    .location(entity.getLocation())
+                    .summary(entity.getSummary())
+                    .startDateTime(FORMATTER.format(entity.getStartDateTime()))
+                    .ticketStatus("残りわずか")
                     .build();
         }
     }
