@@ -72,6 +72,7 @@ public class EventControllerTest {
                 .param("name","ゴスペルワークショップ")
                 .param("location", "東京フォーラム")
                 .param("summary", "イベントのサマリー")
+                .param("owner", "ゆうこ")
                 .param("detail","アーティスト：カークフランクリン ¥n 演目：未定")
                 .param("startDateTime","2019-12-20 09:00")
                 .param("endDateTime","2019-12-21 10:00")
@@ -88,6 +89,7 @@ public class EventControllerTest {
         assertEquals("ゴスペルワークショップ",event.getName());
         assertEquals("東京フォーラム",event.getLocation());
         assertEquals("イベントのサマリー",event.getSummary());
+        assertEquals("ゆうこ",event.getOwner());
         assertEquals("アーティスト：カークフランクリン ¥n 演目：未定",event.getDetail());
         assertEquals("2019-12-20T09:00",event.getStartDateTime().toString());
         assertEquals("2019-12-21T10:00",event.getEndDateTime().toString());
