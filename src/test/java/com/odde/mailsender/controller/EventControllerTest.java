@@ -23,8 +23,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
@@ -78,16 +78,16 @@ public class EventControllerTest {
         ticketRepository.insert(ticket);
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
 
-        registrationInfoRepository.save(new RegistrationInfo(
-                "daiki",
-                "kanai",
-                "odd-e Japan",
-                "sample@odd-e.com",
-                ticket.getId(),
-                "ticket typw",
-                3,
-                ticket.getEventId()
-        ));
+        registrationInfoRepository.save(RegistrationInfo.builder()
+                .firstName("daiki")
+                .lastName("kanai")
+                .company("odd-e Japan")
+                .address("sample@odd-e.com")
+                .ticketId(ticket.getId())
+                .ticketCount(3)
+                .eventId(ticket.getEventId()).build()
+        );
+
 
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
         List<Long> unsoldList = new ArrayList<>();
@@ -107,7 +107,7 @@ public class EventControllerTest {
     @Test
     public void displayAddEventPage() throws Exception {
         MvcResult result = mvc.perform(get("/owner/event/new")).andReturn();
-        assertEquals(200,result.getResponse().getStatus());
+        assertEquals(200, result.getResponse().getStatus());
     }
 
     @Test
@@ -116,21 +116,21 @@ public class EventControllerTest {
         MvcResult result = performAddEvent();
 
         //正常終了
-        assertEquals(200,result.getResponse().getStatus());
+        assertEquals(200, result.getResponse().getStatus());
 
         //DBからデータを取得
-        Event event=eventRepository.findByName("ゴスペルワークショップ");
+        Event event = eventRepository.findByName("ゴスペルワークショップ");
 
         //postしたデータがDBに入っているかかくにん
         assertNotNull(event);
-        assertEquals("ゴスペルワークショップ",event.getName());
-        assertEquals("東京フォーラム",event.getLocation());
-        assertEquals("イベントのサマリー",event.getSummary());
-        assertEquals("ゆうこ",event.getOwner());
-        assertEquals("アーティスト：カークフランクリン ¥n 演目：未定",event.getDetail());
-        assertEquals("2019-12-20T09:00",event.getStartDateTime().toString());
-        assertEquals("2019-12-21T10:00",event.getEndDateTime().toString());
-        assertEquals("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png",event.getImagePath());
+        assertEquals("ゴスペルワークショップ", event.getName());
+        assertEquals("東京フォーラム", event.getLocation());
+        assertEquals("イベントのサマリー", event.getSummary());
+        assertEquals("ゆうこ", event.getOwner());
+        assertEquals("アーティスト：カークフランクリン ¥n 演目：未定", event.getDetail());
+        assertEquals("2019-12-20T09:00", event.getStartDateTime().toString());
+        assertEquals("2019-12-21T10:00", event.getEndDateTime().toString());
+        assertEquals("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png", event.getImagePath());
     }
 
     private MvcResult performAddEvent() throws Exception {
@@ -150,10 +150,10 @@ public class EventControllerTest {
     public void duplicateEventName() throws Exception {
         MvcResult result = performAddEvent();
 
-        assertEquals(200,result.getResponse().getStatus());
-        Event event=eventRepository.findByName("ゴスペルワークショップ");
+        assertEquals(200, result.getResponse().getStatus());
+        Event event = eventRepository.findByName("ゴスペルワークショップ");
         assertNotNull(event);
-        assertEquals("ゴスペルワークショップ",event.getName());
+        assertEquals("ゴスペルワークショップ", event.getName());
 
         //重複するイベントを追加して検証
         result = performAddEvent();
