@@ -32,12 +32,13 @@ public class AddEventForm {
 
     public Event createEvent() {
         return Event.builder()
-                    .name(getName())
-                    .location(getLocation())
-                    .summary(getSummary())
-                    .startDateTime(getStartDateTime())
-                    .endDateTime(getEndDateTime())
-                    .detail(getDetail())
-                    .build();
+                .name(name)
+                .location(location)
+                .summary(summary)
+                .owner(owner)
+                .startDateTime(startDateTime)
+                .endDateTime(endDateTime)
+                .detail(detail)
+                .build();
     }
 }
