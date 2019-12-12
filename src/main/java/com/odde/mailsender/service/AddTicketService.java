@@ -11,8 +11,6 @@ public class AddTicketService {
     private TicketRepository ticketRepository;
 
     public Ticket addTicket(TicketForm ticketForm) {
-        Ticket ticket = ticketForm.createTicket();
-        Ticket save = ticketRepository.save(ticket);
-        return save;
+        return ticketRepository.save(ticketForm.createTicket());
     }
 }
