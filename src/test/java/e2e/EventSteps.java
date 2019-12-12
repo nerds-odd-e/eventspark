@@ -185,7 +185,6 @@ public class EventSteps {
     }
 
 
-
     @When("ownerが{string}の詳細ページを見る")
     public void ownerが_の詳細ページを見る(String eventName) {
         eventDetailForOwnerPage.userVisitsEventPreviewPage(eventName);
@@ -226,5 +225,16 @@ public class EventSteps {
         assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
         assertTrue(eventDetailPage.getTicketList());
     }
+
+    @When("イベントタイトルのリンクをクリックすると")
+    public void イベントタイトルのリンクをクリックすると() {
+        userEventListPage.click("event1");
+    }
+
+    @Then("クリックしたイベントの詳細ページが表示される")
+    public void クリックしたイベントの詳細ページが表示される() throws UnsupportedEncodingException {
+        eventDetailPage.assertCurrentPage("ゴスペルワークショップ1");
+    }
+
 
 }

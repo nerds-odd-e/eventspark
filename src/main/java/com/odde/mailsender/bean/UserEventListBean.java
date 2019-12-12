@@ -23,6 +23,7 @@ public class UserEventListBean {
     @Builder
     public static class EventBean {
 
+        private String eventId;
         private String startDateTime;
         private String title;
         private String location;
@@ -39,6 +40,7 @@ public class UserEventListBean {
                 ticketStatus = TICKET_COUNT_LOT;
             }
             return EventBean.builder()
+                    .eventId(event.getId())
                     .title(event.getName())
                     .location(event.getLocation())
                     .summary(event.getSummary())

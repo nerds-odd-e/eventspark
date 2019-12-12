@@ -132,6 +132,7 @@ public class UserEventControllerTest {
 
         mvc.perform(get("/event"))
                 .andExpect(content().string(containsString("ゴスペルワークショップ")))
+                .andExpect(content().string(containsString("/event/ゴスペルワークショップ")))
                 .andExpect(content().string(containsString("東京国際フォーラム")))
                 .andExpect(content().string(containsString("2019/12/12 13:30")))
                 .andExpect(content().string(containsString("ゴスペルワークショップのイベントです")))

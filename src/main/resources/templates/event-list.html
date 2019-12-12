@@ -1,29 +1,36 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Eventspark</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <script th:src="@{/lib/jquery-3.2.1.js}"></script>
     <script th:src="@{/js/home.js}"></script>
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+    <div>
+        <div class="row"></div>
+        <div class="row">
             <h1>Eventspark</h1>
             <h2>Events</h2>
         </div>
-        <ul th:each="event: ${bean.eventList}">
-            <li class="event-element">
-                <div th:text="${event.title}"></div>
-                <div th:text="${event.location}"></div>
-                <div th:text="${event.summary}"></div>
-                <div th:text="${event.startDateTime}"></div>
-                <div th:text="${event.ticketStatus}"></div>
-            </li>
-        </ul>
+        <div class="row">
+            <ul th:each="event: ${bean.eventList}">
+                <li class="event-element">
+                    <div>
+                        <div>
+                            <a th:href="@{'/event/'+${event.title}}" th:text="|タイトル: ${event.title}|" th:id="|event${event.eventId}|"></a>
+                        </div>
+                        <div th:text="|開催場所: ${event.location}|"></div>
+                        <div th:text="|概要: ${event.summary}|"></div>
+                        <div th:text="|開催日時: ${event.startDateTime}|"></div>
+                        <div th:text="|チケット受付状況: ${event.ticketStatus}|"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
         <div class="col-md-3"></div>
     </div>

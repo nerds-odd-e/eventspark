@@ -19,4 +19,8 @@ public class UserEventListPage extends BasePage {
     public int countRows() {
         return driver.findElements(By.className("event-element")).size();
     }
+
+    public void click(String id) {
+        driver.findElement(By.id(id)).click();
+    }
 }

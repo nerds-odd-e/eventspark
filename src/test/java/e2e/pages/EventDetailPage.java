@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @Component
 public class EventDetailPage extends BasePage {
@@ -98,6 +103,11 @@ public class EventDetailPage extends BasePage {
     }
 
     public boolean getTicketList() {
-        return  ticketList.isDisplayed();
+        return ticketList.isDisplayed();
+    }
+
+    public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
+        String expected = "http://localhost:" + getPort() + "/event/" + URLEncoder.encode(eventName, StandardCharsets.UTF_8.name());
+        assertThat(driver.getCurrentUrl(), equalTo(expected));
     }
 }
