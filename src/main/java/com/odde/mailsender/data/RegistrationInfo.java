@@ -27,25 +27,4 @@ public class RegistrationInfo {
     private String ticketType;
     private Integer ticketCount;
     private String eventId;
-
-
-    /**
-     * @deprecated Constructor with only ticketId (no ticketType) should be used.
-     */
-    @JsonCreator
-    public RegistrationInfo(@JsonProperty("firstName") String firstName,
-                            @JsonProperty("lastName") String lastName,
-                            @JsonProperty("company") String company,
-                            @JsonProperty("address") String address,
-                            @JsonProperty("ticketType") String ticketType,
-                            @JsonProperty("ticketCount") Integer ticketCount,
-                            @JsonProperty("eventId") String eventId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.company = company;
-        this.address = address;
-        this.ticketType = ticketType;
-        this.ticketCount = ticketCount;
-        this.eventId = eventId;
-    }
 }
