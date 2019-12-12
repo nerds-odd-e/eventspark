@@ -1,9 +1,11 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.RegistrationInfo;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.form.AddEventForm;
 import com.odde.mailsender.service.EventRepository;
+import com.odde.mailsender.service.RegistrationInfoRepository;
 import com.odde.mailsender.service.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ public class EventController {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private RegistrationInfoRepository registrationInfoRepository;
+
     @GetMapping("/event/{eventName}")
     public String showDetail(@PathVariable("eventName") String eventName, Model model) {
 
@@ -31,6 +36,19 @@ public class EventController {
         model.addAttribute("event", event);
 
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
+        model.addAttribute("ticketList", ticketList);
+
+        List<Integer> unsoldList = new ArrayList<>();
+        for (Ticket ticket : ticketList) {
+            List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
+            int sold = 0;
+            for (RegistrationInfo registrationInfo : registrationInfoList) {
+                sold += registrationInfo.getTicketCount();
+            }
+            int unsold = ticket.getTicketLimit() - sold;
+            unsoldList.add(unsold);
+        }
+        model.addAttribute("unsoldList", unsoldList);
         model.addAttribute("ticketList", ticketList);
         return "event-detail";
     }

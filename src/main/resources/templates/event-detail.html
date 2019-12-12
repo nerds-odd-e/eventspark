@@ -21,9 +21,9 @@
             <p>主催者 <span th:text="${event.getOwner()}" id="owner"></span></p>
             <p>チケット<span th:if="${ticketList.isEmpty()}"> No Information</span></p>
             <div id="ticket_list" th:if="${!ticketList.isEmpty()}">
-                <p th:each="ticket : ${ticketList}">
+                <p th:each="ticket,stat : ${ticketList}">
                     <span th:text="${ticket.getTicketName()}"></span>
-                    <span th:text="${ticket.getTicketTotal()}"></span>/
+                    <span th:text="${unsoldList.get(stat.index)}"></span>/
                     <span th:text="${ticket.getTicketLimit()}"></span>
                 </p>
             </div>

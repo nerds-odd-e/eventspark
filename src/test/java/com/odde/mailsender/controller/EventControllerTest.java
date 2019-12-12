@@ -1,8 +1,10 @@
 package com.odde.mailsender.controller;
 
 import com.odde.mailsender.data.Event;
+import com.odde.mailsender.data.RegistrationInfo;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
+import com.odde.mailsender.service.RegistrationInfoRepository;
 import com.odde.mailsender.service.TicketRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,9 +41,14 @@ public class EventControllerTest {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private RegistrationInfoRepository registrationInfoRepository;
+
     @Before
     public void setup() {
         eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+        registrationInfoRepository.deleteAll();
     }
 
     @Test
@@ -70,9 +78,30 @@ public class EventControllerTest {
         ticketRepository.insert(ticket);
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
 
+        registrationInfoRepository.save(new RegistrationInfo(
+                "daiki",
+                "kanai",
+                "odd-e Japan",
+                "sample@odd-e.com",
+                ticket.getId(),
+                "ticket typw",
+                3,
+                ticket.getEventId()
+        ));
+
+        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
+        List<Integer> unsoldList = new ArrayList<>();
+        int sold = 0;
+        for (RegistrationInfo registrationInfo : registrationInfoList) {
+            sold += registrationInfo.getTicketCount();
+        }
+        int unsold = ticket.getTicketLimit() - sold;
+        unsoldList.add(unsold);
+
         mvc.perform(get("/event/" + event.getName()))
                 .andExpect(model().attribute("event", event))
-                .andExpect(model().attribute("ticketList", ticketList));
+                .andExpect(model().attribute("ticketList", ticketList))
+                .andExpect(model().attribute("unsoldList", unsoldList));
     }
 
     @Test
