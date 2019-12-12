@@ -69,11 +69,11 @@ public class TicketForm {
 
     public Ticket createTicket(){
         return Ticket.builder()
-                .ticketName(getTicketName())
-                .ticketPrice(getTicketPrice())
-                .ticketTotal(getTicketTotal())
-                .ticketLimit(getTicketLimit())
-                .eventId(getEventId())
+                .ticketName(this.ticketName)
+                .ticketPrice(this.ticketPrice)
+                .ticketTotal(this.ticketTotal)
+                .ticketLimit(this.ticketLimit)
+                .eventId(this.eventId)
                 .build();
     }
 }
