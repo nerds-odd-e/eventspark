@@ -46,7 +46,13 @@
                     <button type="button" id="purchase" class="btn btn-primary">BUY</button>
                 </div>
                 <div class="form-group">
-                    <div id="parent" th:replace="components/error-panel"></div>
+                    <!--<div id="parent" th:replace="components/error-panel"></div>-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Error</h3>
+                    </div>
+                    <div class="panel-body" id="error-area">
+                        <span id="error-message" th:text="${errors}"></span>
+                    </div>
                 </div>
             </form>
         </div>
