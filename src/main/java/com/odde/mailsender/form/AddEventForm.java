@@ -1,5 +1,6 @@
 package com.odde.mailsender.form;
 
+import com.odde.mailsender.data.Event;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +27,14 @@ public class AddEventForm {
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
-
-
+    public Event createEvent() {
+        return Event.builder()
+                    .name(getName())
+                    .location(getLocation())
+                    .summary(getSummary())
+                    .startDateTime(getStartDateTime())
+                    .endDateTime(getEndDateTime())
+                    .detailText(getDetailText())
+                    .build();
+    }
 }

@@ -39,17 +39,11 @@ public class EventController {
 
     @PostMapping("/owner/event")
     public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
-        Event event = Event.builder()
-                .name(form.getName())
-                .location(form.getLocation())
-                .summary(form.getSummary())
-                .startDateTime(form.getStartDateTime())
-                .endDateTime(form.getEndDateTime())
-                .detailText(form.getDetailText())
-                .build();
+        Event event = form.createEvent();
         eventRepository.insert(event);
         model.addAttribute("event", event);
         return "event-detail-owner";
 
     }
+
 }
