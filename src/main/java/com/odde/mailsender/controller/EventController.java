@@ -31,15 +31,13 @@ public class EventController {
     @GetMapping("/event/{eventName}")
     public String showDetail(@PathVariable("eventName") String eventName, Model model) {
         Event event = eventRepository.findByName(eventName);
-        model.addAttribute("event", event);
-
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
-        model.addAttribute("ticketList", ticketList);
-
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
-        List<Long> unsoldList = event.calcSoldTicket(ticketList, registrationInfoList);
-        model.addAttribute("unsoldList", unsoldList);
+
+        model.addAttribute("event", event);
         model.addAttribute("ticketList", ticketList);
+        model.addAttribute("unsoldList", event.countUnsoldTickets(ticketList, registrationInfoList));
+
         return "event-detail";
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -33,4 +34,7 @@ public class Ticket {
                 Objects.equals(eventId, ticket.eventId);
     }
 
+    long countUnsoldTicket(List<RegistrationInfo> registrationInfoList) {
+        return getTicketTotal() -  registrationInfoList.stream().mapToLong(RegistrationInfo::getTicketCount).sum();
+    }
 }
