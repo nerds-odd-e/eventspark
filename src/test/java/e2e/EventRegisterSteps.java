@@ -26,10 +26,6 @@ public class EventRegisterSteps {
     @Autowired
     private GreenMail greenMail;
 
-    @Given("user visits register page")
-    public void userVisitsRegisterPage() {
-    }
-
     @Given("以下が入力されている")
     public void 以下が入力されている(io.cucumber.datatable.DataTable dataTable) {
         名前が入力されている(dataTable.cell(0, 1));
@@ -96,5 +92,10 @@ public class EventRegisterSteps {
     @Then("参加者登録画面エラーエリアに{string}と表示される")
     public void 参加者登録画面エラーエリアに_と表示される(String string) {
         Assert.assertEquals(string, eventRegisterPage.getErrorText());
+    }
+
+    @And("ゴスペルワークショップの参加登録ページが表示されている")
+    public void ゴスペルワークショップの参加登録ページが表示されている() {
+        eventRegisterPage.goToEventRegisterPage();
     }
 }

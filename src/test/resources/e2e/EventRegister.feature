@@ -1,7 +1,8 @@
 Feature: Event Register
 
-#  Background:
-#    Given user visits register page
+  Background:
+    Given ゴスペルワークショップのイベント名のデータが1件あること
+    And ゴスペルワークショップの参加登録ページが表示されている
 
 #  case for
 #  success case

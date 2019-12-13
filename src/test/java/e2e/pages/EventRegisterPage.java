@@ -61,6 +61,7 @@ public class EventRegisterPage extends BasePage {
         this.goToPage("/purchased");
     }
 
+    public void goToEventRegisterPage() { this.goToPage("/register_form/ゴスペルワークショップ"); }
 
     public void fillFirstName(String input) {
         firstName.sendKeys(input);
