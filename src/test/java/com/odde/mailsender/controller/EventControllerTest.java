@@ -128,7 +128,7 @@ public class EventControllerTest {
 
         assertEquals(200, result.getResponse().getStatus());
         assertEquals("event-new", result.getModelAndView().getViewName());
-        assertEquals("同じ名前のイベントが存在します。", result.getModelAndView().getModel().get("errorMessage"));
+        assertEquals("Failed!: Same name event already exist.", result.getModelAndView().getModel().get("errorMessage"));
 
     }
 

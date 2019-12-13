@@ -71,7 +71,7 @@ public class EventController {
         Event event = eventRepository.findByName(form.getName());
         if(event != null){
             model.addAttribute("form", form);
-            model.addAttribute("errorMessage", "同じ名前のイベントが存在します。");
+            model.addAttribute("errorMessage", "Failed!: Same name event already exist.");
             return "event-new";
         }
         event = form.createEvent();
