@@ -11,10 +11,14 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
             <h1>Eventspark</h1>
             <h2 th:text="${event.name}"></h2>
+            <p>開始日時 <span th:text="${event.startDateTime}"></span></p>
+            <p>終了日時 <span th:text="${event.endDateTime}"></span></p>
+            <p>開催場所 <span th:text="${event.location}"></span></p>
+
             <form id="registrationForm" method="post" th:object="${form}">
                 <div class="form-group">
                     <label for="first-name">First name</label>
@@ -38,7 +42,7 @@
                         <select class="form-control" name="ticketId" id="ticket-type" th:value="${form.ticketId}">
                             <option th:value="${ticket.id}" th:each="ticket : ${ticketList}" th:text="${ticket.ticketName + ' (JPY' + ticket.ticketPrice + ')'}"></option>
                         </select>
-                        <input type="text" class="form-control" name="ticketCount" id="ticket-count"  th:value="${form.ticketCount}" /> Ticket
+                        <input type="number" class="form-control" name="ticketCount" id="ticket-count"  th:value="${form.ticketCount}" style="width: 5em;" /> Ticket
                     </div>
                 </div>
                 <input type="hidden" class="form-control" name="eventId" id="event-id"  th:value="${event.id}" />
