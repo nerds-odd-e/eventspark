@@ -98,6 +98,6 @@ public class EventDetailForOwnerPage extends BasePage {
     }
 
     public String getEventUrlText() {
-        return eventUrl.getText();
+        return eventUrl.getAttribute("value");
     }
 }
