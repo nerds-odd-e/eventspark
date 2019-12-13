@@ -62,7 +62,8 @@ public class EventController {
     }
 
     @GetMapping("/owner/event/new")
-    public String AddEvent() {
+    public String AddEvent(AddEventForm form, Model model) {
+        model.addAttribute("form",form);
         return "event-new";
     }
 

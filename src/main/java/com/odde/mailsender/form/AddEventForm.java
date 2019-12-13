@@ -34,6 +34,20 @@ public class AddEventForm {
     @NotEmpty(message = "must be not empty")
     private String imagePath;
 
+    public String startDateTimeToString() {
+        if (startDateTime == null) {
+            return "";
+        }
+        return startDateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
+    }
+
+    public String endDateTimeToString() {
+        if (endDateTime == null) {
+            return "";
+        }
+        return endDateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
+    }
+
     public Event createEvent() {
         return Event.builder()
                 .name(name)
