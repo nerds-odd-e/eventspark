@@ -29,12 +29,12 @@
                     <input type="text" class="form-control" name="lastName" id="last-name" placeholder="Last name" th:value="${form.lastName}" />
                 </div>
                 <div class="form-group">
-                    <label for="company-name">Company</label>
-                    <input type="text" class="form-control" name="companyName" id="company-name" placeholder="Company" th:value="${form.company}" />
+                    <label for="mail-address">e-mail</label>
+                    <input type="text" class="form-control" name="address" id="mail-address" placeholder="Mail address" th:value="${form.address}" />
                 </div>
                 <div class="form-group">
-                    <label for="mail-address">Mail address</label>
-                    <input type="text" class="form-control" name="address" id="mail-address" placeholder="Mail address" th:value="${form.address}" />
+                    <label for="company-name">Company</label>
+                    <input type="text" class="form-control" name="companyName" id="company-name" placeholder="Company" th:value="${form.company}" />
                 </div>
                 <div class="form-group">
                     <div class="form-inline">
@@ -50,9 +50,6 @@
                     <button type="button" id="purchase" class="btn btn-primary" onclick="registerBtnClicked()">BUY</button>
                 </div>
                 <div class="form-group">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Error</h3>
-                    </div>
                     <div class="panel-body" id="error-area">
                         <span id="error-message" th:text="${errors}"></span>
                     </div>
