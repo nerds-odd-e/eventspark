@@ -105,17 +105,11 @@ public class EventSteps {
         Ticket ticket = Ticket.builder()
                 .eventId(event.getId())
                 .ticketName("ゴスペルチケット")
-                .ticketPrice((long) 1000)
-                .ticketTotal((long) 100)
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
                 .ticketLimit(5)
                 .build();
         ticketRepository.insert(ticket);
-    }
-
-    @Given("イベント名がゴスペルワークショップのイベントのデータが{int}件DBにあること")
-    public void イベント名がゴスペルワークショップのイベントのデータが_件DBにあること(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
     }
 
     @When("イベント更新ページに変更内容を入力して確定ボタンを押す")
@@ -187,7 +181,6 @@ public class EventSteps {
     public void ゴスペルワークショップのイベント名のデータがdbに存在しないこと() {
         eventRepository.deleteAll();
     }
-
 
     @When("ownerが{string}の詳細ページを見る")
     public void ownerが_の詳細ページを見る(String eventName) {
