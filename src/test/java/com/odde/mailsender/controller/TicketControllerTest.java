@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.containsString;
@@ -55,15 +56,6 @@ public class TicketControllerTest {
         //given
         TicketForm ticketForm = new TicketForm("ticketName", 1L, 1L, 1, "1");
 
-        Ticket ticket = Ticket.builder()
-                .ticketName(ticketForm.getTicketName())
-                .ticketPrice(ticketForm.getTicketPrice())
-                .ticketTotal(ticketForm.getTicketTotal())
-                .ticketLimit(ticketForm.getTicketLimit())
-                .eventId(ticketForm.getEventId())
-                .build();
-
-        Event event = eventRepository.findByName("ゴスペルワークショップ");
         //when
         mockMvc.perform(post("/owner/event/ゴスペルワークショップ/ticket")
                 .param("ticketName", ticketForm.getTicketName())
@@ -71,9 +63,7 @@ public class TicketControllerTest {
                 .param("ticketTotal", String.valueOf(ticketForm.getTicketTotal()))
                 .param("ticketLimit", String.valueOf(ticketForm.getTicketLimit()))
                 .param("eventId", ticketForm.getEventId()))
-                .andExpect(model().attribute("ticket", ticket))
-                .andExpect(model().attribute("event", event))
-                .andExpect(view().name("event-detail-owner"));
+                .andExpect(redirectedUrl("/owner/event/" + URLEncoder.encode("ゴスペルワークショップ", "UTF-8")));
     }
 
     @Test

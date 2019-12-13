@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 @Controller
 public class TicketController {
@@ -27,30 +29,21 @@ public class TicketController {
 
     @GetMapping("/owner/event/{name}/ticket")
     public String add(@PathVariable("name") String eventName, Model model) {
-        TicketForm form = new TicketForm();
-        form.setEventId(eventRepository.findByName(eventName).getId());
-        model.addAttribute("form", form);
-        setEvent(model, eventName);
+        Event event = eventRepository.findByName(eventName);
+        model.addAttribute("form", new TicketForm(event.getId()));
+        model.addAttribute("event", event);
         return "add-ticket";
     }
 
     @PostMapping("/owner/event/{name}/ticket")
-    public String addTicket(Model model, @PathVariable("name") String eventName, @ModelAttribute("form") @Valid TicketForm form, BindingResult br) {
+    public String addTicket(Model model, @PathVariable("name") String eventName, @ModelAttribute("form") @Valid TicketForm form, BindingResult br) throws UnsupportedEncodingException {
         if (br.hasErrors()) {
-            setEvent(model, eventName);
+            model.addAttribute("event", eventRepository.findByName(eventName));
             return "add-ticket";
         }
         Ticket ticket = form.createTicket();
         ticketRepository.save(ticket);
-
-        model.addAttribute("form", form);
-        model.addAttribute("event", eventRepository.findByName(eventName));
-        model.addAttribute("ticket", ticket);
-        return "event-detail-owner";
+        return "redirect:/owner/event/" + URLEncoder.encode(eventName, "UTF-8");
     }
 
-    private void setEvent(Model model, String eventName) {
-        Event event = eventRepository.findByName(eventName);
-        model.addAttribute("event", event);
-    }
 }

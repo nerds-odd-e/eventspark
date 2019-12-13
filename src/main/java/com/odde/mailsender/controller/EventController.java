@@ -45,10 +45,8 @@ public class EventController {
 
     @GetMapping("/owner/event/{eventName}")
     public String showDetailForOwner(@PathVariable("eventName") String eventName, Model model) {
-        Event event = eventRepository.findByName(eventName);
-        model.addAttribute("event", event);
-        // TODO: [BAU team] ticketが存在する場合は、return ticket
-        model.addAttribute("ticket", null);
+        model.addAttribute("event", eventRepository.findByName(eventName));
+        model.addAttribute("ticketList", ticketRepository.findByEventId(eventRepository.findByName(eventName).getId()));
         return "event-detail-owner";
     }
 

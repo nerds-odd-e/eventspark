@@ -34,6 +34,10 @@ public class TicketForm {
         this.eventId = eventId;
     }
 
+    public TicketForm(String eventId) {
+        this.eventId = eventId;
+    }
+
     public String getTicketName() {
         return ticketName;
     }

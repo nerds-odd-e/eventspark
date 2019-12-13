@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EventDetailForOwnerPage extends BasePage {
@@ -44,8 +46,8 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "image")
     private WebElement image;
 
-    @FindBy(id = "ticket_name")
-    private WebElement ticketName;
+    @FindBy(className = "ticket_name")
+    private List<WebElement> ticketNameList;
 
     @FindBy(id = "event_url")
     private WebElement eventUrl;
@@ -88,13 +90,13 @@ public class EventDetailForOwnerPage extends BasePage {
         return image.getAttribute("src");
     }
 
-    public String getTicketName() {
-        return ticketName.getText();
+    public List<String> getTicketNameList() {
+        return ticketNameList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
         String currentUrl = URLDecoder.decode(driver.getCurrentUrl(), "UTF-8");
-        Assert.assertThat(currentUrl, Matchers.endsWith("/owner/event/" + eventName + "/ticket"));
+        Assert.assertThat(currentUrl, Matchers.endsWith("/owner/event/" + eventName));
     }
 
     public String getEventUrlText() {

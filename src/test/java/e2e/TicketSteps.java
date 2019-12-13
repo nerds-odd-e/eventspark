@@ -2,9 +2,7 @@ package e2e;
 
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.service.EventRepository;
-import e2e.pages.AddEventPage;
 import e2e.pages.AddTicketPage;
-import e2e.pages.BasePage;
 import e2e.pages.EventDetailForOwnerPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertThat;
 
 public class TicketSteps {
 
@@ -75,7 +76,7 @@ public class TicketSteps {
 
         @Then("イベント詳細ページに入力したチケット情報が表示されている")
         public void イベント詳細ページに入力したチケット情報が表示されている() {
-            Assert.assertEquals(eventDetailForOwnerPage.getTicketName(), "ゴスペル");
+            assertThat(eventDetailForOwnerPage.getTicketNameList(), hasItem("ゴスペル"));
         }
 
     }
@@ -92,7 +93,7 @@ public class TicketSteps {
         }
 
         @Then("チケット登録画面が表示された状態になる")
-        public void チケット登録画面が表示された状態になる() throws Exception{
+        public void チケット登録画面が表示された状態になる() throws Exception {
             addTicketPage.isCurrentPage("ゴスペルワークショップ");
         }
 
