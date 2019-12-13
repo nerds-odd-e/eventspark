@@ -44,12 +44,30 @@ public class EventSteps {
     @Autowired
     private UserEventListPage userEventListPage;
 
+    private Event givenEvent = createEvent("1");
+    private Ticket givenTicket = createTicket(givenEvent);
+
     @Given("ゴスペルワークショップのイベント名のデータが{int}件あること")
     public void ゴスペルワークショップのイベント名のデータが_件あること(Integer int1) {
         eventRepository.deleteAll();
+        eventRepository.insert(givenEvent);
+        ticketRepository.insert(givenTicket);
+    }
+
+    private Ticket createTicket(Event event) {
+        return Ticket.builder()
+                    .eventId(event.getId())
+                    .ticketName("ゴスペルチケット")
+                    .ticketPrice(1000L)
+                    .ticketTotal(100L)
+                    .ticketLimit(5)
+                    .build();
+    }
+
+    private Event createEvent(String id) {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        Event event = Event.builder()
-                .id("1")
+        return Event.builder()
+                .id(id)
                 .name("ゴスペルワークショップ")
                 .location("東京国際フォーラム")
                 .owner("ゆうこ")
@@ -62,15 +80,6 @@ public class EventSteps {
                 .detail("ゴスペルワークショップ")
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
                 .build();
-        eventRepository.insert(event);
-        Ticket ticket = Ticket.builder()
-                .eventId(event.getId())
-                .ticketName("ゴスペルチケット")
-                .ticketPrice(1000L)
-                .ticketTotal(100L)
-                .ticketLimit(5)
-                .build();
-        ticketRepository.insert(ticket);
     }
 
     @When("{string}のオーナー用イベント詳細ページを表示する")
@@ -104,16 +113,8 @@ public class EventSteps {
         addEventPage.fillImagePathField(imagePath);
         addEventPage.clickAddButton();
 
-
         Event event = eventRepository.findByName(name);
-        Ticket ticket = Ticket.builder()
-                .eventId(event.getId())
-                .ticketName("ゴスペルチケット")
-                .ticketPrice(1000L)
-                .ticketTotal(100L)
-                .ticketLimit(5)
-                .build();
-        ticketRepository.insert(ticket);
+        ticketRepository.insert(createTicket(event));
     }
 
     @When("イベント更新ページに変更内容を入力して確定ボタンを押す")
@@ -143,30 +144,11 @@ public class EventSteps {
     public void イベントオーナーが複数イベントを登録すると() {
         eventRepository.deleteAll();
         ticketRepository.deleteAll();
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Stream.of("1", "2").forEach(id -> {
-            Event event = Event.builder()
-                    .id(id)
-                    .name("ゴスペルワークショップ" + id)
-                    .location("東京国際フォーラム")
-                    .owner("ゆうこ")
-                    .createDateTime(currentDateTime)
-                    .updateDateTime(currentDateTime)
-                    .summary("ゴスペルワークショップのイベントです。")
-                    .startDateTime(currentDateTime)
-                    .endDateTime(currentDateTime)
-                    .publishedDateTime(currentDateTime)
-                    .detail("ゴスペルワークショップ")
-                    .build();
-            eventRepository.insert(event);
 
-            Ticket ticket = Ticket.builder()
-                    .eventId(event.getId())
-                    .ticketName("ゴスペルチケット" + id)
-                    .ticketPrice(1000L)
-                    .ticketTotal(100L)
-                    .ticketLimit(5)
-                    .build();
+        Stream.of("1", "2").forEach(id -> {
+            Event event = createEvent(id);
+            eventRepository.insert(event);
+            Ticket ticket = createTicket(event);
             ticketRepository.insert(ticket);
         });
     }
