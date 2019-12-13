@@ -8,6 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -24,16 +25,11 @@ public class TicketSteps {
     @Autowired
     private EventRepository eventRepository;
 
-    private void insertTestData(Map<Object, String> table) {
-        addTicketPage.fillTicketName(table.get("チケット名"));
-        addTicketPage.fillTicketPrice(table.get("金額"));
-        addTicketPage.fillTicketTotal(table.get("枚数"));
-        addTicketPage.fillTicketLimit(table.get("上限数"));
-    }
+    @Autowired
+    private EventDetailForOwnerPage eventDetailForOwnerPage;
 
-    @Given("チケット追加画面を表示している")
-    public void チケット追加画面を表示している() {
-        // FIXME イベント画面から遷移する
+    @Before
+    public Event setUpEvent() {
         eventRepository.deleteAll();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event event = Event.builder()
@@ -51,7 +47,21 @@ public class TicketSteps {
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
                 .build();
         eventRepository.insert(event);
-        addTicketPage.goToAddTicketPage("ゴスペルワークショップ");
+        return event;
+    }
+
+    @Given("チケット追加画面を表示している")
+    public void チケット追加画面を表示している() {
+        Event event = setUpEvent();
+        eventDetailForOwnerPage.userVisitsEventPreviewPage(event.getName());
+        eventDetailForOwnerPage.submit();
+    }
+
+    private void insertTestData(Map<Object, String> table) {
+        addTicketPage.fillTicketName(table.get("チケット名"));
+        addTicketPage.fillTicketPrice(table.get("金額"));
+        addTicketPage.fillTicketTotal(table.get("枚数"));
+        addTicketPage.fillTicketLimit(table.get("上限数"));
     }
 
     public class チケットを登録する {
@@ -103,7 +113,4 @@ public class TicketSteps {
         }
 
     }
-
-
-
 }
