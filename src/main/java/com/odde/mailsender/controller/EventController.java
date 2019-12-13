@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,16 +36,8 @@ public class EventController {
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
         model.addAttribute("ticketList", ticketList);
 
-        List<Long> unsoldList = new ArrayList<>();
-        for (Ticket ticket : ticketList) {
-            List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
-            long sold = 0;
-            for (RegistrationInfo registrationInfo : registrationInfoList) {
-                sold += registrationInfo.getTicketCount();
-            }
-            long unsold = ticket.getTicketTotal() - sold;
-            unsoldList.add(unsold);
-        }
+        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
+        List<Long> unsoldList = event.calcSoldTicket(ticketList, registrationInfoList);
         model.addAttribute("unsoldList", unsoldList);
         model.addAttribute("ticketList", ticketList);
         return "event-detail";

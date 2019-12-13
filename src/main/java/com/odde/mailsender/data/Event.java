@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -70,4 +72,16 @@ public class Event {
 
     private String detailUrl;
 
+    public List<Long> calcSoldTicket(List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
+        List<Long> unsoldList = new ArrayList<>();
+        for (Ticket ticket : ticketList) {
+            long sold = 0;
+            for (RegistrationInfo registrationInfo : registrationInfoList) {
+                sold += registrationInfo.getTicketCount();
+            }
+            long unsold = ticket.getTicketTotal() - sold;
+            unsoldList.add(unsold);
+        }
+        return unsoldList;
+    }
 }
