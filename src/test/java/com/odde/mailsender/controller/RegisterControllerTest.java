@@ -52,9 +52,6 @@ public class RegisterControllerTest {
         eventRepository.deleteAll();
         ticketRepository.deleteAll();
 
-        eventRepository.deleteAll();
-        ticketRepository.deleteAll();
-
         eventRepository.save(Event.builder().id("1").name("TestEvent").build());
         eventRepository.save(Event.builder().id("2").name("FailedTestEvent").build());
 

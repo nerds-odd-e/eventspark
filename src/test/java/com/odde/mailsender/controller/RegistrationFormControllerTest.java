@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,10 @@ public class RegistrationFormControllerTest {
         eventRepository.deleteAll();
         ticketRepository.deleteAll();
 
-        eventRepository.save(Event.builder().id("1").name("TestEvent").build());
-        eventRepository.save(Event.builder().id("2").name("TestEvent2").build());
+        eventRepository.save(Event.builder().id("1").name("TestEvent").startDateTime(LocalDateTime.of(2020,6,15,13,0))
+                .endDateTime(LocalDateTime.of(2020,6,16,17,0)).location("秋葉原").build());
+        eventRepository.save(Event.builder().id("2").name("TestEvent2").startDateTime(LocalDateTime.of(2020,6,15,13,0))
+                .endDateTime(LocalDateTime.of(2020,6,16,17,0)).location("秋葉原").build());
 
         Ticket ticket1 = ticketRepository.save(Ticket.builder().ticketName("1day").ticketPrice(1000L).ticketTotal(100L).ticketLimit(10).eventId("1").build());
         Ticket ticket2 = ticketRepository.save(Ticket.builder().ticketName("2days").ticketPrice(1800L).ticketTotal(100L).ticketLimit(10).eventId("1").build());
@@ -63,7 +66,8 @@ public class RegistrationFormControllerTest {
                         hasProperty("name", is("TestEvent")),
                         is(not(nullValue()))
                 )))
-                .andExpect(model().attribute("event", Event.builder().id("1").name("TestEvent").build()))
+                .andExpect(model().attribute("event", Event.builder().id("1").name("TestEvent").startDateTime(LocalDateTime.of(2020,6,15,13,0))
+                        .endDateTime(LocalDateTime.of(2020,6,16,17,0)).location("秋葉原").build()))
                 .andExpect(model().attribute("ticketList", expectedTicketList));
     }
 
