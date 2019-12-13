@@ -82,6 +82,24 @@ public class EventSteps {
                 .build();
     }
 
+    private Event createEvent(String id, String name) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return Event.builder()
+                .id(id)
+                .name(name)
+                .location("東京国際フォーラム")
+                .owner("ゆうこ")
+                .createDateTime(currentDateTime)
+                .updateDateTime(currentDateTime)
+                .summary("ゴスペルワークショップのイベントです。")
+                .startDateTime(currentDateTime)
+                .endDateTime(currentDateTime)
+                .publishedDateTime(currentDateTime)
+                .detail("ゴスペルワークショップ")
+                .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+                .build();
+    }
+
     @When("{string}のオーナー用イベント詳細ページを表示する")
     public void _のオーナー用イベント詳細ページを表示する(String eventName) {
         eventDetailForOwnerPage.userVisitsEventPreviewPage(eventName);
@@ -146,7 +164,7 @@ public class EventSteps {
         ticketRepository.deleteAll();
 
         Stream.of("1", "2").forEach(id -> {
-            Event event = createEvent(id);
+            Event event = createEvent(id, "ゴスペルワークショップ" + id);
             eventRepository.insert(event);
             Ticket ticket = createTicket(event);
             ticketRepository.insert(ticket);
