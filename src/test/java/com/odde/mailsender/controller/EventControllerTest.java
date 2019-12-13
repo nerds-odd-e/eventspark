@@ -89,6 +89,13 @@ public class EventControllerTest {
                 .andExpect(model().attribute("unsoldList", unsoldList));
     }
 
+
+    @Test
+    public void notExistDisplayEventDetail() throws Exception {
+        MvcResult result = mvc.perform(get("/event/" + "no exist event")).andReturn();
+        assertEquals(404, result.getResponse().getStatus());
+    }
+
     @Test
     public void displayAddEventPage() throws Exception {
         MvcResult result = mvc.perform(get("/owner/event/new")).andReturn();

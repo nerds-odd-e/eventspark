@@ -3,6 +3,7 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.RegistrationInfo;
 import com.odde.mailsender.data.Ticket;
+import com.odde.mailsender.exception.HttpStatus404Exception;
 import com.odde.mailsender.form.AddEventForm;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.RegistrationInfoRepository;
@@ -31,6 +32,7 @@ public class EventController {
     @GetMapping("/event/{eventName}")
     public String showDetail(@PathVariable("eventName") String eventName, Model model) {
         Event event = eventRepository.findByName(eventName);
+        if(event == null) throw new HttpStatus404Exception();
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByEventId(event.getId());
 
@@ -72,5 +74,4 @@ public class EventController {
         return "event-detail-owner";
 
     }
-
 }
