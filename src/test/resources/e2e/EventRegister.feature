@@ -2,7 +2,7 @@ Feature: Event Register
 
   Background:
     Given ゴスペルワークショップのイベント名のデータが1件あること
-    And ゴスペルワークショップの参加登録ページが表示されている
+    And "ゴスペルワークショップ"の参加登録ページが表示されている
 
 #  case for
 #  success case

@@ -98,13 +98,14 @@ public class EventRegisterSteps {
         Assert.assertEquals(string, eventRegisterPage.getErrorText());
     }
 
-    @And("ゴスペルワークショップの参加登録ページが表示されている")
-    public void ゴスペルワークショップの参加登録ページが表示されている() {
-        eventRegisterPage.goToEventRegisterPage();
-    }
-
     @Then("{string}のイベント詳細ページが表示される")
     public void のイベント詳細ページが表示される(String input) {
         eventDetailPage.userVisitsEventDetailPage(input);
+    }
+
+    @And("{string}の参加登録ページが表示されている")
+    public void の参加登録ページが表示されている(String input) {
+        eventRegisterPage.goToEventRegisterPage(input);
+
     }
 }
