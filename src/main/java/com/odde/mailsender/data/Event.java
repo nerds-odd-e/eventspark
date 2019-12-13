@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,7 +74,9 @@ public class Event {
 
     private String imagePath;
 
-    public String getEventUrl() { return "http://localhost:8080" + "/event/" + this.getName();}
+    public String getEventUrl() throws UnsupportedEncodingException {
+        return "http://localhost:8080" + "/event/" + URLEncoder.encode(this.name, StandardCharsets.UTF_8.name()).replace("+", "%20");
+    }
 
     public List<Long> countUnsoldTickets (List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
         return ticketList.stream().map(ticket -> ticket.countUnsoldTicket(registrationInfoList)).collect(Collectors.toList());

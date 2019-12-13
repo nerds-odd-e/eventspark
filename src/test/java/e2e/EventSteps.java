@@ -140,7 +140,6 @@ public class EventSteps {
 
         Event event = eventRepository.findByName(name);
         ticketRepository.insert(createTicket(event));
-        throw new cucumber.api.PendingException();
     }
 
     @Then("変更した内容がイベント詳細ページに表示されていること")
