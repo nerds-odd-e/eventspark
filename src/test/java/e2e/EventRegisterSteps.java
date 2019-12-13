@@ -32,7 +32,7 @@ public class EventRegisterSteps {
         苗字が入力されている(dataTable.cell(1, 1));
         会社名が入力されている(dataTable.cell(2, 1));
         メールアドレスが入力されている(dataTable.cell(3, 1));
-        チケット種別が選択されている(dataTable.cell(4, 1));
+        チケットが選択されている(dataTable.cell(4, 1));
         枚数が入力されている(dataTable.cell(5, 1));
     }
 
@@ -84,10 +84,11 @@ public class EventRegisterSteps {
         eventRegisterPage.fillTicketCount(input);
     }
 
-    @And("チケット種別{int}が選択されている")
-    public void チケット種別が選択されている(String input) {
-        eventRegisterPage.fillTicketType(input);
+    @And("チケット{int}が選択されている")
+    public void チケットが選択されている(String input) {
+        eventRegisterPage.fillTicketId(input);
     }
+
 
     @Then("参加者登録画面エラーエリアに{string}と表示される")
     public void 参加者登録画面エラーエリアに_と表示される(String string) {

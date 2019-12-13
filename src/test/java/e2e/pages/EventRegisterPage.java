@@ -22,7 +22,7 @@ public class EventRegisterPage extends BasePage {
     private WebElement mailAddress;
 
     @FindBy(id = "ticket-type")
-    private WebElement ticketType;
+    private WebElement ticketId;
 
     @FindBy(id = "ticket-count")
     private WebElement ticketCount;
@@ -35,22 +35,6 @@ public class EventRegisterPage extends BasePage {
 
     EventRegisterPage(WebDriver driver, Environment environment) {
         super(driver, environment);
-    }
-
-    public String getFirstName() {
-        return firstName.getText();
-    }
-
-    public String getMailAddress() {
-        return mailAddress.getText();
-    }
-
-    public Integer getTicketType() {
-        return Integer.parseInt(ticketType.getText());
-    }
-
-    public Integer getticketCount() {
-        return Integer.parseInt(ticketCount.getText());
     }
 
     public void purchase() {
@@ -82,12 +66,12 @@ public class EventRegisterPage extends BasePage {
         ticketCount.sendKeys(input);
     }
 
-    public void fillTicketType(String input) {
-        ticketType.sendKeys(input);
-    }
-
 
     public String getErrorText() {
         return errorArea.getText();
+    }
+
+    public void fillTicketId(String input) {
+        ticketId.sendKeys(input);
     }
 }

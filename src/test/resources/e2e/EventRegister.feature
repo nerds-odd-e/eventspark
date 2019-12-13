@@ -12,10 +12,8 @@ Feature: Event Register
     |苗字|xxx|
     |会社名|xxx|
     |メールアドレス|xxx@xxx|
-    |チケット種別|1|
+    |チケット(チケットID)|1|
     |枚数|10|
-#    |name|address|ticketType|ticketCount|eventId|
-#    |xxx|xxx@xxx |1         |1          |1      |
     When 購入ボタンを押す
     Then 参加登録完了画面を表示する
 
