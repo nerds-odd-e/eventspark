@@ -1,58 +1,78 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Eventspark</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <script th:src="@{/lib/jquery-3.2.1.js}"></script>
     <script th:src="@{/js/home.js}"></script>
 </head>
 <body>
-<!--<div id="event_name">イベント名</div>-->
-<form action="/owner/event" method="post" th:object="${form}">
-    <div th:if="${errorMessage} != null" th:text="${errorMessage}" style="color:red;"></div>
-    <div class="form-group">
-        <label for="name">event name</label>
-        <input type="text" class="form-control" name="name" id="name" placeholder="イベント名">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h1 id="contact-list-title">Contact List</h1>
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="/home">HOME</a></li>
+                <li role="presentation" class="active"><a href="/contact-list">Contact List</a></li>
+                <li role="presentation"><a href="/event">Event List</a></li>
+                <li role="presentation"><a href="/event/new">Add Event</a></li>
+            </ul>
+
+
+            <!--<div id="event_name">イベント名</div>-->
+            <form action="/owner/event" method="post" th:object="${form}">
+                <div th:if="${errorMessage} != null" th:text="${errorMessage}" style="color:red;"></div>
+                <div class="form-group">
+                    <label for="name">event name</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="イベント名">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">location</label>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="開催場所"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="owner">owner</label>
+                    <input type="text" class="form-control" name="owner" id="owner" placeholder="イベント主催者"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="summary">summary</label>
+                    <input type="text" class="form-control" name="summary" id="summary" placeholder="サマリー"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="detail">event detail</label>
+                    <input type="textarea" class="form-control" name="detail" id="detail" placeholder="イベント詳細"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDateTime">event start date</label>
+                    <input type="text" class="form-control" name="startDateTime" id="startDateTime"
+                           placeholder="イベント開始日時"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="endDateTime">event end date</label>
+                    <input type="text" class="form-control" name="endDateTime" id="endDateTime" placeholder="イベント終了日時"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagePath">image path</label>
+                    <input type="text" class="form-control" name="imagePath" id="imagePath" placeholder="画像URL"/>
+                </div>
+
+                <button type="submit" id="add" class="btn btn-default">Add</button>
+
+            </form>
+        </div>
+        <div class="col-md-3"></div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label for="location">location</label>
-        <input type="text" class="form-control" name="location" id="location" placeholder="開催場所"/>
-    </div>
-
-    <div class="form-group">
-        <label for="owner">owner</label>
-        <input type="text" class="form-control" name="owner" id="owner" placeholder="イベント主催者"/>
-    </div>
-
-    <div class="form-group">
-        <label for="summary">summary</label>
-        <input type="text" class="form-control" name="summary" id="summary" placeholder="サマリー"/>
-    </div>
-
-    <div class="form-group">
-        <label for="detail">event detail</label>
-        <input type="textarea" class="form-control" name="detail" id="detail" placeholder="イベント詳細"/>
-    </div>
-
-    <div class="form-group">
-        <label for="startDateTime">event start date</label>
-        <input type="text" class="form-control" name="startDateTime" id="startDateTime" placeholder="イベント開始日時"/>
-    </div>
-
-    <div class="form-group">
-        <label for="endDateTime">event end date</label>
-        <input type="text" class="form-control" name="endDateTime" id="endDateTime" placeholder="イベント終了日時"/>
-    </div>
-
-    <div class="form-group">
-        <label for="imagePath">image path</label>
-        <input type="text" class="form-control" name="imagePath" id="imagePath" placeholder="画像URL"/>
-    </div>
-
-    <button type="submit" id="add" class="btn btn-default">Add</button>
-
-</form>
 </body>
 </html>
