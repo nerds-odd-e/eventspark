@@ -20,7 +20,7 @@
                 <li role="presentation" class="active"><a href="/event">Event</a></li>
             </ul>
             <img id="image" style="height: 300px;width: 300px;" th:src="${event.getImagePath()}">
-            <h1><span id="event_name" th:text="${event.getName()}"></span></h1>
+            <h1><span id="name" th:text="${event.getName()}"></span></h1>
             <p>Location:<span id="location" th:text="${event.getLocation()}"></span></p>
             <p>Owner:<span id="owner" th:text="${event.getOwner()}"></span></p>
             <p>Summary:<span id="summary" th:text="${event.getSummary()}"></span></p>

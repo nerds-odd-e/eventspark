@@ -19,8 +19,8 @@ public class EventDetailForOwnerPage extends BasePage {
     public EventDetailForOwnerPage(WebDriver driver, Environment environment) {
         super(driver, environment);
     }
-    @FindBy(id = "event_name")
-    private WebElement eventName;
+    @FindBy(id = "name")
+    private WebElement name;
 
     @FindBy(id = "location")
     private WebElement location;
@@ -56,7 +56,7 @@ public class EventDetailForOwnerPage extends BasePage {
     private WebElement editButton;
 
     public String getEventNameText() {
-        return eventName.getText();
+        return name.getText();
     }
 
     public String getLocationText() {
