@@ -31,13 +31,8 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String registerToEvent(@ModelAttribute("form") RegisterForm form, BindingResult result, Model model) {
-        Optional<Ticket> optionalTicket = ticketRepository.findById(form.getTicketId());
-        Ticket ticket = optionalTicket.orElse(null);
 
-        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByTicketId(form.getTicketId());
-        Integer soldTicketCount = registrationInfoList.stream().mapToInt(RegistrationInfo::getTicketCount).sum();
-
-        if (ticket.getTicketTotal() < form.getTicketCount() + soldTicketCount){
+        if (checkEnableToBuy(form)){
             addFormAndEventAndTicketListToModel(form, model);
             model.addAttribute("errors", "Can't buy.");
             return "register_form";
@@ -68,4 +63,13 @@ public class RegisterController {
         model.addAttribute("ticketList", ticketList);
     }
 
+    private boolean checkEnableToBuy(RegisterForm form){
+        Optional<Ticket> optionalTicket = ticketRepository.findById(form.getTicketId());
+        Ticket ticket = optionalTicket.orElse(null);
+
+        List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByTicketId(form.getTicketId());
+        Integer soldTicketCount = registrationInfoList.stream().mapToInt(RegistrationInfo::getTicketCount).sum();
+
+        return ticket.getTicketTotal() < form.getTicketCount() + soldTicketCount;
+    }
 }
