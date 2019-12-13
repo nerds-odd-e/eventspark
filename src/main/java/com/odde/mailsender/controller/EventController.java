@@ -52,14 +52,25 @@ public class EventController {
 
     @GetMapping("/owner/event/new")
     public String AddEvent(AddEventForm form, Model model) {
-        model.addAttribute("form",form);
+        model.addAttribute("form", form);
         return "event-new";
+    }
+
+    @GetMapping("/owner/event/{eventName}/edit")
+    public String editEvent(@PathVariable("eventName") String eventName, AddEventForm form, Model model) {
+        Event event = eventRepository.findByName(eventName);
+        if (event == null) {
+            model.addAttribute("errorMessage", "NotFound");
+            return "event-list";
+        }
+        model.addAttribute("event", event);
+        return "event-edit";
     }
 
     @PostMapping("/owner/event")
     public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
         Event event = eventRepository.findByName(form.getName());
-        if(event != null){
+        if (event != null) {
             model.addAttribute("form", form);
             model.addAttribute("errorMessage", "Failed!: Same name event already exist.");
             return "event-new";
@@ -69,6 +80,22 @@ public class EventController {
         eventRepository.insert(event);
         model.addAttribute("event", event);
         model.addAttribute("ticket", null);
+        return "event-detail-owner";
+
+    }
+
+    @PutMapping("/owner/event/{eventName}")
+    public String updateEvent(@PathVariable("eventName") String eventName,@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
+        Event event = eventRepository.findByName(eventName);
+        if (event == null) {
+            model.addAttribute("errorMessage", "NotFound");
+            return "event-list";
+        }
+        Event updatedEvent = form.createEvent();
+        updatedEvent.setId(event.getId());
+
+        eventRepository.save(updatedEvent);
+        model.addAttribute("event", updatedEvent);
         return "event-detail-owner";
 
     }

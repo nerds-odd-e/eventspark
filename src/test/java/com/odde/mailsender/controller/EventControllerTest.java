@@ -18,13 +18,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
@@ -139,6 +140,20 @@ public class EventControllerTest {
 
     }
 
+    @Test
+    public void updateEvent() throws Exception {
+        eventRepository.save(aEvent);
+        Event editEvent = eventRepository.findByName(aEvent.getName());
+        editEvent.setLocation("幕張メッセ");
+        MvcResult result = performEditEvent(editEvent);
+        assertThat(result.getResponse().getStatus(), is(equalTo(200)));
+
+        Event editedEvent = eventRepository.findByName(aEvent.getName());
+        assertThat(editedEvent.getName(), is(equalTo(aEvent.getName())));
+        assertThat(editedEvent.getLocation(), is(equalTo(editEvent.getLocation())));
+
+    }
+
     private Event validEvent() {
         LocalDateTime createdDateTime = LocalDateTime.of(2019,11,1,9,0);
         return Event.builder()
@@ -176,6 +191,19 @@ public class EventControllerTest {
                 .param("startDateTime", "2019-12-20 09:00")
                 .param("endDateTime", "2019-12-21 17:00")
                 .param("imagePath", aEvent.getImagePath())
+        ).andReturn();
+    }
+
+    private MvcResult performEditEvent(Event editEvent) throws Exception {
+        return mvc.perform(put("/owner/event/"+ editEvent.getName())
+                .param("name", editEvent.getName())
+                .param("location", editEvent.getLocation())
+                .param("summary", editEvent.getSummary())
+                .param("owner", editEvent.getOwner())
+                .param("detail", editEvent.getDetail())
+                .param("startDateTime", editEvent.getStartDateTime().format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm")))
+                .param("endDateTime", editEvent.getStartDateTime().format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm")))
+                .param("imagePath", editEvent.getImagePath())
         ).andReturn();
     }
 

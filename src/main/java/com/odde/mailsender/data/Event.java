@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,20 @@ public class Event {
 
     public Long countAllUnsoldTickets (List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
         return countUnsoldTickets(ticketList, registrationInfoList).stream().mapToLong(ticket -> ticket.longValue()).sum();
+    }
+
+    public String startDateTimeToString() {
+        if (startDateTime == null) {
+            return "";
+        }
+        return startDateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
+    }
+
+    public String endDateTimeToString() {
+        if (endDateTime == null) {
+            return "";
+        }
+        return endDateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
     }
 
 }

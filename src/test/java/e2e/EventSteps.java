@@ -42,6 +42,9 @@ public class EventSteps {
     private AddEventPage addEventPage;
 
     @Autowired
+    private UpdateEventPage updateEventPage;
+
+    @Autowired
     private UserEventListPage userEventListPage;
 
     private Event givenEvent = createEvent("1");
@@ -56,12 +59,12 @@ public class EventSteps {
 
     private Ticket createTicket(Event event) {
         return Ticket.builder()
-                    .eventId(event.getId())
-                    .ticketName("ゴスペルチケット")
-                    .ticketPrice(1000L)
-                    .ticketTotal(100L)
-                    .ticketLimit(5)
-                    .build();
+                .eventId(event.getId())
+                .ticketName("ゴスペルチケット")
+                .ticketPrice(1000L)
+                .ticketTotal(100L)
+                .ticketLimit(5)
+                .build();
     }
 
     private Event createEvent(String id) {
@@ -121,9 +124,22 @@ public class EventSteps {
         ticketRepository.insert(createTicket(event));
     }
 
+    @Given("編集ページを開いていること")
+    public void 編集ページを開いていること() {
+        updateEventPage.userVisitsUpdateEventPage("ゴスペルワークショップ");
+    }
+
     @When("イベント更新ページに変更内容を入力して確定ボタンを押す")
-    public void イベント更新ページに変更内容を入力して確定ボタンを押す() {
-        // Write code here that turns the phrase above into concrete actions
+    public void イベント更新ページに変更内容を入力して確定ボタンを押す(Map<String, String> dataTable) {
+        String name = dataTable.get("イベント名");
+        String location = dataTable.get("場所");
+        updateEventPage.cleanLocationField();
+        updateEventPage.fillLocationField(location);
+
+        updateEventPage.clickUpdateButton();
+
+        Event event = eventRepository.findByName(name);
+        ticketRepository.insert(createTicket(event));
         throw new cucumber.api.PendingException();
     }
 

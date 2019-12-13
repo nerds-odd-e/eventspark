@@ -40,5 +40,14 @@ Feature: Event
   @developing
   Scenario: イベント情報の更新
     Given ゴスペルワークショップのイベント名のデータが1件あること
+    And 編集ページを開いていること
     When イベント更新ページに変更内容を入力して確定ボタンを押す
+      |イベント名|ゴスペルワークショップ|
+      |オーナー |ゆうこ        |
+      |場所  |幕張メッセ              |
+      |イベント情報|アーティスト：カークフランクリン¥n 演目：未定|
+      |サマリー  |ゴスペルワークショップです           |
+      |イベント開始日時|2020-06-11 09:00|
+      |イベント終了日時|2020-06-11 17:00|
+      |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
     Then 変更した内容がイベント詳細ページに表示されていること
