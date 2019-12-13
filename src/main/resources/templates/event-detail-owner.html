@@ -1,29 +1,35 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Eventspark</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <script th:src="@{/lib/jquery-3.2.1.js}"></script>
     <script th:src="@{/js/home.js}"></script>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div id="event_name" th:text="${event.getName()}"></div>
-        <div id="location" th:text="${event.getLocation()}"></div>
-        <div id="owner" th:text="${event.getOwner()}"></div>
-        <div id="summary" th:text="${event.getSummary()}"></div>
-<!--        <div id="event_url" th:text="${event.getEventUrl()}"></div>-->
-        <input id=event_url name="フィールド名" th:value="${event.getEventUrl()}" size="125"/>
-        <div id="start_date" th:text="${event.getStartDateTime()}"></div>
-        <div id="end_date" th:text="${event.getEndDateTime()}"></div>
-        <div id="detail" th:text="${event.getDetail()}"></div>
-        <ul th:each="ticket: ${ticketList}">
-            <li class="ticket_name" th:text="${ticket.getTicketName()}"></li>
-        </ul>
-        <button type="button" class="btn btn-default"><a th:href="@{/owner/event/{eventName}/ticket(eventName=${event.getName()})}" id="go_to_add_ticket_page" >add</a> </button>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <img id="image" style="height: 300px;width: 300px;" th:src="${event.getImagePath()}">
+            <h1><span id="event_name" th:text="${event.getName()}"></span></h1>
+            <p>Location <span id="location" th:text="${event.getLocation()}"></span></p>
+            <p>Owner <span id="owner" th:text="${event.getOwner()}"></span></p>
+            <p>Summary <span id="summary" th:text="${event.getSummary()}"></span></p>
+            <p>Event URL <input id=event_url name="フィールド名" th:value="${event.getEventUrl()}" size="125"/>
+            <p>Event start date <span id="start_date" th:text="${event.getStartDateTime()}"></span></p>
+            <p>Event end date <span id="end_date" th:text="${event.getEndDateTime()}"></span></p>
+            <p>Detail <span id="detail" th:text="${event.getDetail()}"></span></p>
+            <ul th:each="ticket: ${ticketList}">
+                <li class="ticket_name" th:text="${ticket.getTicketName()}"></li>
+            </ul>
+            <button type="button" class="btn btn-default"><a
+                    th:href="@{/owner/event/{eventName}/ticket(eventName=${event.getName()})}"
+                    id="go_to_add_ticket_page">add</a></button>
+        </div>
+        <div class="col-md-3"></div>
     </div>
-</div>
 </body>
 </html>
