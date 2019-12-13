@@ -36,6 +36,9 @@ public class EventSteps {
     private TicketRepository ticketRepository;
 
     @Autowired
+    private HomePage homePage;
+
+    @Autowired
     private AddEventPage addEventPage;
 
     @Autowired
@@ -77,6 +80,7 @@ public class EventSteps {
 
     @Given("イベント追加ページを表示する")
     public void イベント追加ページを表示する() {
+        homePage.userVisitsSendPage();
         addEventPage.userVisitsAddEventPage();
     }
 
