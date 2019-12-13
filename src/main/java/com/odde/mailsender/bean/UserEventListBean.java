@@ -18,6 +18,7 @@ public class UserEventListBean {
     public static final String TICKET_COUNT_FEW = "残りわずか";
     public static final String TICKET_COUNT_LOT = "申し込み受付中";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+    private static final Double SOLD_NOTIFICATION_LEVEL = 0.2;
 
     @Value
     @Builder
@@ -35,21 +36,23 @@ public class UserEventListBean {
             long total = ticketList.stream().mapToLong(ticket -> ticket.getTicketTotal()).sum();
             long unsoldTickets = event.countAllUnsoldTickets(ticketList, registrationInfoList);
 
-            String ticketStatus;
-            if ((double) unsoldTickets / total < 0.2) {
-                ticketStatus = TICKET_COUNT_FEW;
-            } else {
-                ticketStatus = TICKET_COUNT_LOT;
-            }
             return EventBean.builder()
                     .eventId(event.getId())
                     .title(event.getName())
                     .location(event.getLocation())
                     .summary(event.getSummary())
                     .startDateTime(FORMATTER.format(event.getStartDateTime()))
-                    .ticketStatus(ticketStatus)
+                    .ticketStatus(getTicketStatus(total, unsoldTickets))
                     .imagePath(event.getImagePath())
                     .build();
+        }
+
+        private static String getTicketStatus(long total, double unsoldTickets) {
+            if (unsoldTickets / total < SOLD_NOTIFICATION_LEVEL) {
+                return TICKET_COUNT_FEW;
+            } else {
+                return TICKET_COUNT_LOT;
+            }
         }
     }
 
