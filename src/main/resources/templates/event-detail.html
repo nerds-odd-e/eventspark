@@ -12,6 +12,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
+            <p><span th:text="${successMessage}" id="success_message"></span></p>
             <img id="image" style="height: 300px;width: 300px;" th:src="${event.getImagePath()}">
             <h1><span th:text="${event.getName()}" id="name"></span></h1>
             <p>開始日時:<span th:text="${event.getStartDateTime()}" id="start_date"></span></p>

@@ -53,6 +53,9 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "register_button")
     private WebElement registerButton;
 
+    @FindBy(id = "success_message")
+    private WebElement successMessage;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -108,5 +111,9 @@ public class EventDetailPage extends BasePage {
     public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
         String expected = "http://localhost:" + getPort() + "/event/" + URLEncoder.encode(eventName, StandardCharsets.UTF_8.name());
         assertThat(driver.getCurrentUrl(), equalTo(expected));
+    }
+
+    public String getSuccessMessageText() {
+        return successMessage.getText();
     }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class EventRegisterSteps {
@@ -101,6 +102,7 @@ public class EventRegisterSteps {
     @Then("{string}のイベント詳細ページが表示される")
     public void のイベント詳細ページが表示される(String input) {
         eventDetailPage.userVisitsEventDetailPage(input);
+        assertEquals("Complete buy.", eventDetailPage.getSuccessMessageText());
     }
 
     @And("{string}の参加登録ページが表示されている")
