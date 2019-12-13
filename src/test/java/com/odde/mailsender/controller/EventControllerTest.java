@@ -151,7 +151,6 @@ public class EventControllerTest {
         Event editedEvent = eventRepository.findByName(aEvent.getName());
         assertThat(editedEvent.getName(), is(equalTo(aEvent.getName())));
         assertThat(editedEvent.getLocation(), is(equalTo(editEvent.getLocation())));
-
     }
 
     private Event validEvent() {
