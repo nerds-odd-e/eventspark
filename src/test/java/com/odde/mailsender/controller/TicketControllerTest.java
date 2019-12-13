@@ -16,10 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -36,10 +34,6 @@ public class TicketControllerTest {
     @Before
     public void setup() {
         eventRepository.deleteAll();
-    }
-
-    @Before
-    public void createEvent() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         Event eventEntity = Event.builder()
                 .name("ゴスペルワークショップ")
@@ -57,13 +51,7 @@ public class TicketControllerTest {
     }
 
     @Test
-    public void getIndexHtmlPage() {
-//        String ret = new TicketController().add("test");
-//        assertEquals("add-ticket", ret);
-    }
-
-    @Test
-    public void canAddTicketFromAddTicketPageAndRedirectToEventPage() throws Exception{
+    public void canAddTicketFromAddTicketPageAndRedirectToEventPage() throws Exception {
         //given
         TicketForm ticketForm = new TicketForm("ticketName", 1L, 1L, 1, "1");
 
@@ -77,14 +65,29 @@ public class TicketControllerTest {
 
         Event event = eventRepository.findByName("ゴスペルワークショップ");
         //when
-         mockMvc.perform(post("/owner/event/ゴスペルワークショップ/ticket")
-            .param("ticketName", ticketForm.getTicketName())
-            .param("ticketPrice", String.valueOf(ticketForm.getTicketPrice()))
-            .param("ticketTotal", String.valueOf(ticketForm.getTicketTotal()))
-            .param("ticketLimit", String.valueOf(ticketForm.getTicketLimit()))
-             .param("eventId", ticketForm.getEventId()))
-                 .andExpect(model().attribute("ticket", ticket))
-                 .andExpect(model().attribute("event", event))
-                     .andExpect(view().name("event-detail-owner"));
+        mockMvc.perform(post("/owner/event/ゴスペルワークショップ/ticket")
+                .param("ticketName", ticketForm.getTicketName())
+                .param("ticketPrice", String.valueOf(ticketForm.getTicketPrice()))
+                .param("ticketTotal", String.valueOf(ticketForm.getTicketTotal()))
+                .param("ticketLimit", String.valueOf(ticketForm.getTicketLimit()))
+                .param("eventId", ticketForm.getEventId()))
+                .andExpect(model().attribute("ticket", ticket))
+                .andExpect(model().attribute("event", event))
+                .andExpect(view().name("event-detail-owner"));
+    }
+
+    @Test
+    public void inputNoneOutputErrorMessage() throws Exception {
+        mockMvc.perform(post("/owner/event/ゴスペルワークショップ/ticket")
+                .param("ticketName", "")
+                .param("ticketPrice", "")
+                .param("ticketTotal", "")
+                .param("ticketLimit", "")
+                .param("eventId", ""))
+                .andExpect(content().string(containsString("チケット名を入力してください")))
+                .andExpect(content().string(containsString("金額を入力してください")))
+                .andExpect(content().string(containsString("枚数を入力してください")))
+                .andExpect(content().string(containsString("一人当たりの上限数を入力してください")))
+        ;
     }
 }
