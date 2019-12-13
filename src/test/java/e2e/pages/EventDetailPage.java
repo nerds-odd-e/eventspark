@@ -86,7 +86,6 @@ public class EventDetailPage extends BasePage {
     }
 
     public String getRegisterURL() {
-
         return "http://localhost:" + getPort() + "/register_form/";
     }
 

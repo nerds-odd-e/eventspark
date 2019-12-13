@@ -178,7 +178,7 @@ public class EventSteps {
     }
 
     @Then("{string}のイベントの内容とチケット追加ボタンが表示される")
-    public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) {
+    public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) throws UnsupportedEncodingException {
         Event expectedEvent = eventRepository.findByName(eventName);
 
         assertNotNull(expectedEvent);
@@ -190,6 +190,7 @@ public class EventSteps {
         assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
         assertEquals(expectedEvent.getDetail(), eventDetailForOwnerPage.getDetailText());
         Assert.assertEquals(expectedEvent.getEventUrl(), eventDetailForOwnerPage.getEventUrlText());
+        assertEquals(eventDetailForOwnerPage.getEditUrl(expectedEvent.getName()), eventDetailForOwnerPage.getEditButtonURL());
     }
 
     @When("userが{string}の詳細ページを見る")
@@ -210,6 +211,7 @@ public class EventSteps {
         assertEquals(expectedEvent.getDetail(), eventDetailPage.getDetailText());
         assertEquals(eventDetailPage.getRegisterURL() + expectedEvent.getName(), eventDetailPage.getRegisterButtonURL());
         assertTrue(eventDetailPage.getTicketList());
+
     }
 
     @When("イベントタイトルのリンクをクリックすると")

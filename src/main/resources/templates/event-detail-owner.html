@@ -28,6 +28,8 @@
             <button type="button" class="btn btn-default"><a
                     th:href="@{/owner/event/{eventName}/ticket(eventName=${event.getName()})}"
                     id="go_to_add_ticket_page">add</a></button>
+            <button type="button" class="btn btn-default"><a th:href="@{/owner/event/{eventName}/edit(eventName=${event.getName()})}" id="edit_button">edit</a></button>
+
         </div>
         <div class="col-md-3"></div>
     </div>

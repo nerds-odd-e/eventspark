@@ -52,6 +52,9 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "event_url")
     private WebElement eventUrl;
 
+    @FindBy(id = "edit_button")
+    private WebElement editButton;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -101,5 +104,13 @@ public class EventDetailForOwnerPage extends BasePage {
 
     public String getEventUrlText() {
         return eventUrl.getAttribute("value");
+    }
+
+    public String getEditUrl(String eventName) {
+        return "http://localhost:" + getPort() + "/owner/event/" + eventName + "/edit";
+    }
+
+    public String getEditButtonURL() throws UnsupportedEncodingException {
+        return URLDecoder.decode(editButton.getAttribute("href"), "UTF-8");
     }
 }
