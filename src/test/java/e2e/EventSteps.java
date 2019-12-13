@@ -65,21 +65,7 @@ public class EventSteps {
     }
 
     private Event createEvent(String id) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        return Event.builder()
-                .id(id)
-                .name("ゴスペルワークショップ")
-                .location("東京国際フォーラム")
-                .owner("ゆうこ")
-                .createDateTime(currentDateTime)
-                .updateDateTime(currentDateTime)
-                .summary("ゴスペルワークショップのイベントです。")
-                .startDateTime(currentDateTime)
-                .endDateTime(currentDateTime)
-                .publishedDateTime(currentDateTime)
-                .detail("ゴスペルワークショップ")
-                .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
-                .build();
+        return createEvent(id, "ゴスペルワークショップ");
     }
 
     private Event createEvent(String id, String name) {
