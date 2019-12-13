@@ -29,11 +29,16 @@
             <p>Event end date:<span id="end_date" th:text="${event.getEndDateTime()}"></span></p>
             <p>Detail:<span id="detail" th:text="${event.getDetail()}"></span></p>
             <ul th:each="ticket: ${ticketList}">
-                <li class="ticket_name" th:text="${ticket.getTicketName()}"></li>
+                <li>
+                    <div class="ticket_name" th:text="|チケット名: ${ticket.ticketName}|"></div>
+                    <div class="ticket_price" th:text="|金額: ${ticket.ticketPrice}|"></div>
+                    <div class="ticket_total" th:text="|枚数: ${ticket.ticketTotal}|"></div>
+                    <div class="ticket_limit" th:text="|上限: ${ticket.ticketLimit}|"></div>
+                </li>
             </ul>
-            <button type="button" class="btn btn-default"><a
+            <div class="btn btn-default"><a
                     th:href="@{/owner/event/{eventName}/ticket(eventName=${event.getName()})}"
-                    id="go_to_add_ticket_page">add</a></button>
+                    id="go_to_add_ticket_page">add</a></div>
             <button type="button" class="btn btn-default"><a th:href="@{/owner/event/{eventName}/edit(eventName=${event.getName()})}" id="edit_button">edit</a></button>
 
         </div>

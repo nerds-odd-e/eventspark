@@ -49,6 +49,15 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(className = "ticket_name")
     private List<WebElement> ticketNameList;
 
+    @FindBy(className = "ticket_price")
+    private List<WebElement> ticketPriceList;
+
+    @FindBy(className = "ticket_total")
+    private List<WebElement> ticketTotalList;
+
+    @FindBy(className = "ticket_limit")
+    private List<WebElement> ticketLimitList;
+
     @FindBy(id = "event_url")
     private WebElement eventUrl;
 
@@ -95,6 +104,18 @@ public class EventDetailForOwnerPage extends BasePage {
 
     public List<String> getTicketNameList() {
         return ticketNameList.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public List<String> getTicketPriceList() {
+        return ticketPriceList.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public List<String> getTicketTotalList() {
+        return ticketTotalList.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public List<String> getTicketLimitList() {
+        return ticketLimitList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
