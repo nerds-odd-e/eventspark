@@ -34,7 +34,8 @@ public class PreviewSteps {
     }
 
     @Then("^show home window")
-    public void showHomeWindow() {
+    public void showHomeWindow() throws InterruptedException {
+        Thread.sleep(3000);
         assertTrue(homePage.isCurrentPage());
     }
 
