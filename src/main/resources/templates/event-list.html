@@ -17,20 +17,22 @@
             <h2>Events</h2>
         </div>
         <div class="row">
-            <ul th:each="event: ${bean.eventList}">
-                <li class="event-element">
+            <table th:each="event: ${bean.eventList}" >
+                <tr class="event-element" style="width: 100%; height: 100px;">
                     <div>
-                        <div><img th:src="${event.imagePath}" /></div>
-                        <div>
-                            <a th:href="@{'/event/'+${event.title}}" th:text="|タイトル: ${event.title}|" th:id="|event${event.eventId}|"></a>
-                        </div>
-                        <div th:text="|開催場所: ${event.location}|"></div>
-                        <div th:text="|概要: ${event.summary}|"></div>
-                        <div th:text="|開催日時: ${event.startDateTime}|"></div>
-                        <div th:text="|チケット受付状況: ${event.ticketStatus}|"></div>
+                        <td style="width: 50%; height: 90%;"><img th:src="${event.imagePath}" /></td>
+                        <td>
+                            <div>
+                                <a th:href="@{'/event/'+${event.title}}" th:text="|タイトル: ${event.title}|" th:id="|event${event.eventId}|"></a>
+                            </div>
+                            <div th:text="|開催場所: ${event.location}|"></div>
+                            <div th:text="|概要: ${event.summary}|"></div>
+                            <div th:text="|開催日時: ${event.startDateTime}|"></div>
+                            <div th:text="|チケット受付状況: ${event.ticketStatus}|"></div>
+                        </td>
                     </div>
-                </li>
-            </ul>
+                </tr>
+            </table>
         </div>
 
         <div class="col-md-3"></div>
