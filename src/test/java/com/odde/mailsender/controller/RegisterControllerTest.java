@@ -16,14 +16,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -70,6 +67,7 @@ public class RegisterControllerTest {
                 .param("ticketId", "1")
                 .param("ticketCount", "1")
                 .param("eventId", "1"))
+                .andExpect(flash().attribute("successMessage", "Complete buy."))
                 .andExpect(redirectedUrl("/event/TestEvent"));
 
         List<RegistrationInfo> all = registrationInfoRepository.findAll();

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class RegisterController {
     private TicketRepository ticketRepository;
 
     @PostMapping("/register")
-    public String registerToEvent(@ModelAttribute("form") RegisterForm form, BindingResult result, Model model) {
+    public String registerToEvent(@ModelAttribute("form") RegisterForm form, BindingResult result, Model model, RedirectAttributes attributes) {
 
         if (checkEnableToBuy(form)){
             addFormAndEventAndTicketListToModel(form, model);
@@ -46,6 +47,8 @@ public class RegisterController {
                 .ticketCount(form.getTicketCount())
                 .eventId(form.getEventId()).build());
         Optional<Event> event = eventRepository.findById(form.getEventId());
+
+        attributes.addFlashAttribute("successMessage", "Complete buy.");
 
         // 指定されたイベントIDに対するイベント情報が存在しないケースは、画面遷移上想定外のため、Optional#getで値を取得している。
         return "redirect:/event/" + event.get().getName();
