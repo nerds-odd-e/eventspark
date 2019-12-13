@@ -45,8 +45,10 @@ public class RegisterController {
                 .ticketId(form.getTicketId())
                 .ticketCount(form.getTicketCount())
                 .eventId(form.getEventId()).build());
+        Optional<Event> event = eventRepository.findById(form.getEventId());
 
-        return "redirect:/register_complete";
+        // 指定されたイベントIDに対するイベント情報が存在しないケースは、画面遷移上想定外のため、Optional#getで値を取得している。
+        return "redirect:/event/" + event.get().getName();
     }
 
     public boolean isBuyableForTicketMaximum(int ticketMaximum, Integer ticketSoled, Integer ticketBought) {

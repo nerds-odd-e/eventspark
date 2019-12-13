@@ -20,13 +20,6 @@ RegistrationInfo.prototype.checkRegistrationInfo = function(name, address, ticke
     return true
 }
 
-$(function(){
-    var $form = $('#regstrationForm')
-    var $registerBtn = $form.find('#register')
-
-    $registerBtn.on('click', function(){
-        $form
-            .attr('action', '/register')
-            .submit()
-    })
-})
+function registerBtnClicked() {
+    $('#registrationForm').attr('action', '/register').submit()
+}

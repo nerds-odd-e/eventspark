@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -34,20 +35,23 @@ public class RegisterControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private RegistrationInfoRepository registrationInfoRepository;
-
-    @Autowired
-    private RegisterController registerController;
-
-    @Autowired
     private EventRepository eventRepository;
 
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private RegistrationInfoRepository registrationInfoRepository;
+
+    @Autowired
+    private RegisterController registerController;
+
     @Before
     public void setup() {
         registrationInfoRepository.deleteAll();
+        eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+
         eventRepository.deleteAll();
         ticketRepository.deleteAll();
 
@@ -69,7 +73,7 @@ public class RegisterControllerTest {
                 .param("ticketId", "1")
                 .param("ticketCount", "1")
                 .param("eventId", "1"))
-                .andExpect(redirectedUrl("/register_complete"));
+                .andExpect(redirectedUrl("/event/TestEvent"));
 
         List<RegistrationInfo> all = registrationInfoRepository.findAll();
 
@@ -109,7 +113,6 @@ public class RegisterControllerTest {
                 .param("ticketCount", "1")
                 .param("eventId", "2"))
                 .andExpect(view().name("register_form"))
-                .andExpect(model().attribute("errors", "Can't buy."))
-        ;
+                .andExpect(model().attribute("errors", "Can't buy."));
     }
 }
