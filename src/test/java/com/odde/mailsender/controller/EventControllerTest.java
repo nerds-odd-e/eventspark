@@ -104,7 +104,7 @@ public class EventControllerTest {
         assertEquals(200, result.getResponse().getStatus());
 
         //DBからデータを取得
-        Event actualEvent = eventRepository.findByName("ゴスペルワークショップ");
+        Event actualEvent = eventRepository.findByName(aEvent.getName());
 
         //postしたデータがDBに入っているかかくにん
         assertNotNull(actualEvent);
