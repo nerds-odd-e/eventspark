@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -106,8 +105,8 @@ public class EventSteps {
         Ticket ticket = Ticket.builder()
                 .eventId(event.getId())
                 .ticketName("ゴスペルチケット")
-                .ticketPrice(1000)
-                .ticketTotal(100)
+                .ticketPrice((long) 1000)
+                .ticketTotal((long) 100)
                 .ticketLimit(5)
                 .build();
         ticketRepository.insert(ticket);
