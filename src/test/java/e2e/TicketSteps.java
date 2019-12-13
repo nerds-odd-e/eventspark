@@ -23,6 +23,13 @@ public class TicketSteps {
     @Autowired
     private EventRepository eventRepository;
 
+    private void insertTestData(Map<Object, String> table) {
+        addTicketPage.fillTicketName(table.get("チケット名"));
+        addTicketPage.fillTicketPrice(table.get("金額"));
+        addTicketPage.fillTicketTotal(table.get("枚数"));
+        addTicketPage.fillTicketLimit(table.get("上限数"));
+    }
+
     @Given("チケット追加画面を表示している")
     public void チケット追加画面を表示している() {
         // FIXME イベント画面から遷移する
@@ -46,7 +53,7 @@ public class TicketSteps {
         addTicketPage.goToAddTicketPage("ゴスペルワークショップ");
     }
 
-    public static class チケットを登録する {
+    public class チケットを登録する {
 
         @Autowired
         private AddTicketPage addTicketPage;
@@ -57,10 +64,7 @@ public class TicketSteps {
         @When("以下の入力を行い「登録」ボタンをクリックすると")
         public void 以下の入力を行い_登録_ボタンをクリックすると(io.cucumber.datatable.DataTable dataTable) {
             Map<Object, String> table = dataTable.asMap(String.class, String.class);
-            addTicketPage.fillTicketName(table.get("チケット名"));
-            addTicketPage.fillTicketPrice(table.get("金額"));
-            addTicketPage.fillTicketTotal(table.get("枚数"));
-            addTicketPage.fillTicketLimit(table.get("上限数"));
+            insertTestData(table);
             addTicketPage.submit();
         }
 
@@ -76,16 +80,14 @@ public class TicketSteps {
 
     }
 
-    public static class 全ての項目を空で登録ボタンを押下 {
+    public class 全ての項目を空で登録ボタンを押下 {
         @Autowired
         private AddTicketPage addTicketPage;
 
         @When("全てのフォームを空にして「登録」ボタンをクリックすると")
-        public void 全てのフォームを空にして_登録_ボタンをクリックすると() {
-            addTicketPage.fillTicketName("");
-            addTicketPage.fillTicketPrice("");
-            addTicketPage.fillTicketTotal("");
-            addTicketPage.fillTicketLimit("");
+        public void 全てのフォームを空にして_登録_ボタンをクリックすると(io.cucumber.datatable.DataTable dataTable) {
+            Map<Object, String> table = dataTable.asMap(String.class, String.class);
+            insertTestData(table);
             addTicketPage.submit();
         }
 
@@ -96,8 +98,11 @@ public class TicketSteps {
 
         @Then("エラーメッセージが表示される")
         public void エラーメッセージが表示される() {
-            Assert.assertEquals("チケット名を入力してください", addTicketPage.getErrorText());
+            Assert.assertTrue(addTicketPage.errorAreaExists());
         }
 
     }
+
+
+
 }

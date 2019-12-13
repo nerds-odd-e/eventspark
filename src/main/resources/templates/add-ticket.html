@@ -16,7 +16,7 @@
             <h2>addTicket</h2>
 
             <form th:action="@{/owner/event/{eventName}/ticket(eventName=${event.name})}" id="form" method="post" th:object="${form}">
-                <div th:replace="components/error-panel"></div>
+                <div th:replace="components/error-panel" id="error-area"></div>
                 <div class="form-group">
                     <label for="ticket-name">Ticket Name</label>
                     <input type="text" class="form-control" name="ticketName" id="ticket-name" placeholder="ticket-name">

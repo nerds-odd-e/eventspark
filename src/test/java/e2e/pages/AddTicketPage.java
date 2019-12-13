@@ -1,5 +1,6 @@
 package e2e.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,9 +24,8 @@ public class AddTicketPage extends BasePage {
     private WebElement ticketLimitField;
     @FindBy(id = "register")
     private WebElement registerButton;
-// TODO wait for html
-//    @FindBy(id = "error-area")
-//    private WebElement errorArea;
+    @FindBy(id = "error-area")
+    private WebElement errorArea;
 
     AddTicketPage(WebDriver driver, Environment environment) {
         super(driver, environment);
@@ -68,8 +68,11 @@ public class AddTicketPage extends BasePage {
 
 
     public String getErrorText() {
-        // TODO wait for html
-        //return errorArea.getText();
-        return null;
+        return errorArea.getText();
     }
+
+    public boolean errorAreaExists() {
+        return driver.findElements(By.id("error-area")).size() != 0;
+    }
+
 }
