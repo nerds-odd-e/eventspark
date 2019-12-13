@@ -15,13 +15,13 @@
         <div class="col-md-6">
             <img id="image" style="height: 300px;width: 300px;" th:src="${event.getImagePath()}">
             <h1><span id="event_name" th:text="${event.getName()}"></span></h1>
-            <p>Location <span id="location" th:text="${event.getLocation()}"></span></p>
-            <p>Owner <span id="owner" th:text="${event.getOwner()}"></span></p>
-            <p>Summary <span id="summary" th:text="${event.getSummary()}"></span></p>
-            <p>Event URL <input id=event_url name="フィールド名" th:value="${event.getEventUrl()}" size="125"/>
-            <p>Event start date <span id="start_date" th:text="${event.getStartDateTime()}"></span></p>
-            <p>Event end date <span id="end_date" th:text="${event.getEndDateTime()}"></span></p>
-            <p>Detail <span id="detail" th:text="${event.getDetail()}"></span></p>
+            <p>Location:<span id="location" th:text="${event.getLocation()}"></span></p>
+            <p>Owner:<span id="owner" th:text="${event.getOwner()}"></span></p>
+            <p>Summary:<span id="summary" th:text="${event.getSummary()}"></span></p>
+            <p>Event URL:<input id=event_url name="フィールド名" th:value="${event.getEventUrl()}" size="125"/>
+            <p>Event start date:<span id="start_date" th:text="${event.getStartDateTime()}"></span></p>
+            <p>Event end date:<span id="end_date" th:text="${event.getEndDateTime()}"></span></p>
+            <p>Detail:<span id="detail" th:text="${event.getDetail()}"></span></p>
             <ul th:each="ticket: ${ticketList}">
                 <li class="ticket_name" th:text="${ticket.getTicketName()}"></li>
             </ul>
