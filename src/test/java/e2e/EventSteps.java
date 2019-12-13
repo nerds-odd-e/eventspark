@@ -83,6 +83,7 @@ public class EventSteps {
                 .publishedDateTime(currentDateTime)
                 .detail("ゴスペルワークショップ")
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+                .detailUrl("http://localhost:8080/event/ゴスペルワークショップ")
                 .build();
     }
 
@@ -189,6 +190,7 @@ public class EventSteps {
         Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
         Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
         Assert.assertEquals(expectedEvent.getDetail(), eventDetailForOwnerPage.getDetailText());
+        Assert.assertEquals(expectedEvent.getDetailUrl(), eventDetailForOwnerPage.getDetailURLText());
     }
 
     @When("userが{string}の詳細ページを見る")

@@ -75,6 +75,7 @@ public class EventController {
             return "event-new";
         }
         event = form.createEvent();
+        event.setDetailUrl("http://localhost:8080/event/"+event.getName());
 
         eventRepository.insert(event);
         model.addAttribute("event", event);

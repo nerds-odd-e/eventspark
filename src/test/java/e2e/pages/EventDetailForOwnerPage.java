@@ -47,6 +47,9 @@ public class EventDetailForOwnerPage extends BasePage {
     @FindBy(id = "ticket_name")
     private WebElement ticketName;
 
+    @FindBy(id = "event_url")
+    private WebElement eventUrl;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -92,5 +95,9 @@ public class EventDetailForOwnerPage extends BasePage {
     public void assertCurrentPage(String eventName) throws UnsupportedEncodingException {
         String currentUrl = URLDecoder.decode(driver.getCurrentUrl(), "UTF-8");
         Assert.assertThat(currentUrl, Matchers.endsWith("/owner/event/" + eventName + "/ticket"));
+    }
+
+    public String getDetailURLText() {
+        return eventUrl.getText();
     }
 }

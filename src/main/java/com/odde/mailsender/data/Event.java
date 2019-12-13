@@ -68,4 +68,6 @@ public class Event {
 
     private String imagePath;
 
+    private String detailUrl;
+
 }
