@@ -2,6 +2,7 @@ package e2e;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.odde.mailsender.service.MailInfo;
+import e2e.pages.EventDetailPage;
 import e2e.pages.EventRegisterPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -25,6 +26,8 @@ public class EventRegisterSteps {
     private EventRegisterPage eventRegisterPage;
     @Autowired
     private GreenMail greenMail;
+    @Autowired
+    private EventDetailPage eventDetailPage;
 
     @Given("以下が入力されている")
     public void 以下が入力されている(io.cucumber.datatable.DataTable dataTable) {
@@ -98,5 +101,10 @@ public class EventRegisterSteps {
     @And("ゴスペルワークショップの参加登録ページが表示されている")
     public void ゴスペルワークショップの参加登録ページが表示されている() {
         eventRegisterPage.goToEventRegisterPage();
+    }
+
+    @Then("{string}のイベント詳細ページが表示される")
+    public void のイベント詳細ページが表示される(String input) {
+        eventDetailPage.userVisitsEventDetailPage(input);
     }
 }

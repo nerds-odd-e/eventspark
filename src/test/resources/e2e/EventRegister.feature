@@ -15,7 +15,7 @@ Feature: Event Register
     |チケット(チケットID)|1|
     |枚数|10|
     When 購入ボタンを押す
-    Then 参加登録完了画面を表示する
+    Then "ゴスペルワークショップ"のイベント詳細ページが表示される
 
 #  field case
   @developing
