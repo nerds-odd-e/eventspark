@@ -100,14 +100,18 @@ public class EventSteps {
         String imagePath = datatable.get("画像URL");
         addEventPage.fillImagePathField(imagePath);
         addEventPage.clickAddButton();
-    }
 
-    @Then("{string}のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する。")
-    public void のイベントの内容とチケットの内容のオーナー用イベント詳細ページを表示する(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
-    }
 
+        Event event = eventRepository.findByName(name);
+        Ticket ticket = Ticket.builder()
+                .eventId(event.getId())
+                .ticketName("ゴスペルチケット")
+                .ticketPrice(1000)
+                .ticketTotal(100)
+                .ticketLimit(5)
+                .build();
+        ticketRepository.insert(ticket);
+    }
 
     @Given("イベント名がゴスペルワークショップのイベントのデータが{int}件DBにあること")
     public void イベント名がゴスペルワークショップのイベントのデータが_件DBにあること(Integer int1) {
@@ -213,8 +217,6 @@ public class EventSteps {
     @Then("{string}のイベントの内容とチケット購入ボタンが表示される")
     public void _のイベントの内容とチケット購入ボタンが表示される(String eventName) throws UnsupportedEncodingException {
         Event expectedEvent = eventRepository.findByName(eventName);
-        List<Ticket> ticketList = ticketRepository.findByEventId(expectedEvent.getId());
-        Ticket expectedTicket = ticketList.get(0);
 
         Assert.assertEquals(expectedEvent.getImagePath(), eventDetailForOwnerPage.getImageUrl());
         assertEquals(expectedEvent.getName(), eventDetailPage.getEventNameText());
