@@ -70,7 +70,7 @@ public class Event {
 
     private String imagePath;
 
-    private String detailUrl;
+    public String getEventUrl() { return "http://localhost:8080" + "/event/" + this.getName();}
 
     public List<Long> calcSoldTicket(List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
         List<Long> unsoldList = new ArrayList<>();

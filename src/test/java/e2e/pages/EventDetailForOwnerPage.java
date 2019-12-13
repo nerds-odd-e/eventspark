@@ -97,7 +97,7 @@ public class EventDetailForOwnerPage extends BasePage {
         Assert.assertThat(currentUrl, Matchers.endsWith("/owner/event/" + eventName + "/ticket"));
     }
 
-    public String getDetailURLText() {
+    public String getEventUrlText() {
         return eventUrl.getText();
     }
 }

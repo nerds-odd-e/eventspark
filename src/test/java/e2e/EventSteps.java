@@ -83,7 +83,6 @@ public class EventSteps {
                 .publishedDateTime(currentDateTime)
                 .detail("ゴスペルワークショップ")
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
-                .detailUrl("http://localhost:8080/event/ゴスペルワークショップ")
                 .build();
     }
 
@@ -182,15 +181,15 @@ public class EventSteps {
     public void _のイベントの内容とチケット追加ボタンが表示される(String eventName) {
         Event expectedEvent = eventRepository.findByName(eventName);
 
-        Assert.assertNotNull(expectedEvent);
-        Assert.assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getEventNameText());
-        Assert.assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
-        Assert.assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
-        Assert.assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
-        Assert.assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
-        Assert.assertEquals(expectedEvent.getDetail(), eventDetailForOwnerPage.getDetailText());
-        Assert.assertEquals(expectedEvent.getDetailUrl(), eventDetailForOwnerPage.getDetailURLText());
+        assertNotNull(expectedEvent);
+        assertEquals(expectedEvent.getName(), eventDetailForOwnerPage.getEventNameText());
+        assertEquals(expectedEvent.getLocation(), eventDetailForOwnerPage.getLocationText());
+        assertEquals(expectedEvent.getOwner(), eventDetailForOwnerPage.getCreateUserNameText());
+        assertEquals(expectedEvent.getSummary(), eventDetailForOwnerPage.getSummaryText());
+        assertEquals(String.valueOf(expectedEvent.getStartDateTime()), eventDetailForOwnerPage.getStartDateText());
+        assertEquals(String.valueOf(expectedEvent.getEndDateTime()), eventDetailForOwnerPage.getEndDateText());
+        assertEquals(expectedEvent.getDetail(), eventDetailForOwnerPage.getDetailText());
+        Assert.assertEquals(expectedEvent.getEventUrl(), eventDetailForOwnerPage.getEventUrlText());
     }
 
     @When("userが{string}の詳細ページを見る")

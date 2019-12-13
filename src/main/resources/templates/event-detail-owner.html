@@ -14,8 +14,8 @@
         <div id="location" th:text="${event.getLocation()}"></div>
         <div id="owner" th:text="${event.getOwner()}"></div>
         <div id="summary" th:text="${event.getSummary()}"></div>
-        <div id="event_url" th:text="${event.getDetailUrl()}"></div>
-<!--        <input id=event_url name="フィールド名" th:value="${event.getDetailUrl()}" size="125"/>-->
+        <div id="event_url" th:text="${event.getEventUrl()}"></div>
+<!--        <input id=event_url name="フィールド名" th:value="${event.getEventUrl()}" size="125"/>-->
         <div id="start_date" th:text="${event.getStartDateTime()}"></div>
         <div id="end_date" th:text="${event.getEndDateTime()}"></div>
         <div id="detail" th:text="${event.getDetail()}"></div>
