@@ -89,34 +89,15 @@ public class TicketSteps {
             addTicketPage.submit();
         }
 
-        @Then("チケット登録画面が表示された状態で")
-        public void チケット登録画面が表示された状態で() {
-            // Write code here that turns the phrase above into concrete actions
-            throw new cucumber.api.PendingException();
+        @Then("チケット登録画面が表示された状態になる")
+        public void チケット登録画面が表示された状態になる() throws Exception{
+            addTicketPage.isCurrentPage("ゴスペルワークショップ");
         }
 
-        @Then("画面上に「チケット名を入力してください」が表示され")
-        public void 画面上に_チケット名を入力してください_が表示され() {
-            // Write code here that turns the phrase above into concrete actions
-            throw new cucumber.api.PendingException();
+        @Then("エラーメッセージが表示される")
+        public void エラーメッセージが表示される() {
+            Assert.assertEquals("チケット名を入力してください", addTicketPage.getErrorText());
         }
 
-        @Then("画面上に「金額を入力してください」が表示され")
-        public void 画面上に_金額を入力してください_が表示され() {
-            // Write code here that turns the phrase above into concrete actions
-            throw new cucumber.api.PendingException();
-        }
-
-        @Then("画面上に「枚数を入力してください」が表示され")
-        public void 画面上に_枚数を入力してください_が表示され() {
-            // Write code here that turns the phrase above into concrete actions
-            throw new cucumber.api.PendingException();
-        }
-
-        @Then("画面上に「一人当たりの上限数を入力してください」が表示される")
-        public void 画面上に_一人当たりの上限数を入力してください_が表示される() {
-            // Write code here that turns the phrase above into concrete actions
-            throw new cucumber.api.PendingException();
-        }
     }
 }
