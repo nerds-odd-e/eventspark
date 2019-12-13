@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RegistrationInfoRepository extends MongoRepository<RegistrationInfo, String> {
     List<RegistrationInfo> findByEventId(String id);
+
+    List<RegistrationInfo> findByTicketId(String ticketId);
 }
