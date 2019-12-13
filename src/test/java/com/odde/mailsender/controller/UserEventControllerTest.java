@@ -122,6 +122,8 @@ public class UserEventControllerTest {
     @Test
     public void 全ての項目が表示されること() throws Exception {
         eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+        registrationInfoRepository.deleteAll();
 
         LocalDateTime time = LocalDateTime.of(2019, 12, 12, 13, 30);
         Event event = createEventBuilder(time).build();

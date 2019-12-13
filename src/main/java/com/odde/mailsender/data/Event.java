@@ -76,4 +76,8 @@ public class Event {
         return ticketList.stream().map(ticket -> ticket.countUnsoldTicket(registrationInfoList)).collect(Collectors.toList());
     }
 
+    public Long countAllUnsoldTickets (List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
+        return countUnsoldTickets(ticketList, registrationInfoList).stream().mapToLong(ticket -> ticket.longValue()).sum();
+    }
+
 }

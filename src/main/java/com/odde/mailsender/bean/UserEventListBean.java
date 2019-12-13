@@ -33,9 +33,10 @@ public class UserEventListBean {
 
         public static EventBean of(Event event, List<Ticket> ticketList, List<RegistrationInfo> registrationInfoList) {
             long total = ticketList.stream().mapToLong(ticket -> ticket.getTicketTotal()).sum();
-            long registerTotal = registrationInfoList.stream().mapToLong(registrationInfo -> registrationInfo.getTicketCount()).sum();
+            long unsoldTickets = event.countAllUnsoldTickets(ticketList, registrationInfoList);
+
             String ticketStatus;
-            if ((double) registerTotal / total > 0.8) {
+            if ((double) unsoldTickets / total < 0.2) {
                 ticketStatus = TICKET_COUNT_FEW;
             } else {
                 ticketStatus = TICKET_COUNT_LOT;
