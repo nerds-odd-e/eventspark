@@ -38,7 +38,7 @@ task cucumber_focus() {
     }
 }
 task webpack(type: NodeTask, dependsOn: 'npmInstall') {
-    script = project.file('node_modules/.bin/webpack')
+    script = project.file('node_modules/webpack-cli/bin/cli.js')
 }
 
 dependencies {
