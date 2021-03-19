@@ -18,8 +18,12 @@ public class MailServiceImpl implements MailService {
     private Boolean sslEnable;
 
     private static final String CHARSET = "ISO-2022-JP";
-    private static final String SENDER_NAME = "eventspark@gmx.com";
-    private static final String PASSWORD = "scrumdeveloper2019";
+
+    @Value("${EMAIL_SENDER}")
+    private String SENDER_NAME;
+
+    @Value("${EMAIL_PASSWORD}")
+    private String PASSWORD;
 
     @Override
     public void send(MailInfo mailInfo) throws Exception {

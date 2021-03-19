@@ -1,3 +1,5 @@
+prod_secrets.sh
+
 node_modules/
 
 # Compiled class file

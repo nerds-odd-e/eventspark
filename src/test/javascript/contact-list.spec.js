@@ -1,10 +1,12 @@
+const $ = require('jquery')
+const checkAll = require('../../main/webapp/javascript/contact-list.js')
+
 describe('check all', function(){
 
     var testContainer;
     var contactList;
 
     beforeEach(function() {
-        contactList = new ContactList();
         testContainer = $('<div></div>');
 
         $('<input type="checkbox" id="all" />' +
@@ -20,14 +22,14 @@ describe('check all', function(){
 
     it('given not all check box then click all checkbox', function() {
         $('#all').prop('checked', true);
-        contactList.checkAll();
+        checkAll();
         expect($('input[name="mailAddress"]:checked').length).toEqual(2);
     })
 
     it('given all check box then click all checkbox', function() {
         $('#user1gmail.com').prop('checked', true);
         $('#user2gmail.com').prop('checked', true);
-        contactList.checkAll();
+        checkAll();
         expect($('input[name="mailAddress"]:checked').length).toEqual(0);
     })
 

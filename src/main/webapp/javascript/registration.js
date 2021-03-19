@@ -1,6 +1,6 @@
-function RegistrationInfo() {}
+const $ = require('jquery')
 
-RegistrationInfo.prototype.checkRegistrationInfo = function(name, address, ticketType, ticketCount, eventId) {
+const checkRegistrationInfo = (name, address, ticketType, ticketCount, eventId) => {
     if (name === "") {
         return false
     }
@@ -20,6 +20,14 @@ RegistrationInfo.prototype.checkRegistrationInfo = function(name, address, ticke
     return true
 }
 
-function registerBtnClicked() {
+const registerBtnClicked = () => {
     $('#registrationForm').attr('action', '/register').submit()
 }
+
+$(() => {
+    $('#purchase').on('click', () => {
+        registerBtnClicked()
+    })
+})
+
+module.exports = { registerBtnClicked, checkRegistrationInfo }

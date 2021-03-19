@@ -1,7 +1,7 @@
 plugins {
-    id 'com.craigburke.karma' version '1.4.4'
     id 'org.springframework.boot' version '2.2.1.RELEASE'
     id "io.freefair.lombok" version "4.1.5"
+    id "com.github.node-gradle.node" version "3.0.1"
 }
 
 apply plugin: 'java'
@@ -14,29 +14,6 @@ sourceCompatibility = 1.8
 repositories {
     jcenter()
     mavenCentral()
-}
-
-node {
-    version = '11.12.0'
-}
-
-karma {
-    basePath = '../' // <1>
-    colors = true // <2>
-
-    browsers = ['PhantomJS'] // <4>
-    frameworks = ['jasmine'] // <5>
-
-    profile('default') {
-        libraryBases = ['src/main/resources/static/lib/']
-        libraryFiles = ['jquery-3.2.1.js'] // <1>
-
-        sourceBases = ['src/main/resources/static/js/']
-        sourceFiles = ['*.js'] // <2>
-
-        testBases = ['src/test/javascript/']
-        testFiles = ['**/*test.js'] // <3>
-    }
 }
 
 task cucumber() {
@@ -59,6 +36,9 @@ task cucumber_focus() {
             args = ['--plugin', 'pretty', '--glue', 'e2e', 'src/test/resources', '--tags', '@focus']
         }
     }
+}
+task webpack(type: NodeTask, dependsOn: 'npmInstall') {
+    script = project.file('node_modules/.bin/webpack')
 }
 
 dependencies {
@@ -95,3 +75,6 @@ configurations {
         extendsFrom testRuntime
     }
 }
+
+processResources.dependsOn webpack
+test.dependsOn npm_test
