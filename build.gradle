@@ -31,7 +31,7 @@ task cucumber_focus() {
     dependsOn assemble, testClasses
     doLast {
         javaexec {
-            main = "cucumber.api.cli.Main"
+            main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = ['--plugin', 'pretty', '--glue', 'e2e', 'src/test/resources', '--tags', '@focus']
         }
@@ -42,10 +42,10 @@ task webpack(type: NodeTask, dependsOn: 'npmInstall') {
 }
 
 dependencies {
-    def cucumberVer = "4.7.4"
+    def cucumberVer = "4.8.1"
     def jacksonVer = "2.10.0"
 
-    compile(
+    implementation(
             "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-thymeleaf",
             "org.springframework.boot:spring-boot-starter-data-mongodb",
@@ -57,7 +57,7 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-annotations:$jacksonVer",
             "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVer"
     )
-    testCompile(
+    testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'com.icegreen:greenmail:1.5.11',
             'junit:junit:4.12',
@@ -72,7 +72,7 @@ dependencies {
 
 configurations {
     cucumberRuntime {
-        extendsFrom testRuntime
+        extendsFrom testImplementation
     }
 }
 
