@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'org.springframework.boot' version '2.3.9.RELEASE'
     id "io.freefair.lombok" version "5.3.0"
     id "com.github.node-gradle.node" version "3.0.1"
 }
@@ -43,10 +43,11 @@ task webpack(type: NodeTask, dependsOn: 'npmInstall') {
 
 dependencies {
     def cucumberVer = "5.7.0"
-    def jacksonVer = "2.10.0"
+    def jacksonVer = "2.12.0"
 
     implementation(
             "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-validation",
             "org.springframework.boot:spring-boot-starter-thymeleaf",
             "org.springframework.boot:spring-boot-starter-data-mongodb",
             "org.apache.commons:commons-email:1.5",
