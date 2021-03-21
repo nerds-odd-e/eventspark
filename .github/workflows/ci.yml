@@ -33,3 +33,8 @@ jobs:
         run: ./gradlew cucumber
       - name: Package jar
         run: ./gradlew bootJar
+      - name: Notify Discord \#build-monitor
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
