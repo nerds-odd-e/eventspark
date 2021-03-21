@@ -41,6 +41,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "build/libs/eventspark-0.0.1-SNAPSHOT.jar"
           target: "~"
+          strip_components: 2
       - name: Notify Discord build-monitor channel
         uses: sarisia/actions-status-discord@v1
         if: always()
