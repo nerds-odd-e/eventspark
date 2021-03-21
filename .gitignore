@@ -35,3 +35,5 @@ out
 *.iml
 .DS_Store
 addressbook.json
+
+eventspark.pem
