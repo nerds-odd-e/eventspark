@@ -60,8 +60,8 @@ dependencies {
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'com.icegreen:greenmail:1.6.2',
-            'junit:junit:4.12',
-            'org.mockito:mockito-core:3.2.0',
+            'junit:junit:4.13.2',
+            'org.mockito:mockito-core:3.7.7',
             'io.github.bonigarcia:webdrivermanager:4.3.1',
             'org.seleniumhq.selenium:selenium-java:3.141.59',
             "io.cucumber:cucumber-java:$cucumberVer",
