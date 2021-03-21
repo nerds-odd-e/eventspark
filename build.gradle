@@ -42,7 +42,7 @@ task webpack(type: NodeTask, dependsOn: 'npmInstall') {
 }
 
 dependencies {
-    def cucumberVer = "5.7.0"
+    def cucumberVer = "6.8.1"
     def jacksonVer = "2.12.0"
 
     implementation(
