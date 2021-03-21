@@ -2,12 +2,12 @@ package e2e;
 
 import com.odde.mailsender.data.Address;
 import com.odde.mailsender.service.AddressRepository;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import e2e.pages.ContactListPage;
 import e2e.pages.HomePage;
 import e2e.pages.ImportCsvPage;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;

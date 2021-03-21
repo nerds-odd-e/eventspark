@@ -17,6 +17,7 @@ Feature: Mail Send
 
   # replace subject and body placeholder
   # success case
+  @focus
   Scenario: replace subject and body success two person
     Given subject is "Hi $name"
     And address is "user1@gmail.com;user2@gmail.com"

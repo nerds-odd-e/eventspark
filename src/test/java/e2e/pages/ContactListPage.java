@@ -1,11 +1,9 @@
 package e2e.pages;
 
-import e2e.ContactListSteps;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 

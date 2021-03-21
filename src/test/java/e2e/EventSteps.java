@@ -5,6 +5,7 @@ import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
 import e2e.pages.*;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -145,7 +146,7 @@ public class EventSteps {
     @Then("変更した内容がイベント詳細ページに表示されていること")
     public void 変更した内容がイベント詳細ページに表示されていること() {
         // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        throw new PendingException();
     }
 
 

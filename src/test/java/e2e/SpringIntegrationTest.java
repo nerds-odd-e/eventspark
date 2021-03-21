@@ -4,18 +4,19 @@ import com.icegreen.greenmail.util.GreenMail;
 import com.odde.mailsender.MailsenderApplication;
 import com.odde.mailsender.data.Address;
 import com.odde.mailsender.service.AddressRepository;
-import cucumber.api.java.Before;
-import org.junit.After;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
+@CucumberContextConfiguration
 @SpringBootTest(classes = {MailsenderApplication.class, Config.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = "e2e")
 public class SpringIntegrationTest {
-
     @LocalServerPort
     private int port;
 
