@@ -24,10 +24,10 @@ jobs:
       - name: Code checkout
         uses: actions/checkout@v2
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
       - name: Run unit tests
-        run: gradlew test
+        run: ./gradlew test
       - name: Run E2E tests
-        run: gradlew cucumber
+        run: ./gradlew cucumber
       - name: Build with Gradle
         run: ./gradlew build
