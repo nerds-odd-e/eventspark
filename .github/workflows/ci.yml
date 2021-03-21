@@ -27,10 +27,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
-#       - name: Run unit tests
-#         run: ./gradlew test
-#       - name: Run E2E tests
-#         run: ./gradlew cucumber
+       - name: Run unit tests
+         run: ./gradlew test
+       - name: Run E2E tests
+         run: ./gradlew cucumber
       - name: Package jar
         run: ./gradlew bootJar
       - name: Copy jar to server
