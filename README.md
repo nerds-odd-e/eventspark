@@ -19,7 +19,12 @@ Requires setting environment variables email sender and password in order to sen
 
 `./gradlew bootRun --args='--spring.profiles.active=prod'`
 
-## Run single cucumber test
+## End to end (e2e) tests with cucumber
+
+### For scenarios working in progress
+Annotate with @developing in the scenario so that it will not be run in the CI server.
+
+### Run a specific scenario
 Add an annotation @focus
 ```
   @focus
@@ -28,6 +33,8 @@ Add an annotation @focus
     When click link
     Then move to import page
  ```
-run `./gradlew cucumber_focus`
+then run `./gradlew cucumber_focus`
 
-
+## Known Problems
+### Gradle test may fail
+`./gradlew test` fails with "npm not found" when OS' nodejs is installed with nvm. Try to install nodejs directly in OS as a workaround for the time being.
