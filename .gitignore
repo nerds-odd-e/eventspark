@@ -1,4 +1,5 @@
 prod_secrets.sh
+eventspark.pem
 
 node_modules/
 

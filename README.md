@@ -1,7 +1,14 @@
 # eventspark
 
-## Dependencies
-Requires mongodb (https://www.mongodb.com/community) and at least node 15.3.0.
+## Application stack
+1. Spring-boot
+2. Cucumber JVM
+3. MongoDB
+4. Jest
+5. JQuery
+6. Webdriver
+7. Gradle (automated build)
+8. At least node 15.3.0
 
 ## Spring Profiles
 Databases are named according to the profile names.
