@@ -3,11 +3,19 @@
 ## Dependencies
 Requires mongodb (https://www.mongodb.com/community) and at least node 15.3.0.
 
-## Running locally
+## Spring Profiles
+Databases are named according to the profile names.
+* local - default profile
+* test - use for ./gradlew test
+* e2e - use for ./gradlew cucumber
+* prod - use for production
+
+## How to run
+### Running locally
 `./gradlew bootRun` Defaults to `local` profile
 
-## Running on production
-Requires setting environment variables email sender and password in order to send email.
+### Running on prod profile
+Requires setting environment variables email sender and password in order to send email. Ask your team members or trainers to get the credentials.
 
 `./gradlew bootRun --args='--spring.profiles.active=prod'`
 

@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             kill $(ps aux | grep 'eventspark-0.0.1-SNAPSHOT.jar' | grep -v grep | awk '{print $2}')
-            nohup java -jar eventspark-0.0.1-SNAPSHOT.jar > nohup.out &
+            nohup java -jar -Dspring.profiles.active=prod eventspark-0.0.1-SNAPSHOT.jar > nohup.out &
       - name: Notify Discord build-monitor channel
         uses: sarisia/actions-status-discord@v1
         if: always()
