@@ -3,8 +3,10 @@
 
 name: Java CI with Gradle
 
-on: push
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   unit-e2e-tests-run:
     name: Unit & E2E tests then Deploy
