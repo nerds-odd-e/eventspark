@@ -1,7 +1,7 @@
 package e2e;
 
-import cucumber.api.java.en.When;
 import e2e.pages.HomePage;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MailTemplateSteps {

@@ -1,17 +1,12 @@
 package e2e;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import e2e.pages.HomePage;
 import e2e.pages.PreviewPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 

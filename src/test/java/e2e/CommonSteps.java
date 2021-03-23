@@ -1,11 +1,10 @@
 package e2e;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import e2e.pages.HomePage;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -20,19 +19,19 @@ public class CommonSteps {
         homePage.userVisitsSendPage();
     }
 
-    @And("address is filled with \"([^\"]*)\"")
+    @And("address is filled with {string}")
     public void addressIsFilledWith(String address) {
         String actual = homePage.getInputAddressText();
         assertThat(actual, is(address));
     }
 
-    @And("subject is filled with \"([^\"]*)\"")
+    @Then("subject is filled with {string}")
     public void subjectIsFilledWith(String subject) {
         String actual = homePage.getInputSubjectText();
         assertThat(actual, is(subject));
     }
 
-    @And("body is filled with \"([^\"]*)\"")
+    @And("body is filled with {string}")
     public void bodyIsFilledWith(String body) {
         String actual = homePage.getInputBodyText();
         assertThat(actual, is(body));

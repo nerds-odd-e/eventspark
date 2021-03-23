@@ -6,6 +6,7 @@ import com.icegreen.greenmail.util.ServerSetup;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
@@ -27,9 +28,11 @@ public class Config {
 
     @Bean
     public WebDriver getDriver() {
-        if(driver == null)
-            driver = new ChromeDriver();
-
+        if(driver == null) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage");
+            driver = new ChromeDriver(options);
+        }
         return driver;
     }
 

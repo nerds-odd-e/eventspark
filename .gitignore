@@ -1,4 +1,5 @@
 prod_secrets.sh
+eventspark.pem
 
 node_modules/
 
@@ -35,3 +36,5 @@ out
 *.iml
 .DS_Store
 addressbook.json
+
+eventspark.pem

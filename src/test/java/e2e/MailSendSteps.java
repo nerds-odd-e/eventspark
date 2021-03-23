@@ -2,17 +2,14 @@ package e2e;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.odde.mailsender.service.MailInfo;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import e2e.pages.HomePage;
+import io.cucumber.java.DataTableType;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
 
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
@@ -23,7 +20,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class MailSendSteps {
     @Autowired
@@ -60,6 +56,12 @@ public class MailSendSteps {
     @Then("^error_area is none$")
     public void error_area_is_none() {
         assertFalse(homePage.errorAreaExists());
+    }
+
+
+    @DataTableType
+    public MailInfo mailInfoEntry(java.util.Map<String, String> entry) {
+        return new MailInfo(entry.get("from"), entry.get("to"), entry.get("subject"), entry.get("body"));
     }
 
     @Then("^should receive the following emails:$")

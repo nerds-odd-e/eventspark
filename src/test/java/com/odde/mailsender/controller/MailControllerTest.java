@@ -63,7 +63,7 @@ public class MailControllerTest {
 
     @Test
     public void goToHome() throws Exception {
-        mvc.perform(get(""))
+        mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/home"));
     }
