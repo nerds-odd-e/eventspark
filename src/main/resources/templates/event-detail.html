@@ -21,12 +21,12 @@
             <p><span th:text="${successMessage}" id="success_message"></span></p>
             <img id="image" style="height: 300px;width: 300px;" th:src="${event.getImagePath()}">
             <h1><span th:text="${event.getName()}" id="name"></span></h1>
-            <p>開始日時:<span th:text="${event.getStartDateTime()}" id="start_date"></span></p>
-            <p>終了日時:<span th:text="${event.getEndDateTime()}" id="end_date"></span></p>
-            <p>開催場所:<span th:text="${event.getLocation()}" id="location"></span></p>
-            <h2>イベント情報:<br> <span th:text="${event.getDetail()}" id="detail"></span></h2>
-            <p>主催者:<span th:text="${event.getOwner()}" id="owner"></span></p>
-            <p>チケット:<span th:if="${ticketList.isEmpty()}"> No Information</span></p>
+            <p>Start datetime:<span th:text="${event.getStartDateTime()}" id="start_date"></span></p>
+            <p>End datetime:<span th:text="${event.getEndDateTime()}" id="end_date"></span></p>
+            <p>Location:<span th:text="${event.getLocation()}" id="location"></span></p>
+            <h2>Event detail:<br> <span th:text="${event.getDetail()}" id="detail"></span></h2>
+            <p>Organizer:<span th:text="${event.getOwner()}" id="owner"></span></p>
+            <p>Ticket:<span th:if="${ticketList.isEmpty()}" id="ticket_message"> No Information</span></p>
             <div id="ticket_list" th:if="${!ticketList.isEmpty()}">
                 <p th:each="ticket,stat : ${ticketList}">
                     <span th:text="${ticket.getTicketName()}"></span>
@@ -35,7 +35,7 @@
                 </p>
             </div>
 
-            <button type="button" class="btn btn-default"><a id="register_button" th:href="@{/register_form/{eventName}(eventName=${event.getName()})}">購入</a></button>
+            <button type="button" class="btn btn-default"><a id="register_button" th:href="@{/register_form/{eventName}(eventName=${event.getName()})}">Buy</a></button>
         </div>
         <div class="col-md-3"></div>
     </div>

@@ -56,6 +56,9 @@ public class EventDetailPage extends BasePage {
     @FindBy(id = "success_message")
     private WebElement successMessage;
 
+    @FindBy(id = "ticket_message")
+    private WebElement ticketMessage;
+
     public String getEventNameText() {
         return eventName.getText();
     }
@@ -102,6 +105,10 @@ public class EventDetailPage extends BasePage {
 
     public String getTicketNameText() {
         return ticketName.getText();
+    }
+
+    public String getTicketMessageText() {
+        return ticketMessage.getText();
     }
 
     public boolean getTicketList() {

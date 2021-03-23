@@ -6,6 +6,7 @@ import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
 import e2e.pages.*;
 import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -94,6 +95,7 @@ public class EventSteps {
 
     private Event createEventFixedDatetime(String id, String name) {
         LocalDateTime currentDateTime = LocalDateTime.of(2017, 12, 10, 23, 59, 59, 1);
+        LocalDateTime endDateTime = LocalDateTime.of(2017, 12, 20, 23, 59, 59, 1);
         return Event.builder()
                     .id(id)
                     .name(name)
@@ -103,7 +105,7 @@ public class EventSteps {
                     .updateDateTime(currentDateTime)
                     .summary("ゴスペルワークショップのイベントです。")
                     .startDateTime(currentDateTime)
-                    .endDateTime(currentDateTime)
+                    .endDateTime(endDateTime)
                     .publishedDateTime(currentDateTime)
                     .detail("ゴスペルワークショップ")
                     .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
@@ -287,5 +289,25 @@ public class EventSteps {
         eventDetailPage.assertCurrentPage("ゴスペルワークショップ1");
     }
 
+    @And("以下の詳細が表示されている")
+    public void 以下の詳細が表示されている(List<Map<String, String>> dataTable) {
+        assertEquals(dataTable.get(0).get("タイトル"), eventDetailPage.getEventNameText());
+        assertEquals(dataTable.get(0).get("開始日時"), eventDetailPage.getStartDateText());
+        assertEquals(dataTable.get(0).get("終了日時"), eventDetailPage.getEndDateText());
+        assertEquals(dataTable.get(0).get("開催場所"), eventDetailPage.getLocationText());
+        assertEquals(dataTable.get(0).get("概要"), eventDetailPage.getDetailText());
+        assertEquals(dataTable.get(0).get("主催者"), eventDetailPage.getCreateUserNameText());
+        assertTrue(eventDetailPage.getTicketList());
+
+//        assertTrue(userEventListPage.eventTitle(i).contains("Title: " + dataTable.get(i).get("タイトル")));
+//        assertTrue(userEventListPage.eventVenue(i).contains("Location: " + dataTable.get(i).get("開催地")));
+//        assertTrue(userEventListPage.eventSummary(i).contains("Summary: " + dataTable.get(i).get("概要")));
+//        System.out.println(userEventListPage.eventStartDateTime(i));
+//        assertTrue(userEventListPage.eventStartDateTime(i).contains("Event start date: " + dataTable.get(i).get("開催日時")));
+//        assertTrue(userEventListPage.eventTicketStatus(i).contains("Ticket status: " + dataTable.get(i).get("チケット状況")));
+//            assertTrue(userEventListPage.eventTitle(i).contains("Title"));
+
+
+    }
 
 }
