@@ -30,10 +30,10 @@
             <p>Detail:<span id="detail" th:text="${event.getDetail()}"></span></p>
             <ul th:each="ticket: ${ticketList}">
                 <li>
-                    <div class="ticket_name" th:text="|チケット名: ${ticket.ticketName}|"></div>
-                    <div class="ticket_price" th:text="|金額: ${ticket.ticketPrice}|"></div>
-                    <div class="ticket_total" th:text="|枚数: ${ticket.ticketTotal}|"></div>
-                    <div class="ticket_limit" th:text="|上限: ${ticket.ticketLimit}|"></div>
+                    <div class="ticket_name" th:text="|Ticket name: ${ticket.ticketName}|"></div>
+                    <div class="ticket_price" th:text="|Ticket price: ${ticket.ticketPrice}|"></div>
+                    <div class="ticket_total" th:text="|Ticket total: ${ticket.ticketTotal}|"></div>
+                    <div class="ticket_limit" th:text="|Ticket limit per user: ${ticket.ticketLimit}|"></div>
                 </li>
             </ul>
             <div class="btn btn-default"><a
