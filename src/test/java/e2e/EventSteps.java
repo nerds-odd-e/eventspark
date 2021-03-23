@@ -51,6 +51,9 @@ public class EventSteps {
     @Autowired
     private UserEventListPage userEventListPage;
 
+    @Autowired
+    private EventNewPage eventNewPage;
+
     private Event givenEvent = createEvent("1");
     private Ticket givenTicket = createTicket(givenEvent);
 
@@ -306,8 +309,24 @@ public class EventSteps {
 //        assertTrue(userEventListPage.eventStartDateTime(i).contains("Event start date: " + dataTable.get(i).get("開催日時")));
 //        assertTrue(userEventListPage.eventTicketStatus(i).contains("Ticket status: " + dataTable.get(i).get("チケット状況")));
 //            assertTrue(userEventListPage.eventTitle(i).contains("Title"));
-
-
     }
 
+    @When("Add Eventページに内容を入力して確定ボタンを押す")
+    public void addEventページに内容を入力して確定ボタンを押す(Map<String, String> dataTable) {
+        eventNewPage.goToPage();
+
+        eventNewPage.fillNameField(dataTable.get("イベント名"));
+        eventNewPage.fillLocationField(dataTable.get("場所"));
+        eventNewPage.fillOwnerField(dataTable.get("オーナー"));
+        eventNewPage.fillSummaryField(dataTable.get("サマリー"));
+        eventNewPage.fillStartDateField(dataTable.get("イベント開始日時"));
+        eventNewPage.fillEndDateField(dataTable.get("イベント終了日時"));
+        eventNewPage.fillImageField(dataTable.get("画像URL"));
+        eventNewPage.submit();
+    }
+
+    @Then("イベントの登録に失敗しエラーメッセージが表示される")
+    public void イベントの登録に失敗しエラーメッセージが表示される() throws UnsupportedEncodingException {
+
+    }
 }

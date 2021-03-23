@@ -63,3 +63,16 @@ Feature: Event
       |イベント終了日時|2020-06-11 17:00|
       |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
     Then "ゴスペルワークショップ"のイベントの内容とチケット追加ボタンが表示される
+
+  @focus
+  Scenario: イベント開始日時
+    When Add Eventページに内容を入力して確定ボタンを押す
+      |イベント名|ゴスペルワークショップ|
+      |オーナー |ゆうこ        |
+      |場所  |東京フォーラム              |
+      |イベント情報|アーティスト：カークフランクリン¥n 演目：未定|
+      |サマリー  |ゴスペルワークショップです           |
+      |イベント開始日時||
+      |イベント終了日時|2020-06-11 17:00|
+      |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
+    Then イベントの登録に失敗しエラーメッセージが表示される
