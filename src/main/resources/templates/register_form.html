@@ -14,9 +14,9 @@
         <div class="col-md-6">
             <h1>Eventspark</h1>
             <h2 th:text="${event.name}"></h2>
-            <p>開始日時 <span th:text="${event.startDateTime}"></span></p>
-            <p>終了日時 <span th:text="${event.endDateTime}"></span></p>
-            <p>開催場所 <span th:text="${event.location}"></span></p>
+            <p>Start datetime <span th:text="${event.startDateTime}"></span></p>
+            <p>End datetime <span th:text="${event.endDateTime}"></span></p>
+            <p>Location <span th:text="${event.location}"></span></p>
 
             <form id="registrationForm" method="post" th:object="${form}">
                 <div class="form-group">
