@@ -1,7 +1,8 @@
 package e2e;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import e2e.pages.ContactListPage;
 import e2e.pages.EventListPage;
 import e2e.pages.HomePage;
