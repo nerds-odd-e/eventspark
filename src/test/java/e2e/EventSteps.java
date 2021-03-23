@@ -11,9 +11,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -88,6 +90,24 @@ public class EventSteps {
                 .detail("ゴスペルワークショップ")
                 .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
                 .build();
+    }
+
+    private Event createEventFixedDatetime(String id, String name) {
+        LocalDateTime currentDateTime = LocalDateTime.of(2017, 12, 10, 23, 59, 59, 1);
+        return Event.builder()
+                    .id(id)
+                    .name(name)
+                    .location("東京国際フォーラム")
+                    .owner("ゆうこ")
+                    .createDateTime(currentDateTime)
+                    .updateDateTime(currentDateTime)
+                    .summary("ゴスペルワークショップのイベントです。")
+                    .startDateTime(currentDateTime)
+                    .endDateTime(currentDateTime)
+                    .publishedDateTime(currentDateTime)
+                    .detail("ゴスペルワークショップ")
+                    .imagePath("https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png")
+                    .build();
     }
 
     @When("{string}のオーナー用イベント詳細ページを表示する")
@@ -173,6 +193,19 @@ public class EventSteps {
         });
     }
 
+    @Given("イベントオーナーが2件のイベントを登録すると")
+    public void イベントオーナーが2件のイベントを登録すると() {
+        eventRepository.deleteAll();
+        ticketRepository.deleteAll();
+
+        Stream.of("1", "2").forEach(id -> {
+            Event event = createEventFixedDatetime(id, "ゴスペルワークショップ" + id);
+            eventRepository.insert(event);
+            Ticket ticket = createTicket(event);
+            ticketRepository.insert(ticket);
+        });
+    }
+
     @When("公開中のイベント一覧ページをみると")
     public void 公開中のイベント一覧ページをみると() {
         userEventListPage.goToUserEventListPage();
@@ -181,6 +214,20 @@ public class EventSteps {
     @Then("一覧に複数イベントが見れる")
     public void 一覧に複数イベントが見れる() {
         assertThat(userEventListPage.countRows(), greaterThan(1));
+    }
+
+    @Then("一覧に英語表記となった{int}件のイベントが表示される")
+    public void 一覧に英語表記となった件のイベントが表示される(Integer numberOfEvents, List<Map<String, String>> dataTable) {
+        for (int i = 0; i < numberOfEvents; i++) {
+            assertTrue(userEventListPage.eventTitle(i).contains("Title: " + dataTable.get(i).get("タイトル")));
+            assertTrue(userEventListPage.eventVenue(i).contains("Location: " + dataTable.get(i).get("開催地")));
+            assertTrue(userEventListPage.eventSummary(i).contains("Summary: " + dataTable.get(i).get("概要")));
+            System.out.println(userEventListPage.eventStartDateTime(i));
+            assertTrue(userEventListPage.eventStartDateTime(i).contains("Event start date: " + dataTable.get(i).get("開催日時")));
+            assertTrue(userEventListPage.eventTicketStatus(i).contains("Ticket status: " + dataTable.get(i).get("チケット状況")));
+//            assertTrue(userEventListPage.eventTitle(i).contains("Title"));
+
+        }
     }
 
     @Given("イベントのデータが１件も存在しないこと")

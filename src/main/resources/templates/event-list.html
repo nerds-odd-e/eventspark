@@ -26,14 +26,14 @@
                         <div>
                             <td style="width: 50%; height: 90%;"><img style="width: 100%" th:src="${event.imagePath}"/></td>
                             <td style="width: 50%; height: 90%;">
-                                <div>
-                                    <a th:href="@{'/event/'+${event.title}}" th:text="|タイトル: ${event.title}|"
+                                <div class="event-title">
+                                    <a th:href="@{'/event/'+${event.title}}" th:text="|Title: ${event.title}|"
                                        th:id="|event${event.eventId}|"></a>
                                 </div>
-                                <div th:text="|開催場所: ${event.location}|"></div>
-                                <div th:text="|概要: ${event.summary}|"></div>
-                                <div th:text="|開催日時: ${event.startDateTime}|"></div>
-                                <div th:text="|チケット受付状況: ${event.ticketStatus}|"></div>
+                                <div class="event-venue" th:text="|Location: ${event.location}|"></div>
+                                <div class="event-summary" th:text="|Summary: ${event.summary}|"></div>
+                                <div class="event-start-datetime" th:text="|Event start date: ${event.startDateTime}|"></div>
+                                <div class="event-ticket-status" th:text="|Ticket status: ${event.ticketStatus}|"></div>
                             </td>
                         </div>
                     </tr>
