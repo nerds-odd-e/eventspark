@@ -75,4 +75,4 @@ Feature: Event
       |イベント開始日時||
       |イベント終了日時|2020-06-11 17:00|
       |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
-    Then イベントの登録に失敗しエラーメッセージが表示される "Address may not be empty"
+    Then イベントの登録に失敗しエラーメッセージが表示される "Please specify the start date time"

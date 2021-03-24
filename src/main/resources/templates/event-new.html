@@ -23,7 +23,7 @@
 
             <!--<div id="event_name">イベント名</div>-->
             <form action="/owner/event" method="post" th:object="${form}">
-                <div th:if="${errorMessage} != null" th:text="${errorMessage}" style="color:red;"></div>
+                <div th:if="${errorMessage} != null" th:text="${errorMessage}" style="color:red;" id="errorArea"></div>
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" th:value="*{name}" placeholder="name">

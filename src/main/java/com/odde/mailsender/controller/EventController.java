@@ -75,6 +75,13 @@ public class EventController {
             model.addAttribute("errorMessage", "Failed!: Same name event already exist.");
             return "event-new";
         }
+
+        if (result.hasErrors()) {
+            model.addAttribute("form", form);
+            model.addAttribute("errorMessage", "Please specify the start date time");
+            return "event-new";
+        }
+
         event = form.createEvent();
 
         eventRepository.insert(event);
