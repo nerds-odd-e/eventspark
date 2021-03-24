@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.validation.constraints.NotNull;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 
@@ -74,10 +75,9 @@ public class TicketControllerTest {
                 .param("ticketTotal", "")
                 .param("ticketLimit", "")
                 .param("eventId", ""))
-                .andExpect(content().string(containsString("チケット名を入力してください")))
-                .andExpect(content().string(containsString("金額を入力してください")))
-                .andExpect(content().string(containsString("枚数を入力してください")))
-                .andExpect(content().string(containsString("一人当たりの上限数を入力してください")))
-        ;
+                .andExpect(content().string(containsString("Please specify the ticket name")))
+                .andExpect(content().string(containsString("Please specify the ticket price")))
+                .andExpect(content().string(containsString("Please specify the amount of tickets")))
+                .andExpect(content().string(containsString("Please specify the ticket limit per user")));
     }
 }
