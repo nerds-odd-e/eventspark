@@ -7,13 +7,13 @@ import javax.validation.constraints.NotNull;
 
 public class TicketForm {
 
-    @NotEmpty(message = "チケット名を入力してください")
+    @NotEmpty(message = "Please specify the ticket name")
     private String ticketName;
-    @NotNull(message = "金額を入力してください")
+    @NotNull(message = "Please specify the ticket price")
     private Long ticketPrice;
-    @NotNull(message = "枚数を入力してください")
+    @NotNull(message = "Please specify the amount of tickets")
     private Long ticketTotal;
-    @NotNull(message = "一人当たりの上限数を入力してください")
+    @NotNull(message = "Please specify the ticket limit per user")
     private Integer ticketLimit;
     @NotEmpty
     private String eventId;
