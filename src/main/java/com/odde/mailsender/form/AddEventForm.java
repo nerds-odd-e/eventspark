@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -25,6 +26,7 @@ public class AddEventForm {
     @NotEmpty(message = "must be not empty")
     private String detail;
 
+    @NotNull
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime startDateTime;
 
