@@ -78,7 +78,7 @@ public class EventController {
 
         if (result.hasErrors()) {
             model.addAttribute("form", form);
-            model.addAttribute("errorMessage", "Please specify the start date time");
+            model.addAttribute("errorMessage", "There is an error in the input contents.");
             return "event-new";
         }
 

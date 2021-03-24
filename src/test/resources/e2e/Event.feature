@@ -64,10 +64,10 @@ Feature: Event
       |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
     Then "ゴスペルワークショップ"のイベントの内容とチケット追加ボタンが表示される
 
-  @developing
+  @focus
   Scenario: イベント開始日時
     When Add Eventページに内容を入力して確定ボタンを押す
-      |イベント名|ゴスペルワークショップ|
+      |イベント名|開始時刻なしイベント|
       |オーナー |ゆうこ        |
       |場所  |東京フォーラム              |
       |イベント情報|アーティスト：カークフランクリン¥n 演目：未定|
@@ -75,4 +75,4 @@ Feature: Event
       |イベント開始日時||
       |イベント終了日時|2020-06-11 17:00|
       |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
-    Then イベントの登録に失敗しエラーメッセージが表示される "Please specify the start date time"
+    Then イベントの登録に失敗しエラーメッセージが表示される "There is an error in the input contents."
