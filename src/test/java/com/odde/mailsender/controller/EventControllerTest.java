@@ -141,7 +141,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void InvalidParamater() throws Exception {
+    public void InvalidParameter() throws Exception {
         MvcResult result = mvc.perform(post("/owner/event")
                 .param("name", aEvent.getName())
                 .param("location", aEvent.getLocation())
