@@ -141,17 +141,8 @@ public class EventControllerTest {
     }
 
     @Test
-    public void InvalidParameter() throws Exception {
-        MvcResult result = mvc.perform(post("/owner/event")
-                .param("name", aEvent.getName())
-                .param("location", aEvent.getLocation())
-                .param("summary", aEvent.getSummary())
-                .param("owner", aEvent.getOwner())
-                .param("detail", aEvent.getDetail())
-//                .param("startDateTime", "2019-12-20 09:00")
-                .param("endDateTime", "2019-12-21 17:00")
-                .param("imagePath", aEvent.getImagePath())
-        ).andReturn();
+    public void invalidParameterEvent() throws Exception {
+        MvcResult result = performAddEventWithoutStartDataTime();
 
         assertEquals(200, result.getResponse().getStatus());
         assertEquals("event-new", result.getModelAndView().getViewName());
@@ -224,4 +215,15 @@ public class EventControllerTest {
         ).andReturn();
     }
 
+    private MvcResult performAddEventWithoutStartDataTime() throws Exception {
+        return mvc.perform(post("/owner/event")
+                        .param("name", aEvent.getName())
+                        .param("location", aEvent.getLocation())
+                        .param("summary", aEvent.getSummary())
+                        .param("owner", aEvent.getOwner())
+                        .param("detail", aEvent.getDetail())
+                        .param("endDateTime", "2019-12-21 17:00")
+                        .param("imagePath", aEvent.getImagePath())
+        ).andReturn();
+    }
 }
