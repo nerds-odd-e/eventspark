@@ -140,6 +140,19 @@ public class EventControllerTest {
 
     }
 
+//    @Test
+//    public void EventName() throws Exception {
+//        eventRepository.save(aEvent);
+//
+//        //重複するイベントを追加して検証
+//        MvcResult result = performAddEvent();
+//
+//        assertEquals(200, result.getResponse().getStatus());
+//        assertEquals("event-new", result.getModelAndView().getViewName());
+//        assertEquals("Failed!: Same name event already exist.", result.getModelAndView().getModel().get("errorMessage"));
+//
+//    }
+
     @Test
     public void updateEvent() throws Exception {
         eventRepository.save(aEvent);

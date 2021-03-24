@@ -318,6 +318,7 @@ public class EventSteps {
         eventNewPage.fillNameField(dataTable.get("イベント名"));
         eventNewPage.fillLocationField(dataTable.get("場所"));
         eventNewPage.fillOwnerField(dataTable.get("オーナー"));
+        eventNewPage.fillDetailField(dataTable.get("イベント情報"));
         eventNewPage.fillSummaryField(dataTable.get("サマリー"));
         eventNewPage.fillStartDateField(dataTable.get("イベント開始日時"));
         eventNewPage.fillEndDateField(dataTable.get("イベント終了日時"));
