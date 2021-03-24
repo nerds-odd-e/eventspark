@@ -140,18 +140,23 @@ public class EventControllerTest {
 
     }
 
-//    @Test
-//    public void EventName() throws Exception {
-//        eventRepository.save(aEvent);
-//
-//        //重複するイベントを追加して検証
-//        MvcResult result = performAddEvent();
-//
-//        assertEquals(200, result.getResponse().getStatus());
-//        assertEquals("event-new", result.getModelAndView().getViewName());
-//        assertEquals("Failed!: Same name event already exist.", result.getModelAndView().getModel().get("errorMessage"));
-//
-//    }
+    @Test
+    public void InvalidParamater() throws Exception {
+        MvcResult result = mvc.perform(post("/owner/event")
+                .param("name", aEvent.getName())
+                .param("location", aEvent.getLocation())
+                .param("summary", aEvent.getSummary())
+                .param("owner", aEvent.getOwner())
+                .param("detail", aEvent.getDetail())
+//                .param("startDateTime", "2019-12-20 09:00")
+                .param("endDateTime", "2019-12-21 17:00")
+                .param("imagePath", aEvent.getImagePath())
+        ).andReturn();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("event-new", result.getModelAndView().getViewName());
+        assertEquals("There is an error in the input contents.", result.getModelAndView().getModel().get("errorMessage"));
+    }
 
     @Test
     public void updateEvent() throws Exception {
