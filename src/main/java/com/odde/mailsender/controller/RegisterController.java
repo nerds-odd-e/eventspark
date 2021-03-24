@@ -39,13 +39,14 @@ public class RegisterController {
             return "register_form";
         }
 
-        registrationInfoRepository.save(RegistrationInfo.builder().firstName(form.getFirstName())
-                .lastName(form.getLastName())
-                .company(form.getCompany())
-                .address(form.getAddress())
-                .ticketId(form.getTicketId())
-                .ticketCount(form.getTicketCount())
-                .eventId(form.getEventId()).build());
+        registrationInfoRepository.save(RegistrationInfo.builder()
+                                                        .firstName(form.getFirstName())
+                                                        .lastName(form.getLastName())
+                                                        .company(form.getCompany())
+                                                        .address(form.getAddress())
+                                                        .ticketId(form.getTicketId())
+                                                        .ticketCount(form.getTicketCount())
+                                                        .eventId(form.getEventId()).build());
         Optional<Event> event = eventRepository.findById(form.getEventId());
 
         attributes.addFlashAttribute("successMessage", "Complete buy.");

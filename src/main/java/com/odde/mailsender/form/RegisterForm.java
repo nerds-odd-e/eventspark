@@ -1,5 +1,14 @@
 package com.odde.mailsender.form;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class RegisterForm {
 
     private String firstName;
@@ -10,66 +19,18 @@ public class RegisterForm {
 
     private String address;
 
+    private String attendeeFirstName;
+
+    private String attendeeLastName;
+
+    private String attendeeCompany;
+
+    private String attendeeAddress;
+
     private String ticketId;
 
     private Integer ticketCount;
 
     private String eventId;
 
-    public String getFirstName() {
-
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
-
-    public Integer getTicketCount() {
-        return ticketCount;
-    }
-
-    public void setTicketCount(Integer ticketCount) {
-        this.ticketCount = ticketCount;
-    }
-
-    public String getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
 }

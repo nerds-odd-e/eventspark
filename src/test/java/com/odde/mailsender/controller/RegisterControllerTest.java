@@ -3,22 +3,32 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.RegistrationInfo;
 import com.odde.mailsender.data.Ticket;
+import com.odde.mailsender.form.RegisterForm;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.RegistrationInfoRepository;
 import com.odde.mailsender.service.TicketRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,83 +41,133 @@ public class RegisterControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
+    @MockBean
     private EventRepository eventRepository;
 
-    @Autowired
+    @MockBean
     private TicketRepository ticketRepository;
 
-    @Autowired
+    @MockBean
     private RegistrationInfoRepository registrationInfoRepository;
-
-    @Autowired
-    private RegisterController registerController;
 
     @Before
     public void setup() {
-        registrationInfoRepository.deleteAll();
-        eventRepository.deleteAll();
-        ticketRepository.deleteAll();
+        when(ticketRepository.findById("6059a3527818810498ce8deb")).thenReturn(Optional.of(Ticket.builder()
+                                                                                                 .id("6059a3527818810498ce8deb")
+                                                                                                 .ticketName("ATicketName")
+                                                                                                 .ticketLimit(3)
+                                                                                                 .ticketPrice(1000L)
+                                                                                                 .ticketTotal(10L)
+                                                                                                 .eventId("605a9ad932d2ef4627b89d90")
+                                                                                                 .build()));
 
-        eventRepository.save(Event.builder().id("1").name("TestEvent").build());
-        eventRepository.save(Event.builder().id("2").name("FailedTestEvent").build());
+        when(registrationInfoRepository.findByTicketId("6059a3527818810498ce8deb"))
+          .thenReturn(Arrays.asList(RegistrationInfo.builder()
+                                                    .id("605a9afc32d2ef4627b89d92")
+                                                    .firstName("Taiki")
+                                                    .lastName("Kawaji")
+                                                    .company("ABC")
+                                                    .address("kawaji@fake.com")
+                                                    .ticketId("6059a3527818810498ce8deb")
+                                                    .ticketCount(2)
+                                                    .eventId("605a9ad932d2ef4627b89d90")
+                                                    .build(),
+                                    RegistrationInfo.builder()
+                                                    .id("605a9afc32d2ef4627b89d91")
+                                                    .firstName("Yuta")
+                                                    .lastName("Sasaki")
+                                                    .company("ABC")
+                                                    .address("sasaki@fake.com")
+                                                    .ticketId("6059a3527818810498ce8deb")
+                                                    .ticketCount(3)
+                                                    .eventId("605a9ad932d2ef4627b89d90")
+                                                    .build(),
+                                    RegistrationInfo.builder()
+                                                    .id("605a9afc32d2ef4627b89d91")
+                                                    .firstName("Yuta")
+                                                    .lastName("Sasaki")
+                                                    .company("ABC")
+                                                    .address("sasaki@fake.com")
+                                                    .ticketId("6059a3527818810498ce8deb")
+                                                    .ticketCount(2)
+                                                    .eventId("605a9ad932d2ef4627b89d90")
+                                                    .build()));
 
-        ticketRepository.save(Ticket.builder().id("1").ticketName("1day").ticketPrice(1000L).ticketTotal(100L).ticketLimit(10).eventId("1").build());
-        ticketRepository.save(Ticket.builder().id("2").ticketName("2days").ticketPrice(1800L).ticketTotal(100L).ticketLimit(10).eventId("1").build());
-        ticketRepository.save(Ticket.builder().id("3").ticketName("1day").ticketPrice(1800L).ticketTotal(10L).ticketLimit(10).eventId("2").build());
+        when(eventRepository.findById("605a9ad932d2ef4627b89d90")).thenReturn(Optional.of(Event.builder()
+                                                                                               .name("TestEvent")
+                                                                                               .id("605a9ad932d2ef4627b89d90")
+                                                                                               .build()));
     }
 
     @Test
-    public void registerToEvent() throws Exception {
+    public void 正常にレジストレーションができる場合() throws Exception {
+
         mvc.perform(post("/register")
                 .param("firstName", "firstName")
                 .param("lastName", "lastName")
                 .param("company", "companyName")
                 .param("address", "aaa@example.com")
-                .param("ticketId", "1")
-                .param("ticketCount", "1")
-                .param("eventId", "1"))
+                .param("attendeeFirstName", "Attendee")
+                .param("attendeeLastName", "NameDesu")
+                .param("attendeeCompany", "Attendee.corp")
+                .param("attendeeAddress", "attendee@example.com")
+                .param("ticketId", "6059a3527818810498ce8deb")
+                .param("ticketCount", "3")
+                .param("eventId", "605a9ad932d2ef4627b89d90"))
                 .andExpect(flash().attribute("successMessage", "Complete buy."))
                 .andExpect(redirectedUrl("/event/TestEvent"));
 
-        List<RegistrationInfo> all = registrationInfoRepository.findAll();
 
-        assertEquals(1, all.size());
-        assertEquals("firstName", all.get(0).getFirstName());
-        assertEquals("lastName", all.get(0).getLastName());
-        assertEquals("companyName", all.get(0).getCompany());
-        assertEquals("aaa@example.com", all.get(0).getAddress());
-        assertEquals("1", all.get(0).getTicketId());
-        assertEquals(Integer.valueOf(1), all.get(0).getTicketCount());
-        assertEquals("1", all.get(0).getEventId());
-        assertNotNull(all.get(0).getId());
+        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
+        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
+        verify(eventRepository, times(1)).findById("605a9ad932d2ef4627b89d90");
     }
 
     @Test
-    public void チケット数が100分の99枚の場合1枚購入出来る() {
-        assertTrue(registerController.isBuyableForTicketMaximum(100, 99, 1));
-    }
+    public void チケットの枚数が足りない場合() throws Exception {
+        Ticket ticket = Ticket.builder()
+                               .id("6059a3527818810498ce8deb")
+                               .ticketName("ATicketName")
+                               .ticketLimit(3)
+                               .ticketPrice(1000L)
+                               .ticketTotal(7L)
+                               .eventId("605a9ad932d2ef4627b89d90")
+                               .build();
 
-    @Test
-    public void チケット数が100分の100枚の場合1枚購入出来ない() {
-        assertFalse(registerController.isBuyableForTicketMaximum(100, 100, 1));
-    }
+        when(ticketRepository.findById("6059a3527818810498ce8deb")).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findByEventId("605a9ad932d2ef4627b89d90")).thenReturn(
+          Collections.singletonList(ticket));
 
-    @Test
-    public void ticketTotalOver() throws Exception {
-        registrationInfoRepository.save(
-                RegistrationInfo.builder().firstName("first").lastName("last").company("")
-                        .address("test@example").ticketId("3").ticketCount(10).eventId("2").build()
-        );
         mvc.perform(post("/register")
-                .param("firstName", "firstName")
-                .param("lastName", "lastName")
-                .param("company", "companyName")
-                .param("address", "aaa@example.com")
-                .param("ticketId", "3")
-                .param("ticketCount", "1")
-                .param("eventId", "2"))
-                .andExpect(view().name("register_form"))
-                .andExpect(model().attribute("errors", "Can't buy."));
+          .param("firstName", "firstName")
+          .param("lastName", "lastName")
+          .param("company", "companyName")
+          .param("address", "aaa@example.com")
+          .param("attendeeFirstName", "Attendee")
+          .param("attendeeLastName", "NameDesu")
+          .param("attendeeCompany", "Attendee.corp")
+          .param("attendeeAddress", "attendee@example.com")
+          .param("ticketId", "6059a3527818810498ce8deb")
+          .param("ticketCount", "3")
+          .param("eventId", "605a9ad932d2ef4627b89d90"))
+          .andExpect(MockMvcResultMatchers.model().attribute("errors", "Can't buy."))
+          .andExpect(MockMvcResultMatchers.model().attribute("ticketList", Collections.singletonList(ticket)))
+          .andExpect(model().attribute("form", hasProperty("firstName", is("firstName"))))
+          .andExpect(model().attribute("form", hasProperty("lastName", is("lastName"))))
+          .andExpect(model().attribute("form", hasProperty("company", is("companyName"))))
+          .andExpect(model().attribute("form", hasProperty("address", is("aaa@example.com"))))
+          .andExpect(model().attribute("form", hasProperty("attendeeFirstName", is("Attendee"))))
+          .andExpect(model().attribute("form", hasProperty("attendeeLastName", is("NameDesu"))))
+          .andExpect(model().attribute("form", hasProperty("attendeeCompany", is("Attendee.corp"))))
+          .andExpect(model().attribute("form", hasProperty("attendeeAddress", is("attendee@example.com"))))
+          .andExpect(model().attribute("form", hasProperty("ticketId", is("6059a3527818810498ce8deb"))))
+          .andExpect(model().attribute("form", hasProperty("ticketCount", is(3))))
+          .andExpect(model().attribute("form", hasProperty("eventId", is("605a9ad932d2ef4627b89d90"))))
+          .andExpect(model().attribute("event", Event.builder().name("TestEvent").id("605a9ad932d2ef4627b89d90").build()))
+          .andExpect(view().name("register_form"));
+
+        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
+        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
+        verify(eventRepository,times(1)).findById("605a9ad932d2ef4627b89d90");
     }
 }
