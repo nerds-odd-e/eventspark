@@ -38,6 +38,8 @@ public class EventNewPage extends BasePage {
     @FindBy(id = "add")
     private WebElement submitButton;
 
+    @FindBy(id = "errorArea")
+    private WebElement errorArea;
 
     public void goToPage() {
         this.goToPage("/owner/event/new");
@@ -80,4 +82,7 @@ public class EventNewPage extends BasePage {
 
     public void submit() { submitButton.click(); }
 
+    public String getErrorText() {
+        return errorArea.getText();
+    }
 }

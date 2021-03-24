@@ -325,8 +325,10 @@ public class EventSteps {
         eventNewPage.submit();
     }
 
-    @Then("イベントの登録に失敗しエラーメッセージが表示される")
-    public void イベントの登録に失敗しエラーメッセージが表示される() throws UnsupportedEncodingException {
-
+    @Then("イベントの登録に失敗しエラーメッセージが表示される {string}")
+    public void イベントの登録に失敗しエラーメッセージが表示される(String arg0) {
+        Assert.assertEquals(arg0, eventNewPage.getErrorText());
     }
 }
+
+
