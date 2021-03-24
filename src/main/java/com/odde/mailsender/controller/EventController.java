@@ -72,15 +72,13 @@ public class EventController {
         Event event = eventRepository.findByName(form.getName());
         if (event != null) {
             String errorMessage = "Failed!: Same name event already exist.";
-            model.addAttribute("form", form);
-            model.addAttribute("errorMessage", errorMessage);
+            addAttributeErrorMessage(form, model, errorMessage);
             return "event-new";
         }
 
         if (result.hasErrors()) {
             String errorMessage = "There is an error in the input contents.";
-            model.addAttribute("form", form);
-            model.addAttribute("errorMessage", errorMessage);
+            addAttributeErrorMessage(form, model, errorMessage);
             return "event-new";
         }
 
@@ -91,6 +89,11 @@ public class EventController {
         model.addAttribute("ticket", null);
         return "event-detail-owner";
 
+    }
+
+    private void addAttributeErrorMessage(AddEventForm form, Model model, String errorMessage) {
+        model.addAttribute("form", form);
+        model.addAttribute("errorMessage", errorMessage);
     }
 
     @PutMapping("/owner/event/{eventName}")
