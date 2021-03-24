@@ -71,14 +71,16 @@ public class EventController {
     public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
         Event event = eventRepository.findByName(form.getName());
         if (event != null) {
+            String errorMessage = "Failed!: Same name event already exist.";
             model.addAttribute("form", form);
-            model.addAttribute("errorMessage", "Failed!: Same name event already exist.");
+            model.addAttribute("errorMessage", errorMessage);
             return "event-new";
         }
 
         if (result.hasErrors()) {
+            String errorMessage = "There is an error in the input contents.";
             model.addAttribute("form", form);
-            model.addAttribute("errorMessage", "There is an error in the input contents.");
+            model.addAttribute("errorMessage", errorMessage);
             return "event-new";
         }
 
