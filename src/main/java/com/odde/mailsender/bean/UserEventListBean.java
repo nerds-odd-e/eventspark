@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 @Builder
 public class UserEventListBean {
 
-    public static final String TICKET_COUNT_FEW = "残りわずか";
-    public static final String TICKET_COUNT_LOT = "申し込み受付中";
+    public static final String TICKET_COUNT_FEW = "Few available";
+    public static final String TICKET_COUNT_LOT = "Available";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
     private static final Double SOLD_NOTIFICATION_LEVEL = 0.2;
 
