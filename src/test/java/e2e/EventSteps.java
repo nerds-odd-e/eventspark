@@ -315,14 +315,13 @@ public class EventSteps {
     public void addEventページに内容を入力して確定ボタンを押す(Map<String, String> dataTable) {
         eventNewPage.goToPage();
 
-        eventNewPage.fillNameField(dataTable.get("イベント名"));
-        eventNewPage.fillLocationField(dataTable.get("場所"));
-        eventNewPage.fillOwnerField(dataTable.get("オーナー"));
-        eventNewPage.fillDetailField(dataTable.get("イベント情報"));
-        eventNewPage.fillSummaryField(dataTable.get("サマリー"));
-        eventNewPage.fillStartDateField(dataTable.get("イベント開始日時"));
-        eventNewPage.fillEndDateField(dataTable.get("イベント終了日時"));
-        eventNewPage.fillImageField(dataTable.get("画像URL"));
+        eventNewPage.fillNameField("イベント名");
+        eventNewPage.fillLocationField("場所");
+        eventNewPage.fillOwnerField("オーナー");
+        eventNewPage.fillDetailField("イベント情報");
+        eventNewPage.fillSummaryField("サマリー");
+        eventNewPage.fillEndDateField("イベント終了日時");
+        eventNewPage.fillImageField("画像URL");
         eventNewPage.submit();
     }
 
