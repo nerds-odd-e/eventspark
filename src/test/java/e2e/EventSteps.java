@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 
+import javax.validation.constraints.AssertTrue;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -320,13 +321,14 @@ public class EventSteps {
         eventNewPage.fillOwnerField("オーナー");
         eventNewPage.fillDetailField("イベント情報");
         eventNewPage.fillSummaryField("サマリー");
-        eventNewPage.fillEndDateField("イベント終了日時");
+        eventNewPage.fillEndDateField("2020-06-11 17:00");
         eventNewPage.fillImageField("画像URL");
         eventNewPage.submit();
     }
 
     @Then("イベントの登録に失敗しエラーメッセージが表示される {string}")
     public void イベントの登録に失敗しエラーメッセージが表示される(String arg0) {
+        Assert.assertTrue(eventNewPage.isActive());
         Assert.assertEquals(arg0, eventNewPage.getErrorText());
     }
 }

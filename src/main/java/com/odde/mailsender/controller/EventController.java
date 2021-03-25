@@ -76,17 +76,18 @@ public class EventController {
             return "event-new";
         }
 
-        if (result.hasErrors()) {
-            String errorMessage = "There is an error in the input contents.";
-            addAttributeErrorMessage(form, model, errorMessage);
-            return "event-new";
-        }
+        //if (result.hasErrors()) {
+        //    String errorMessage = "There is an error in the input contents.";
+        //    addAttributeErrorMessage(form, model, errorMessage);
+        //    return "event-new";
+        //}
 
         event = form.createEvent();
 
         eventRepository.insert(event);
         model.addAttribute("event", event);
         model.addAttribute("ticket", null);
+
         return "event-detail-owner";
 
     }

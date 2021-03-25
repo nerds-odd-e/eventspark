@@ -17,12 +17,13 @@
                 <li role="presentation"><a href="/home">HOME</a></li>
                 <li role="presentation"><a href="/contact-list">Contact List</a></li>
                 <li role="presentation"><a href="/event">Event</a></li>
-                <li role="presentation" class="active"><a href="/owner/event/new">Add Event</a></li>
+                <li role="presentation" class="active" id="add-event-tab"><a href="/owner/event/new">Add Event</a></li>
             </ul>
 
 
             <!--<div id="event_name">イベント名</div>-->
             <form action="/owner/event" method="post" th:object="${form}">
+                <div id="parent" th:replace="components/error-panel"></div>
                 <div th:if="${errorMessage} != null" th:text="${errorMessage}" style="color:red;" id="errorArea"></div>
                 <div class="form-group">
                     <label for="name">Name</label>

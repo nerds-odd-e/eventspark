@@ -38,8 +38,11 @@ public class EventNewPage extends BasePage {
     @FindBy(id = "add")
     private WebElement submitButton;
 
-    @FindBy(id = "errorArea")
+    @FindBy(id = "error-area")
     private WebElement errorArea;
+
+    @FindBy(id = "add-event-tab")
+    private WebElement tab;
 
     public void goToPage() {
         this.goToPage("/owner/event/new");
@@ -84,5 +87,10 @@ public class EventNewPage extends BasePage {
 
     public String getErrorText() {
         return errorArea.getText();
+    }
+
+    public boolean isActive() {
+        String className = tab.getAttribute("class");
+        return className.equals("active");
     }
 }

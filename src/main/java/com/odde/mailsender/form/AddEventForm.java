@@ -26,10 +26,11 @@ public class AddEventForm {
     @NotEmpty(message = "must be not empty")
     private String detail;
 
-    @NotNull
+    @NotNull(message = "Please specify the event start date")
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime startDateTime;
 
+    @NotNull(message = "must be not empty")
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
