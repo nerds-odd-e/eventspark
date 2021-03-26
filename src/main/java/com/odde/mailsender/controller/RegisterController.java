@@ -39,14 +39,7 @@ public class RegisterController {
             return "register_form";
         }
 
-        registrationInfoRepository.save(RegistrationInfo.builder()
-                                                        .firstName(form.getFirstName())
-                                                        .lastName(form.getLastName())
-                                                        .company(form.getCompany())
-                                                        .address(form.getAddress())
-                                                        .ticketId(form.getTicketId())
-                                                        .ticketCount(form.getTicketCount())
-                                                        .eventId(form.getEventId()).build());
+        registrationInfoRepository.save(form.toEntity());
         Optional<Event> event = eventRepository.findById(form.getEventId());
 
         attributes.addFlashAttribute("successMessage", "Complete buy.");
@@ -70,7 +63,14 @@ public class RegisterController {
     }
 
     private boolean checkEnableToBuy(RegisterForm form){
+        System.out.println("repository size = " + ticketRepository.findAll().size());
+        List<Ticket> ticketArray = ticketRepository.findAll();
+        System.out.println(ticketArray.get(0).getId());
+        System.out.println(ticketArray.get(1).getId());
+        System.out.println(ticketArray.get(2).getId());
+        System.out.println(form.getTicketId());
         Optional<Ticket> optionalTicket = ticketRepository.findById(form.getTicketId());
+        System.out.println(optionalTicket);
         Ticket ticket = optionalTicket.orElse(null);
 
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByTicketId(form.getTicketId());

@@ -3,6 +3,7 @@ package com.odde.mailsender.controller;
 import com.odde.mailsender.data.Event;
 import com.odde.mailsender.data.Ticket;
 import com.odde.mailsender.form.RegisterForm;
+import com.odde.mailsender.form.UserInfo;
 import com.odde.mailsender.service.EventRepository;
 import com.odde.mailsender.service.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class RegisterFormController {
         Event event = eventRepository.findByName(eventName);
         List<Ticket> ticketList = ticketRepository.findByEventId(event.getId());
 
-        model.addAttribute("form", new RegisterForm());
+        model.addAttribute("form", new RegisterForm(new UserInfo(), new UserInfo(), "", ""));
         model.addAttribute("event", event);
         model.addAttribute("ticketList", ticketList);
 
