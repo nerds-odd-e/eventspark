@@ -37,7 +37,6 @@ public class EventRegisterSteps {
         会社名が入力されている(dataTable.cell(2, 1));
         メールアドレスが入力されている(dataTable.cell(3, 1));
         チケットが選択されている(dataTable.cell(4, 1));
-        枚数が入力されている(dataTable.cell(5, 1));
     }
 
     @Given("会社名{string}が入力されている")

@@ -64,7 +64,12 @@ Feature: Event
       |画像URL   |https://3.bp.blogspot.com/-cwPnmxNx-Ps/V6iHw4pHPgI/AAAAAAAA89I/3EUmSFZqX4oeBzDwZcIVwF0A1cyv0DsagCLcB/s800/gassyou_gospel_black.png|
     Then "ゴスペルワークショップ"のイベントの内容とチケット追加ボタンが表示される
 
-  Scenario:
+  Scenario: Empty StartDateTime
     When Add Eventページに内容を入力して確定ボタンを押す
       |イベント開始日時||
-    Then イベントの登録に失敗しエラーメッセージが表示される "Please specify the event start date"
+    Then イベントの登録に失敗しエラーメッセージが表示される "Start date time must not be empty"
+
+  Scenario: Same NameEvent
+    Given ゴスペルワークショップのイベント名のデータが1件あること
+    When Add Eventページに"ゴスペルワークショップ"内容を入力して確定ボタンを押す
+    Then イベントの登録に失敗しエラーメッセージが表示される "Failed!: Same name event already exist."

@@ -136,7 +136,7 @@ public class EventControllerTest {
 
         assertEquals(200, result.getResponse().getStatus());
         assertEquals("event-new", result.getModelAndView().getViewName());
-        assertEquals("Failed!: Same name event already exist.", result.getModelAndView().getModel().get("errorMessage"));
+        assertEquals("Failed!: Same name event already exist.", ((ArrayList)(result.getModelAndView().getModel().get("errorMessages"))).get(0));
 
     }
 
@@ -144,10 +144,11 @@ public class EventControllerTest {
     public void invalidParameterEvent() throws Exception {
         MvcResult result = performAddEventWithoutStartDataTime();
 
+        assertTrue(getBindingErrors(result).contains("Start date time must not be empty"));
         assertEquals(200, result.getResponse().getStatus());
         assertEquals("event-new", result.getModelAndView().getViewName());
-        assertEquals("There is an error in the input contents.", result.getModelAndView().getModel().get("errorMessage"));
     }
+
 
     @Test
     public void updateEvent() throws Exception {
@@ -160,6 +161,10 @@ public class EventControllerTest {
         Event editedEvent = eventRepository.findByName(aEvent.getName());
         assertThat(editedEvent.getName(), is(equalTo(aEvent.getName())));
         assertThat(editedEvent.getLocation(), is(equalTo(editEvent.getLocation())));
+    }
+
+    private String getBindingErrors(MvcResult result)  {
+        return result.getModelAndView().getModel().get("org.springframework.validation.BindingResult.form").toString();
     }
 
     private Event validEvent() {

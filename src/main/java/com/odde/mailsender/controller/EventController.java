@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -71,17 +73,16 @@ public class EventController {
     public String addEvent(@Valid @ModelAttribute("form") AddEventForm form, BindingResult result, Model model) {
         Event event = eventRepository.findByName(form.getName());
         if (event != null) {
-            String errorMessage = "Failed!: Same name event already exist.";
-            addAttributeErrorMessage(form, model, errorMessage);
+            model.addAttribute("errorMessages", new ArrayList(Arrays.asList("Failed!: Same name event already exist.")));
+            model.addAttribute("form", form);
             return "event-new";
         }
 
         if (result.hasErrors()) {
-            String errorMessage = "There is an error in the input contents.";
+            String errorMessage = "Please specify the event start date";
             addAttributeErrorMessage(form, model, errorMessage);
             return "event-new";
         }
-
 
         event = form.createEvent();
 

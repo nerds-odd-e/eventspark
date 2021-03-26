@@ -331,6 +331,21 @@ public class EventSteps {
         //  Assert.assertTrue(eventNewPage.isActive());
         Assert.assertEquals(arg0, eventNewPage.getErrorText());
     }
+
+    @When("Add Eventページに{string}内容を入力して確定ボタンを押す")
+    public void addEventページに_を入力して確定ボタンを押す(String eventName) {
+        eventNewPage.goToPage();
+
+        eventNewPage.fillNameField(eventName);
+        eventNewPage.fillLocationField("場所");
+        eventNewPage.fillOwnerField("オーナー");
+        eventNewPage.fillDetailField("イベント情報");
+        eventNewPage.fillSummaryField("サマリー");
+        eventNewPage.fillStartDateField("2020-06-11 16:00");
+        eventNewPage.fillEndDateField("2020-06-11 17:00");
+        eventNewPage.fillImageField("画像URL");
+        eventNewPage.submit();
+    }
 }
 
 

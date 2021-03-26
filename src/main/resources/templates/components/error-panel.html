@@ -1,4 +1,4 @@
-<div class="panel panel-danger" th:if="${#fields.hasAnyErrors()}">
+<div class="panel panel-danger" th:if="${#fields.hasAnyErrors()} or ${errorMessages}">
     <div class="panel-heading">
         <h3 class="panel-title">Error</h3>
     </div>
@@ -7,7 +7,9 @@
             <li th:each="error : ${#fields.detailedErrors()}">
                 <span th:text="${error.message}"></span>
             </li>
-
+            <li th:each="message : ${errorMessages}">
+                <span th:text="${message}"></span>
+            </li>
         </ul>
     </div>
 </div>

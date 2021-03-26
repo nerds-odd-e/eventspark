@@ -11,30 +11,30 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class AddEventForm {
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Name must not be empty")
     private String name;
 
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Location must not be empty")
     private String location;
 
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Summary must not be empty")
     private String summary;
 
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Owner must not be empty")
     private String owner;
 
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Detail must not be empty")
     private String detail;
 
-    @NotNull(message = "Please specify the event start date")
+    @NotNull(message = "Start date time must not be empty")
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime startDateTime;
 
-    @NotNull(message = "must be not empty")
+    @NotNull(message = "End date time must not be empty")
     @DateTimeFormat(pattern = "uuuu-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
-    @NotEmpty(message = "must be not empty")
+    @NotEmpty(message = "Image url must not be empty")
     private String imagePath;
 
     public String startDateTimeToString() {
