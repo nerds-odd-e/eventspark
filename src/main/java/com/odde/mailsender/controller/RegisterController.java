@@ -63,14 +63,8 @@ public class RegisterController {
     }
 
     private boolean checkEnableToBuy(RegisterForm form){
-        System.out.println("repository size = " + ticketRepository.findAll().size());
         List<Ticket> ticketArray = ticketRepository.findAll();
-        System.out.println(ticketArray.get(0).getId());
-        System.out.println(ticketArray.get(1).getId());
-        System.out.println(ticketArray.get(2).getId());
-        System.out.println(form.getTicketId());
         Optional<Ticket> optionalTicket = ticketRepository.findById(form.getTicketId());
-        System.out.println(optionalTicket);
         Ticket ticket = optionalTicket.orElse(null);
 
         List<RegistrationInfo> registrationInfoList = registrationInfoRepository.findByTicketId(form.getTicketId());

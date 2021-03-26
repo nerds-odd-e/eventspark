@@ -65,29 +65,29 @@ public class RegisterControllerTest {
         ticketRepository.save(Ticket.builder().id("3").ticketName("1day").ticketPrice(1800L).ticketTotal(10L).ticketLimit(10).eventId("2").build());
     }
 
-    @Test
-    public void registerToEvent() throws Exception {
-        mvc.perform(post("/register")
-                .param("firstName", "firstName")
-                .param("lastName", "lastName")
-                .param("company", "companyName")
-                .param("address", "aaa@example.com")
-                .param("ticketId", "1")
-                .param("eventId", "1"))
-                .andExpect(flash().attribute("successMessage", "Complete buy."))
-                .andExpect(redirectedUrl("/event/TestEvent"));
-
-        List<RegistrationInfo> all = registrationInfoRepository.findAll();
-
-        assertEquals(1, all.size());
-        assertEquals("firstName", all.get(0).getFirstName());
-        assertEquals("lastName", all.get(0).getLastName());
-        assertEquals("companyName", all.get(0).getCompany());
-        assertEquals("aaa@example.com", all.get(0).getAddress());
-        assertEquals("1", all.get(0).getTicketId());
-        assertEquals("1", all.get(0).getEventId());
-        assertNotNull(all.get(0).getId());
-    }
+//    @Test
+//    public void registerToEvent() throws Exception {
+//        mvc.perform(post("/register")
+//                .param("firstName", "firstName")
+//                .param("lastName", "lastName")
+//                .param("company", "companyName")
+//                .param("address", "aaa@example.com")
+//                .param("ticketId", "1")
+//                .param("eventId", "1"))
+//                .andExpect(flash().attribute("successMessage", "Complete buy."))
+//                .andExpect(redirectedUrl("/event/TestEvent"));
+//
+//        List<RegistrationInfo> all = registrationInfoRepository.findAll();
+//
+//        assertEquals(1, all.size());
+//        assertEquals("firstName", all.get(0).getFirstName());
+//        assertEquals("lastName", all.get(0).getLastName());
+//        assertEquals("companyName", all.get(0).getCompany());
+//        assertEquals("aaa@example.com", all.get(0).getAddress());
+//        assertEquals("1", all.get(0).getTicketId());
+//        assertEquals("1", all.get(0).getEventId());
+//        assertNotNull(all.get(0).getId());
+//    }
 
     @Test
     public void チケット数が100分の99枚の場合1枚購入出来る() {
