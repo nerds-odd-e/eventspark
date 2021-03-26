@@ -63,7 +63,6 @@ public class RegisterController {
     }
 
     private boolean checkEnableToBuy(RegisterForm form){
-        List<Ticket> ticketArray = ticketRepository.findAll();
         Optional<Ticket> optionalTicket = ticketRepository.findById(form.getTicketId());
         Ticket ticket = optionalTicket.orElse(null);
 
