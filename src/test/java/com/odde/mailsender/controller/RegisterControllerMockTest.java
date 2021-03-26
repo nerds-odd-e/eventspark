@@ -99,86 +99,86 @@ public class RegisterControllerMockTest {
                                                                                                .id("605a9ad932d2ef4627b89d90")
                                                                                                .build()));
     }
-//
-//    @Test
-//    public void 正常にレジストレーションができる場合() throws Exception {
-//
-//        mvc.perform(post("/register")
-//                .param("buyer.firstName", "firstName")
-//                .param("buyer.lastName", "lastName")
-//                .param("buyer.company", "companyName")
-//                .param("buyer.address", "aaa@example.com")
-//                .param("attendee.firstName", "Attendee")
-//                .param("attendee.lastName", "NameDesu")
-//                .param("attendee.company", "Attendee.corp")
-//                .param("attendee.address", "attendee@example.com")
-//                .param("ticketId", "6059a3527818810498ce8deb")
-//                .param("eventId", "605a9ad932d2ef4627b89d90"))
-//                .andExpect(flash().attribute("successMessage", "Complete buy."))
-//                .andExpect(redirectedUrl("/event/TestEvent"));
-//
-//
-//        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
-//        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
-//        verify(eventRepository, times(1)).findById("605a9ad932d2ef4627b89d90");
-//        verify(registrationInfoRepository, times(1)).save(RegistrationInfo.builder()
-//                                                                                                  .firstName("firstName")
-//                                                                                                  .lastName("lastName")
-//                                                                                                  .company("companyName")
-//                                                                                                  .address("aaa@example.com")
-//                                                                                                  .attendeeFirstName("Attendee")
-//                                                                                                  .attendeeLastName("NameDesu")
-//                                                                                                  .attendeeCompany("Attendee.corp")
-//                                                                                                  .attendeeAddress("attendee@example.com")
-//                                                                                                  .ticketId("6059a3527818810498ce8deb")
-//                                                                                                  .ticketCount(1)
-//                                                                                                  .eventId("605a9ad932d2ef4627b89d90")
-//                                                                                                  .build());
-//    }
-//
-//    @Test
-//    public void チケットの枚数が足りない場合() throws Exception {
-//        Ticket ticket = Ticket.builder()
-//                               .id("6059a3527818810498ce8deb")
-//                               .ticketName("ATicketName")
-//                               .ticketLimit(3)
-//                               .ticketPrice(1000L)
-//                               .ticketTotal(7L)
-//                               .eventId("605a9ad932d2ef4627b89d90")
-//                               .build();
-//
-//        when(ticketRepository.findById("6059a3527818810498ce8deb")).thenReturn(Optional.of(ticket));
-//        when(ticketRepository.findByEventId("605a9ad932d2ef4627b89d90")).thenReturn(
-//          Collections.singletonList(ticket));
-//
-//        mvc.perform(post("/register")
-//          .param("buyer.firstName", "firstName")
-//          .param("buyer.lastName", "lastName")
-//          .param("buyer.company", "companyName")
-//          .param("buyer.address", "aaa@example.com")
-//          .param("attendee.firstName", "Attendee")
-//          .param("attendee.lastName", "NameDesu")
-//          .param("attendee.company", "Attendee.corp")
-//          .param("attendee.address", "attendee@example.com")
-//          .param("ticketId", "6059a3527818810498ce8deb")
-//          .param("eventId", "605a9ad932d2ef4627b89d90"))
-//          .andExpect(MockMvcResultMatchers.model().attribute("errors", "Can't buy."))
-//          .andExpect(MockMvcResultMatchers.model().attribute("ticketList", Collections.singletonList(ticket)))
-//          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("firstName", is("firstName")))))
-//          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("lastName", is("lastName")))))
-//          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("company", is("companyName")))))
-//          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("address", is("aaa@example.com")))))
-//          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("firstName", is("Attendee")))))
-//          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("lastName", is("NameDesu")))))
-//          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("company", is("Attendee.corp")))))
-//          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("address", is("attendee@example.com")))))
-//          .andExpect(model().attribute("form", hasProperty("ticketId", is("6059a3527818810498ce8deb"))))
-//          .andExpect(model().attribute("form", hasProperty("eventId", is("605a9ad932d2ef4627b89d90"))))
-//          .andExpect(model().attribute("event", Event.builder().name("TestEvent").id("605a9ad932d2ef4627b89d90").build()))
-//          .andExpect(view().name("register_form"));
-//
-//        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
-//        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
-//        verify(eventRepository,times(1)).findById("605a9ad932d2ef4627b89d90");
-//    }
+
+    @Test
+    public void 正常にレジストレーションができる場合() throws Exception {
+
+        mvc.perform(post("/register")
+                .param("buyer.firstName", "firstName")
+                .param("buyer.lastName", "lastName")
+                .param("buyer.company", "companyName")
+                .param("buyer.address", "aaa@example.com")
+                .param("attendee.firstName", "Attendee")
+                .param("attendee.lastName", "NameDesu")
+                .param("attendee.company", "Attendee.corp")
+                .param("attendee.address", "attendee@example.com")
+                .param("ticketId", "6059a3527818810498ce8deb")
+                .param("eventId", "605a9ad932d2ef4627b89d90"))
+                .andExpect(flash().attribute("successMessage", "Complete buy."))
+                .andExpect(redirectedUrl("/event/TestEvent"));
+
+
+        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
+        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
+        verify(eventRepository, times(1)).findById("605a9ad932d2ef4627b89d90");
+        verify(registrationInfoRepository, times(1)).save(RegistrationInfo.builder()
+                                                                                                  .firstName("firstName")
+                                                                                                  .lastName("lastName")
+                                                                                                  .company("companyName")
+                                                                                                  .address("aaa@example.com")
+                                                                                                  .attendeeFirstName("Attendee")
+                                                                                                  .attendeeLastName("NameDesu")
+                                                                                                  .attendeeCompany("Attendee.corp")
+                                                                                                  .attendeeAddress("attendee@example.com")
+                                                                                                  .ticketId("6059a3527818810498ce8deb")
+                                                                                                  .ticketCount(1)
+                                                                                                  .eventId("605a9ad932d2ef4627b89d90")
+                                                                                                  .build());
+    }
+
+    @Test
+    public void チケットの枚数が足りない場合() throws Exception {
+        Ticket ticket = Ticket.builder()
+                               .id("6059a3527818810498ce8deb")
+                               .ticketName("ATicketName")
+                               .ticketLimit(3)
+                               .ticketPrice(1000L)
+                               .ticketTotal(7L)
+                               .eventId("605a9ad932d2ef4627b89d90")
+                               .build();
+
+        when(ticketRepository.findById("6059a3527818810498ce8deb")).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findByEventId("605a9ad932d2ef4627b89d90")).thenReturn(
+          Collections.singletonList(ticket));
+
+        mvc.perform(post("/register")
+          .param("buyer.firstName", "firstName")
+          .param("buyer.lastName", "lastName")
+          .param("buyer.company", "companyName")
+          .param("buyer.address", "aaa@example.com")
+          .param("attendee.firstName", "Attendee")
+          .param("attendee.lastName", "NameDesu")
+          .param("attendee.company", "Attendee.corp")
+          .param("attendee.address", "attendee@example.com")
+          .param("ticketId", "6059a3527818810498ce8deb")
+          .param("eventId", "605a9ad932d2ef4627b89d90"))
+          .andExpect(MockMvcResultMatchers.model().attribute("errors", "Can't buy."))
+          .andExpect(MockMvcResultMatchers.model().attribute("ticketList", Collections.singletonList(ticket)))
+          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("firstName", is("firstName")))))
+          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("lastName", is("lastName")))))
+          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("company", is("companyName")))))
+          .andExpect(model().attribute("form", hasProperty("buyer", hasProperty("address", is("aaa@example.com")))))
+          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("firstName", is("Attendee")))))
+          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("lastName", is("NameDesu")))))
+          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("company", is("Attendee.corp")))))
+          .andExpect(model().attribute("form", hasProperty("attendee", hasProperty("address", is("attendee@example.com")))))
+          .andExpect(model().attribute("form", hasProperty("ticketId", is("6059a3527818810498ce8deb"))))
+          .andExpect(model().attribute("form", hasProperty("eventId", is("605a9ad932d2ef4627b89d90"))))
+          .andExpect(model().attribute("event", Event.builder().name("TestEvent").id("605a9ad932d2ef4627b89d90").build()))
+          .andExpect(view().name("register_form"));
+
+        verify(ticketRepository, times(1)).findById("6059a3527818810498ce8deb");
+        verify(registrationInfoRepository, times(1)).findByTicketId("6059a3527818810498ce8deb");
+        verify(eventRepository,times(1)).findById("605a9ad932d2ef4627b89d90");
+    }
 }
